@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '10.0'
+
+target 'Observatory_Example' do
+  pod 'Observatory', :path => '../'
+
+  target 'Observatory_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
