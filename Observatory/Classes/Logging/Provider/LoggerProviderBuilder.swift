@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+public struct LoggerProviderBuilder {
+    let resource: Resource
+    
+    public func build() -> LoggerProvidable {
+        return LoggerProvider(resource: resource)
+    }
+}
