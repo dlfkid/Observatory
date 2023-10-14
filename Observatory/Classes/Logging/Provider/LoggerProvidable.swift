@@ -15,6 +15,8 @@ class LoggerProvider: LoggerProvidable {
     
     private var loggerCache = [String: Loggerable]()
     
+    let timeStampProvider: TimeStampProvidable
+    
     func  createLoggerIfNeeded(name: String, version: String) -> Loggerable {
         return createLoggerIfNeeded(name: name, version: version, schemeaURL: nil, attributes: nil)
     }
@@ -36,8 +38,9 @@ class LoggerProvider: LoggerProvidable {
     
     let resource: Resource
     
-    init(resource: Resource) {
+    init(resource: Resource, timeStampProvider: TimeStampProvidable) {
         self.resource = resource
+        self.timeStampProvider = timeStampProvider
     }
 }
 

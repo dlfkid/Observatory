@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct LogRecordData {
+    let timeUnixNano: TimeInterval
+    let body: Data
+    let traceID: Data
+    let spanID: Data
+    
+}

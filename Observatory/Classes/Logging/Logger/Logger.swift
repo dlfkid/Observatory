@@ -18,34 +18,14 @@ import Foundation
  */
 
 public protocol Loggerable {
-    func log(_ content: String, timeStamp: TimeInterval, severity: Severity, attributes: [String : ObservableValue]?)
+    func log(record: LogRecord)
 }
 
 class Logger: Loggerable {
     
-    func log(_ content: String, timeStamp: TimeInterval, severity: Severity, attributes: [String : ObservableValue]?) {
+    func log(record: LogRecord) {
+        
     }
-    
-    func logDebug(_ content: String, attributes: [String : ObservableValue]?) {
-        log(content, timeStamp: Date().timeIntervalSince1970, severity: .debug, attributes: attributes)
-    }
-    
-    func logInfo(_ content: String, attributes: [String : ObservableValue]?) {
-        log(content, timeStamp: Date().timeIntervalSince1970, severity: .info, attributes: attributes)
-    }
-    
-    func logWarn(_ content: String, attributes: [String : ObservableValue]?) {
-        log(content, timeStamp: Date().timeIntervalSince1970, severity: .warn, attributes: attributes)
-    }
-    
-    func logError(_ content: String, attributes: [String : ObservableValue]?) {
-        log(content, timeStamp: Date().timeIntervalSince1970, severity: .error, attributes: attributes)
-    }
-    
-    func logFatal(_ content: String, attributes: [String : ObservableValue]?) {
-        log(content, timeStamp: Date().timeIntervalSince1970, severity: .fatal, attributes: attributes)
-    }
-    
     
     let version: String
     

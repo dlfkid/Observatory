@@ -7,17 +7,17 @@
 
 import Foundation
 
-public enum Severity {
-    case trace
-    case debug
-    case info
-    case warn
-    case error
-    case fatal
+public enum LogRecord {
+    case trace(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
+    case debug(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
+    case info(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
+    case warn(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
+    case error(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
+    case fatal(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
 }
 
-public extension Severity {
-    var number: Int {
+public extension LogRecord {
+    var severityNumber: Int {
         switch self  {
         case .trace:
             return 4
@@ -34,7 +34,7 @@ public extension Severity {
         }
     }
     
-    var name: String {
+    var severityName: String {
         switch self {
         case .trace:
             return "TRACE"
