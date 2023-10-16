@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+protocol LogProcessable {
+    
+}
+
+class LogProcessor: LogProcessable {
+    
+}

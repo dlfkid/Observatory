@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+protocol LogExportable {
+    
+}
+
+class LogExporter: LogExportable {
+    
+}

@@ -18,13 +18,13 @@ import Foundation
  */
 
 public protocol Loggerable {
-    func log(record: LogRecord)
+    func log(record: LogRecord) -> LogRecordData
 }
 
 class Logger: Loggerable {
     
-    func log(record: LogRecord) {
-        
+    func log(record: LogRecord) -> LogRecordData {
+        return LogRecordData(time_unix_nano: 0, body: nil, trace_id: nil, span_id: nil, severity_text: nil, severity_number: nil, dropped_attributes_count: nil, attributes: nil, flags: .unspecified)
     }
     
     let version: String
