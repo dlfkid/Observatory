@@ -1,5 +1,5 @@
 //
-//  LogRecord.swift
+//  LogSeverity.swift
 //  Pods
 //
 //  Created by LeonDeng on 2023/10/5.
@@ -7,16 +7,16 @@
 
 import Foundation
 
-public enum LogRecord {
-    case trace(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
-    case debug(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
-    case info(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
-    case warn(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
-    case error(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
-    case fatal(body: String, timeStamp: TimeInterval = 0, attributes: [String : ObservableValue]? = nil, traceID: Data? = nil, spanID: Data? = nil)
+public enum LogSeverity {
+    case trace
+    case debug
+    case info
+    case warn
+    case error
+    case fatal
 }
 
-public extension LogRecord {
+public extension LogSeverity {
     var severityNumber: Int {
         switch self  {
         case .trace:

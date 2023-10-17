@@ -10,7 +10,7 @@ import Foundation
 /*
  Timestamp
  Observed Timestamp. If unspecified the implementation SHOULD set it equal to the current time.
- The Context associated with the LogRecord. The API MAY implicitly use the current Context as a default behavior.
+ The Context associated with the LogSeverity. The API MAY implicitly use the current Context as a default behavior.
  Severity Number
  Severity Text
  Body
@@ -18,13 +18,29 @@ import Foundation
  */
 
 public protocol Loggerable {
-    func log(record: LogRecord) -> LogRecordData
+    
+    var version: String {get}
+    
+    var name: String {get}
+    
+    var schemaURL: String? {get}
+    
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String: ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> (LogRecordData, InstrumentationScope)
+}
+
+extension Loggerable {
+    var scope: InstrumentationScope {
+        return InstrumentationScope(name: name, version: version)
+    }
 }
 
 class Logger: Loggerable {
     
-    func log(record: LogRecord) -> LogRecordData {
-        return LogRecordData(time_unix_nano: 0, body: nil, trace_id: nil, span_id: nil, severity_text: nil, severity_number: nil, dropped_attributes_count: nil, attributes: nil, flags: .unspecified)
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> (LogRecordData, InstrumentationScope) {
+        
+        let logData = LogRecordData(time_unix_nano: timeStamp, body: body.data(using: .utf8), trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: attributes, flags: flag)
+        
+        return (logData, scope)
     }
     
     let version: String
@@ -38,7 +54,5 @@ class Logger: Loggerable {
         self.name = name
         self.schemaURL = schemaURL
     }
-    
-    
     
 }
