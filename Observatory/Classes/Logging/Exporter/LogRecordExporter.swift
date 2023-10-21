@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol LogExportable {
-    
-}
-
-class LogExporter: LogExportable {
+public protocol LogExportable {
     
 }

@@ -7,10 +7,8 @@
 
 import Foundation
 
-protocol LogProcessable {
+public protocol LogProcessable {
+    var exporter: LogExportable? {get set}
     
-}
-
-class LogProcessor: LogProcessable {
-    
+    func addLogRecord(_ logRecordData: LogRecordData, scope: InstrumentationScope)
 }
