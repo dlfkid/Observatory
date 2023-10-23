@@ -13,7 +13,6 @@ public struct InstrumentationScope: Hashable, Equatable {
     let version: String
 }
 
-
 public enum LogRecordFlags: UInt {
   case unspecified = 0;
   case mask = 0x000000FF;
@@ -29,6 +28,7 @@ public struct LogRecordData {
     let dropped_attributes_count: Int?
     let attributes: [String : ObservableValue]?
     let flags: LogRecordFlags
+    let scope: InstrumentationScope
 }
 
 extension LogRecordData: Encodable {

@@ -22,13 +22,15 @@ public struct BatchLogRecordConfig {
 
 public class BatchLogRecordProcessor: LogProcessable {
     
-    let config: BatchLogRecordConfig
+    public func onEmit(logRecord: LogRecordData) {
+        
+    }
     
     public var exporter: LogExportable?
     
-    public func addLogRecord(_ logRecordData: LogRecordData, scope: InstrumentationScope) {
-        
-    }
+    private let config: BatchLogRecordConfig
+    
+    private var unexportedLogRecords = [InstrumentationScope: LogRecordData]()
     
     init(config: BatchLogRecordConfig) {
         self.config = config

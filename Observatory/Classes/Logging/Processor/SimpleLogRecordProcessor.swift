@@ -16,7 +16,7 @@ public class SimpleLogProcessor: LogProcessable {
         self.exporter = exporter
     }
     
-    public func addLogRecord(_ logRecordData: LogRecordData, scope: InstrumentationScope) {
+    public func onEmit(logRecord: LogRecordData) {
         
     }
 }

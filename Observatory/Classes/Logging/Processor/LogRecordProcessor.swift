@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol LogProcessable {
-    var exporter: LogExportable? {get set}
+    var exporter: LogExportable? {get}
     
-    func addLogRecord(_ logRecordData: LogRecordData, scope: InstrumentationScope)
+    func onEmit(logRecord: LogRecordData)
 }
