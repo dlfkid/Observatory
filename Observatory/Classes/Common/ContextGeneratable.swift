@@ -21,11 +21,19 @@ extension TelemetryID {
     }
 }
 
-struct TraceID: TelemetryID {
+struct TraceID: TelemetryID, Hashable, Comparable {
+    static func < (lhs: TraceID, rhs: TraceID) -> Bool {
+        return lhs.hashValue < rhs.hashValue
+    }
+    
     var raw: [UInt8]
 }
 
-struct SpanID: TelemetryID {
+struct SpanID: TelemetryID, Hashable, Comparable {
+    static func < (lhs: SpanID, rhs: SpanID) -> Bool {
+        return lhs.hashValue < rhs.hashValue
+    }
+    
     var raw: [UInt8]
 }
 
