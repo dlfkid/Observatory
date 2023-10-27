@@ -14,33 +14,39 @@ class LoggerProvider: LoggerProvidable {
     
     private var loggerCache = [String: Loggerable]()
     
+    private var processorCache = [LogProcessable]()
+    
+    let resource: Resource
+    
     let timeStampProvider: TimeStampProvidable
     
-    func createLoggerIfNeeded(name: String, version: String) -> Loggerable {
+    func createLoggerIfNeeded(name: String, version: String) {
         return createLoggerIfNeeded(name: name, version: version, schemeaURL: nil, attributes: nil)
     }
     
-    func createLoggerIfNeeded(name: String, version: String, schemeaURL: String?, attributes: [String : ObservableValue]?) -> Loggerable {
-        var result: Loggerable?
+    func createLoggerIfNeeded(name: String, version: String, schemeaURL: String?, attributes: [String : ObservableValue]?) {
         cacheManageQueue.sync {
-            if let logger = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
-                result = logger
+            if let _ = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
+                return
             }
             let generatedLoggerKey = loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)
             let generatedLogger = Logger(version: version, name: name, schemaURL: schemeaURL)
             loggerCache[generatedLoggerKey] = generatedLogger
-            result = generatedLogger
-            return
         }
-        return result!
     }
     
     func loggerCacheKey(name: String, version: String, schemeaURL: String?) -> String {
         return String("\(name)_\(version)_\(schemeaURL ?? "")")
     }
     
-    
-    let resource: Resource
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?) {
+        if let logger = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
+            let record = logger.log(body, severity: severity, timeStamp: timeStamp, attributes: attributes, traceID: traceID, spanID: spanID, flag: flag)
+            for processor in processorCache {
+                processor.onEmit(logRecord: record)
+            }
+        }
+    }
     
     init(resource: Resource, timeStampProvider: TimeStampProvidable) {
         self.resource = resource
