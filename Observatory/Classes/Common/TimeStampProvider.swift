@@ -14,8 +14,8 @@ public protocol TimeStampProvidable {
     func currentTimeStampMillieSeconds() -> TimeInterval
 }
 
-struct TimeStampProvider: TimeStampProvidable {
-    func currentTimeStampMillieSeconds() -> TimeInterval {
+public struct TimeStampProvider: TimeStampProvidable {
+    public func currentTimeStampMillieSeconds() -> TimeInterval {
         return Date().timeIntervalSince1970 * 1000
     }
 }
