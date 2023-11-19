@@ -39,9 +39,16 @@ class LoggerProvider: LoggerProvidable {
         return String("\(name)_\(version)_\(schemeaURL ?? "")")
     }
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?) {
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?) {
+        var actualTimeStamp = 0.0
+        if let timeStamp = timeStamp {
+            actualTimeStamp = timeStamp
+        } else {
+            actualTimeStamp = timeStampProvider.currentTimeStampMillieSeconds()
+        }
+        
         if let logger = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
-            let record = logger.log(body, severity: severity, timeStamp: timeStamp, attributes: attributes, traceID: traceID, spanID: spanID, flag: flag)
+            let record = logger.log(body, severity: severity, timeStamp: actualTimeStamp, attributes: attributes, traceID: traceID, spanID: spanID, flag: flag)
             for processor in processorCache {
                 processor.onEmit(logRecord: record)
             }

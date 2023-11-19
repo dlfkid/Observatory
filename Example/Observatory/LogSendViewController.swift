@@ -13,9 +13,14 @@ class LogSendViewController: UIViewController {
     
     private var logContent: String = ""
     
+    private let loggerName = "customize_logger"
+    
+    private let loggerVersion = "1.0.0"
+    
     lazy private var loggerProvider: LoggerProvidable = {
         let resource = Resource(serviceName: "demmoTelemetry", nameSpace: "plainLogger", instanceId: "LogSendViewController", version: "0.1.0", otherAttributes: nil)
         let provider = LoggerProviderBuilder(resource: resource).build()
+        provider.createLoggerIfNeeded(name: loggerName, version: loggerVersion, schemeaURL: nil, attributes: ["type": .string("demo")])
         return provider
     }()
 
@@ -31,6 +36,6 @@ class LogSendViewController: UIViewController {
 extension LogSendViewController {
     
     @objc func rightBarButtonItemDidTappedAction() {
-        
+        loggerProvider.log("asfpadnsongaepgn", severity: .error, timeStamp: nil, attributes: nil, traceID: nil, spanID: nil, flag: .unspecified, name: loggerName, version: loggerVersion, schemeaURL: nil)
     }
 }
