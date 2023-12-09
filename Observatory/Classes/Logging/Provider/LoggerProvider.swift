@@ -14,7 +14,7 @@ class LoggerProvider: LoggerProvidable {
     
     private var loggerCache = [String: Loggerable]()
     
-    private var processorCache = [LogProcessable]()
+    private let processorCache: [LogProcessable]
     
     let resource: Resource
     
@@ -35,7 +35,7 @@ class LoggerProvider: LoggerProvidable {
         }
     }
     
-    func loggerCacheKey(name: String, version: String, schemeaURL: String?) -> String {
+    private func loggerCacheKey(name: String, version: String, schemeaURL: String?) -> String {
         return String("\(name)_\(version)_\(schemeaURL ?? "")")
     }
     
@@ -55,8 +55,9 @@ class LoggerProvider: LoggerProvidable {
         }
     }
     
-    init(resource: Resource, timeStampProvider: TimeStampProvidable) {
+    init(resource: Resource, timeStampProvider: TimeStampProvidable, logProcessors: [LogProcessable]) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
+        self.processorCache = logProcessors
     }
 }

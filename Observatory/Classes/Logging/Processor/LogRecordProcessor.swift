@@ -7,7 +7,8 @@
 
 import Foundation
 
-public protocol LogProcessable {
+public protocol LogProcessable: ProcedureEndable {
+    
     var exporter: LogExportable? {get}
     
     func onEmit(logRecord: LogRecordData)

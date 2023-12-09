@@ -28,6 +28,8 @@ public class BatchLogRecordProcessor: LogProcessable {
     
     public var exporter: LogExportable?
     
+    private var shuttedDown: Bool = false
+    
     private let config: BatchLogRecordConfig
     
     private var unexportedLogRecords = [InstrumentationScope: LogRecordData]()
@@ -35,5 +37,36 @@ public class BatchLogRecordProcessor: LogProcessable {
     init(config: BatchLogRecordConfig) {
         self.config = config
         self.exporter = config.exporter
+    }
+}
+
+extension BatchLogRecordProcessor: ProcedureEndable {
+    public var isShuttedDown: Bool {
+        return shuttedDown
+    }
+    
+    public func shutdown(timeout: TimeInterval, closure: ProcedureEndClosure?) {
+        defer {
+            shuttedDown = true
+        }
+        if isShuttedDown {
+            guard let closure = closure else {
+                return
+            }
+            closure(false, .shuttedDown(component: "BatchLogProcessor"))
+            return
+        }
+        exporter?.shutdown(timeout: timeout, closure: closure)
+    }
+    
+    public func forceFlush(timeout: TimeInterval, closure: ProcedureEndClosure?) {
+        if isShuttedDown {
+            guard let closure = closure else {
+                return
+            }
+            closure(false, .shuttedDown(component: "BatchLogProcessor"))
+            return
+        }
+        exporter?.forceFlush(timeout: timeout, closure: closure)
     }
 }

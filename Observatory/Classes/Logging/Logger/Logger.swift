@@ -48,7 +48,7 @@ class Logger: Loggerable {
     
     let schemaURL: String?
     
-    init(version: String, name: String, schemaURL: String?) {
+    init(version: String, name: String, schemaURL: String? = nil) {
         self.version = version
         self.name = name
         self.schemaURL = schemaURL

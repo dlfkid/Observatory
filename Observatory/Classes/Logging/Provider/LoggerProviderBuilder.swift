@@ -12,6 +12,8 @@ public class LoggerProviderBuilder {
     
     public var timeStampProvider: TimeStampProvidable = TimeStampProvider()
     
+    public var logProcessables = [LogProcessable]()
+    
     public init(resource: Resource) {
         self.resource = resource
     }
@@ -21,7 +23,12 @@ public class LoggerProviderBuilder {
         return self
     }
     
+    public func addLogProcessable(_ processor: LogProcessable) -> LoggerProviderBuilder {
+        logProcessables.append(processor)
+        return self
+    }
+    
     public func build() -> Any & LoggerProvidable {
-        return LoggerProvider(resource: resource, timeStampProvider: timeStampProvider)
+        return LoggerProvider(resource: resource, timeStampProvider: timeStampProvider, logProcessors: logProcessables)
     }
 }

@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol LogExportable {
-    
+public protocol LogExportable: ProcedureEndable {
+    func export(timeout: TimeInterval, batch: [LogRecordData], completion: @escaping (_ result: Result<[LogRecordData], ObservatoryError>) -> Void)
 }
