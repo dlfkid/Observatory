@@ -15,7 +15,7 @@ public class SimpleLogProcessor: LogProcessable {
     
     private var unexportedLogRecords = [InstrumentationScope: LogRecordData]()
     
-    init(exporter: LogExportable? = nil) {
+    public init(exporter: LogExportable? = nil) {
         self.exporter = exporter
     }
     

@@ -9,6 +9,8 @@ import Foundation
 
 public class SimpleLogRecordExporter: LogExportable {
     var shuttedDown = false
+    
+    public init() {}
 }
 
 extension SimpleLogRecordExporter: ProcedureEndable {

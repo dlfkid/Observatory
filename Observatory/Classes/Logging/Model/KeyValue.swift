@@ -19,16 +19,6 @@ public enum ObservableValue {
 }
 
 extension ObservableValue {
-    /*
-     string string_value = 1;
-     bool bool_value = 2;
-     int64 int_value = 3;
-     double double_value = 4;
-     ArrayValue array_value = 5;
-     KeyValueList kvlist_value = 6;
-     bytes bytes_value = 7;
-     */
-    
     var valueKey: String {
         switch self {
         case .string:
@@ -47,6 +37,27 @@ extension ObservableValue {
             return "intArray"
         case .doubleArray:
             return "doubleArray"
+        }
+    }
+    
+    var metaData: [String: Any] {
+        switch self {
+        case .string(let value):
+            return [self.valueKey: value]
+        case .int(let value):
+            return [self.valueKey: value]
+        case .double(let value):
+            return [self.valueKey: value]
+        case .bool(let value):
+            return [self.valueKey: value]
+        case .stringArray(let value):
+            return [self.valueKey: value]
+        case .boolArray(let value):
+            return [self.valueKey: value]
+        case .intArray(let value):
+            return [self.valueKey: value]
+        case .doubleArray(let value):
+            return [self.valueKey: value]
         }
     }
 }

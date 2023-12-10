@@ -18,8 +18,13 @@ class LogSendViewController: UIViewController {
     private let loggerVersion = "1.0.0"
     
     lazy private var loggerProvider: LoggerProvidable = {
-        let resource = Resource(serviceName: "demmoTelemetry", nameSpace: "plainLogger", instanceId: "LogSendViewController", version: "0.1.0", otherAttributes: nil)
-        let provider = LoggerProviderBuilder(resource: resource).build()
+        let resource = ResourceBuilder() .serviceName("demmoTelemetry").nameSpace("plainLogger").instanceId("LogSendViewController").version("0.1.0").build()
+        
+        let exporter = SimpleLogRecordExporter()
+        let processor = SimpleLogProcessor(exporter: exporter)
+        
+        let provider = LoggerProviderBuilder(resource: resource).addLogProcessable(processor).build()
+        
         provider.createLoggerIfNeeded(name: loggerName, version: loggerVersion, schemeaURL: nil, attributes: ["type": .string("demo")])
         return provider
     }()

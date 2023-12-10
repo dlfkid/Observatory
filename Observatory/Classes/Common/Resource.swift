@@ -17,11 +17,11 @@ public struct Resource {
     
     private let versionKey = "service.version"
     
-    var serviceName: String?
-    var nameSpace: String?
-    var instanceId: String?
-    var version: String?
-    var otherAttributes: [String: ObservableValue]?
+    fileprivate var serviceName: String?
+    fileprivate var nameSpace: String?
+    fileprivate var instanceId: String?
+    fileprivate var version: String?
+    fileprivate var otherAttributes: [String: ObservableValue]?
     
     var metaData: [String: ObservableValue] {
         var result = [String: ObservableValue]()
@@ -37,7 +37,7 @@ public struct Resource {
         return result
     }
     
-    public init(serviceName: String? = nil, nameSpace: String? = nil, instanceId: String? = nil, version: String? = nil, otherAttributes: [String : ObservableValue]? = nil) {
+    fileprivate init(serviceName: String? = nil, nameSpace: String? = nil, instanceId: String? = nil, version: String? = nil, otherAttributes: [String : ObservableValue]? = nil) {
         self.serviceName = serviceName
         self.nameSpace = nameSpace
         self.instanceId = instanceId
@@ -50,28 +50,25 @@ public class ResourceBuilder {
     var limit = LimitConfig()
     var resourceSample = Resource()
     
-    func limit(_ limit: LimitConfig) -> ResourceBuilder {
-        self.limit = limit
-        return self
-    }
+    public init() {}
     
-    func serviceName(_ serviceName: String) -> ResourceBuilder {
+    public func serviceName(_ serviceName: String) -> ResourceBuilder {
         resourceSample.serviceName = serviceName
         return self
     }
-    func nameSpace(_ nameSpace: String) -> ResourceBuilder {
+    public func nameSpace(_ nameSpace: String) -> ResourceBuilder {
         resourceSample.nameSpace = nameSpace
         return self
     }
-    func instanceId(_ instanceId: String) -> ResourceBuilder {
+    public func instanceId(_ instanceId: String) -> ResourceBuilder {
         resourceSample.instanceId = instanceId
         return self
     }
-    func version(_ version: String) -> ResourceBuilder {
+    public func version(_ version: String) -> ResourceBuilder {
         resourceSample.version = version
         return self
     }
-    func otherAttributes(_ otherAttributes: [String: ObservableValue]) -> ResourceBuilder {
+    public func otherAttributes(_ otherAttributes: [String: ObservableValue]) -> ResourceBuilder {
         var attributeCount = 0
         for (key, value) in otherAttributes {
             if attributeCount >= limit.maximumNumberOfAttributes ?? 0 {
@@ -82,6 +79,10 @@ public class ResourceBuilder {
             attributeCount += 1
         }
         return self
+    }
+    
+    public func build() -> Resource {
+        return resourceSample
     }
 }
 

@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct LimitConfig {
-    var maximumNumberOfAttributes: Int? = 128
-    var maximumLengthForValue: Int? = 1024
-    var invalidKeys: [String]?
+public struct LimitConfig {
+    public var maximumNumberOfAttributes: Int? = 128
+    public var maximumLengthForValue: Int? = 1024
+    public var invalidKeys: [String]?
 }
