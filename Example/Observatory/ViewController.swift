@@ -53,11 +53,15 @@ extension ViewController: UITableViewDataSource {
         let logModule = LogModuleCases.allCases[indexPath.row]
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.textLabel?.text = logModule.moduleName
+        cell.selectionStyle = .none
         return cell
     }
 }
 
 extension ViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = LogSendViewController()
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 

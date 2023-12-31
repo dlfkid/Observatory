@@ -24,7 +24,7 @@ class LoggerProvider: LoggerProvidable {
         return createLoggerIfNeeded(name: name, version: version, schemeaURL: nil, attributes: nil)
     }
     
-    func createLoggerIfNeeded(name: String, version: String, schemeaURL: String?, attributes: [String : ObservableValue]?) {
+    func createLoggerIfNeeded(name: String, version: String, schemeaURL: String?, attributes: [String : ObservatoryValue]?) {
         cacheManageQueue.sync {
             if let _ = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
                 return
@@ -39,7 +39,7 @@ class LoggerProvider: LoggerProvidable {
         return String("\(name)_\(version)_\(schemeaURL ?? "")")
     }
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?) {
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?) {
         var actualTimeStamp = 0.0
         if let timeStamp = timeStamp {
             actualTimeStamp = timeStamp

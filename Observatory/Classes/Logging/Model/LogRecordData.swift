@@ -20,13 +20,13 @@ public enum LogRecordFlags: UInt {
 
 public struct LogRecordData {
     let time_unix_nano: TimeInterval
-    let body: Data?
+    let body: String?
     let trace_id: Data?
     let span_id: Data?
     let severity_text: String?
     let severity_number: Int?
     let dropped_attributes_count: Int?
-    let attributes: [String : ObservableValue]?
+    let attributes: [ObservatoryKeyValue]?
     let flags: LogRecordFlags
     let scope: InstrumentationScope
 }
@@ -53,34 +53,7 @@ extension LogRecordData: Encodable {
         try container.encode(severity_text, forKey: .severity_text)
         try container.encode(severity_number, forKey: .severity_number)
         try container.encode(dropped_attributes_count, forKey: .dropped_attributes_count)
-        if let attributes = attributes {
-            var encodedAttributes = [String: Data]()
-            attributes.forEach { (key: String, observableValue: ObservableValue) in
-                switch observableValue {
-                case .string(let value):
-                    encodedAttributes[key] = value.data(using: .utf8)
-                case .int(let value):
-                    var value = value
-                    encodedAttributes[key] = Data(bytes: &value, count: MemoryLayout<Int>.size)
-                case .double(let value):
-                    var value = value
-                    encodedAttributes[key] = Data(bytes: &value, count: MemoryLayout<Double>.size)
-                case .bool(let value):
-                    var value = value
-                    encodedAttributes[key] = Data(bytes: &value, count: MemoryLayout<Bool>.size)
-                case .doubleArray:
-                    break
-                case .stringArray:
-                    break
-                case .boolArray:
-                    break
-                case .intArray:
-                    break
-                }
-            }
-            try container.encode(encodedAttributes, forKey: .attributes)
-        
-        }
+        try container.encode(attributes, forKey: .attributes)
         try container.encode(flags.rawValue, forKey: .flags)
     }
 }

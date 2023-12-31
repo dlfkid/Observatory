@@ -40,6 +40,17 @@ extension SimpleLogRecordExporter: ProcedureEndable {
     }
     
     public func export(timeout: TimeInterval, batch: [LogRecordData], completion: @escaping (Result<[LogRecordData], ObservatoryError>) -> Void) {
-        
+        for record in batch {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted // Optional: Make the JSON output more readable
+            do {
+                let jsonData = try encoder.encode(record)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print("[Log Exported]: \(jsonString)")
+                }
+            } catch {
+                print("[Log Exported]: Error encoding JSON: \(error)")
+            }
+        }
     }
 }

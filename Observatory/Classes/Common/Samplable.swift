@@ -20,7 +20,7 @@ protocol Samplable {
                       traceId: TraceID,
                       name: String,
                       kind: SpanKind,
-                      attributes: [String:ObservableValue]) -> Decision
+                      attributes: [String:ObservatoryValue]) -> Decision
 }
 
 /// Sampling decision returned by Sampler.shouldSample(SpanContext, TraceId, SpanId, String, Array).
@@ -31,5 +31,5 @@ public protocol Decision {
     /// Return tags which will be attached to the span.
     /// These attributes should be added to the span only for root span or when sampling decision
     /// changes from false to true.
-    var attributes: [String: ObservableValue] { get }
+    var attributes: [String: ObservatoryValue] { get }
 }

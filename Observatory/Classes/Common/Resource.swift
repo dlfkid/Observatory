@@ -21,12 +21,12 @@ public struct Resource {
     fileprivate var nameSpace: String?
     fileprivate var instanceId: String?
     fileprivate var version: String?
-    fileprivate var otherAttributes: [String: ObservableValue]?
+    fileprivate var otherAttributes: [String: ObservatoryValue]?
     
-    var metaData: [String: ObservableValue] {
-        var result = [String: ObservableValue]()
+    var metaData: [String: ObservatoryValue] {
+        var result = [String: ObservatoryValue]()
         if let otherAttributes = otherAttributes {
-            otherAttributes.forEach { (key: String, value: ObservableValue) in
+            otherAttributes.forEach { (key: String, value: ObservatoryValue) in
                 result[key] = value
             }
         }
@@ -37,7 +37,7 @@ public struct Resource {
         return result
     }
     
-    fileprivate init(serviceName: String? = nil, nameSpace: String? = nil, instanceId: String? = nil, version: String? = nil, otherAttributes: [String : ObservableValue]? = nil) {
+    fileprivate init(serviceName: String? = nil, nameSpace: String? = nil, instanceId: String? = nil, version: String? = nil, otherAttributes: [String : ObservatoryValue]? = nil) {
         self.serviceName = serviceName
         self.nameSpace = nameSpace
         self.instanceId = instanceId
@@ -68,7 +68,7 @@ public class ResourceBuilder {
         resourceSample.version = version
         return self
     }
-    public func otherAttributes(_ otherAttributes: [String: ObservableValue]) -> ResourceBuilder {
+    public func otherAttributes(_ otherAttributes: [String: ObservatoryValue]) -> ResourceBuilder {
         var attributeCount = 0
         for (key, value) in otherAttributes {
             if attributeCount >= limit.maximumNumberOfAttributes ?? 0 {

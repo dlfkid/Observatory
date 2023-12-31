@@ -20,7 +20,8 @@ public class SimpleLogProcessor: LogProcessable {
     }
     
     public func onEmit(logRecord: LogRecordData) {
-        
+        self.exporter?.export(timeout: 10, batch: [logRecord], completion: { result in
+        })
     }
 }
 

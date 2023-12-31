@@ -25,7 +25,7 @@ public protocol Loggerable {
     
     var schemaURL: String? {get}
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String: ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData
 }
 
 extension Loggerable {
@@ -36,9 +36,14 @@ extension Loggerable {
 
 class Logger: Loggerable {
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservableValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData {
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData {
         let scope = InstrumentationScope(name: name, version: version)
-        let logData = LogRecordData(time_unix_nano: timeStamp, body: body.data(using: .utf8), trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: attributes, flags: flag, scope: scope)
+        var atttributUnits = [ObservatoryKeyValue]()
+        attributes?.forEach({ (key: String, value: ObservatoryValue) in
+            let unit = ObservatoryKeyValue(key: key, value: value)
+            atttributUnits.append(unit)
+        })
+        let logData = LogRecordData(time_unix_nano: timeStamp, body: body, trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: atttributUnits, flags: flag, scope: scope)
         return logData
     }
     
