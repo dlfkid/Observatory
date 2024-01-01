@@ -18,13 +18,21 @@ public struct BatchLogRecordConfig {
     var exportTimeoutMillis: TimeInterval = 300000
     
     var maxExportBatchSize: Int = 32
+    
+    public init(exporter: LogExportable?, maxQueueSize: Int = 1024, scheduledDelayMillis: TimeInterval = 1000, exportTimeoutMillis: TimeInterval = 300000, maxExportBatchSize: Int = 32) {
+        self.exporter = exporter
+        self.maxQueueSize = maxQueueSize
+        self.scheduledDelayMillis = scheduledDelayMillis
+        self.exportTimeoutMillis = exportTimeoutMillis
+        self.maxExportBatchSize = maxExportBatchSize
+    }
 }
 
 public class BatchLogRecordProcessor: LogProcessable {
     
     public func onEmit(logRecord: LogRecordData) {
         logRecordHandleQueue.sync {
-            guard config.maxQueueSize < unexportedLogRecords.count else {
+            guard config.maxQueueSize > unexportedLogRecords.count else {
                 print("[Observatory]: LogProcessor collect limit reached")
                 return
             }
@@ -48,7 +56,7 @@ public class BatchLogRecordProcessor: LogProcessable {
     
     private let logRecordHandleQueue = dispatch_queue_serial_t(label: "observatory_batch_processor_queue")
     
-    init(config: BatchLogRecordConfig) {
+    public init(config: BatchLogRecordConfig) {
         self.config = config
         timer = DispatchSource.makeTimerSource(queue: logRecordHandleQueue)
 
@@ -63,6 +71,9 @@ public class BatchLogRecordProcessor: LogProcessable {
             var logBatch = [LogRecordData]()
             let maxLength = min(config.maxExportBatchSize, self.unexportedLogRecords.count)
             for index in 0 ... maxLength {
+                guard unexportedLogRecords.count > index else {
+                    continue
+                }
                 logBatch.append(self.unexportedLogRecords[index])
             }
             exporter?.export(timeout: config.exportTimeoutMillis / 1000, batch: logBatch, completion: { result in
