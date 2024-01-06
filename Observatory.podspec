@@ -22,21 +22,30 @@ TODO: Add long description of the pod here.
                        DESC
 
   s.homepage         = 'https://github.com/RavenDeng/Observatory'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'RavenDeng' => 'dlfkid@icloud.com' }
   s.source           = { :git => 'https://github.com/RavenDeng/Observatory.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '10.0'
 
-  s.source_files = 'Observatory/Classes/**/*'
+  s.default_subspec = 'Full'
   
-  # s.resource_bundles = {
-  #   'Observatory' => ['Observatory/Assets/*.png']
-  # }
+  s.subspec 'Full' do |full|
+    full.dependency 'Observatory/Tracing'
+    full.dependency 'Observatory/Logging'
+  end
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.subspec 'Tracing' do |tracing|
+    tracing.dependency 'Observatory/Common'
+    tracing.source_files = 'Observatory/Classes/Tracing/**/*'
+  end
+
+  s.subspec 'Logging' do |logging|
+    logging.dependency 'Observatory/Common'
+    logging.source_files = 'Observatory/Classes/Logging/**/*'
+  end
+
+  s.subspec 'Common' do |common|
+    common.source_files = 'Observatory/Classes/Common/**/*'
+  end
 end
