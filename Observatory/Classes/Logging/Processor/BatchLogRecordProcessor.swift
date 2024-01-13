@@ -31,12 +31,12 @@ public struct BatchLogRecordConfig {
 public class BatchLogRecordProcessor: LogProcessable {
     
     public func onEmit(logRecord: LogRecordData) {
-        logRecordHandleQueue.sync {
-            guard config.maxQueueSize > unexportedLogRecords.count else {
+        logRecordHandleQueue.async {
+            guard self.config.maxQueueSize > self.unexportedLogRecords.count else {
                 print("[Observatory]: LogProcessor collect limit reached")
                 return
             }
-            unexportedLogRecords.append(logRecord)
+            self.unexportedLogRecords.append(logRecord)
         }
     }
     
@@ -78,7 +78,7 @@ public class BatchLogRecordProcessor: LogProcessable {
                 }
                 logBatch.append(self.unexportedLogRecords[index])
             }
-            logRecordCollectQueue.sync {
+            logRecordCollectQueue.async {
                 self.exporter?.export(timeout: config.exportTimeoutMillis / 1000, batch: logBatch, completion: { result in
                 })
             }
