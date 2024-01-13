@@ -10,6 +10,7 @@ import UIKit
 
 enum LogModuleCases: CaseIterable {
     case plainLog
+    case tracing
 }
 
 extension LogModuleCases {
@@ -17,6 +18,8 @@ extension LogModuleCases {
         switch self {
         case .plainLog:
             return "plain_log_module"
+        case .tracing:
+            return "tracing"
         }
     }
 }
@@ -60,8 +63,17 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = LogSendViewController()
-        navigationController?.pushViewController(controller, animated: true)
+        let logModule = LogModuleCases.allCases[indexPath.row]
+        switch logModule {
+        case .plainLog:
+            let controller = LogSendViewController()
+            navigationController?.pushViewController(controller, animated: true)
+        case .tracing:
+            let controller = TracingDemoViewController()
+            navigationController?.pushViewController(controller, animated: true)
+            break
+        }
+        
     }
 }
 

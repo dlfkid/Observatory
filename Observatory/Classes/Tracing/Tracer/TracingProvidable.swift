@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+public protocol TracerProvidable: CachedKeyManagable {
+    func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String: ObservatoryValue]?)
+}

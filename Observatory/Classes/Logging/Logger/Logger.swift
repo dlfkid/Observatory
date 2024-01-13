@@ -34,7 +34,7 @@ extension Loggerable {
     }
 }
 
-class Logger: Loggerable {
+struct Logger: Loggerable {
     
     func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData {
         let scope = InstrumentationScope(name: name, version: version)

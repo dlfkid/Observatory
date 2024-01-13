@@ -54,7 +54,9 @@ public class BatchLogRecordProcessor: LogProcessable {
     
     private var unexportedLogRecords = [LogRecordData]()
     
-    private let logRecordHandleQueue = dispatch_queue_serial_t(label: "observatory_batch_processor_queue")
+    private let logRecordHandleQueue = dispatch_queue_serial_t(label: "observatory_batch_processor_queue_handle")
+    
+    private let logRecordCollectQueue = dispatch_queue_serial_t(label: "observatory_batch_processor_queue_collect")
     
     public init(config: BatchLogRecordConfig) {
         self.config = config
@@ -76,8 +78,10 @@ public class BatchLogRecordProcessor: LogProcessable {
                 }
                 logBatch.append(self.unexportedLogRecords[index])
             }
-            exporter?.export(timeout: config.exportTimeoutMillis / 1000, batch: logBatch, completion: { result in
-            })
+            logRecordCollectQueue.sync {
+                self.exporter?.export(timeout: config.exportTimeoutMillis / 1000, batch: logBatch, completion: { result in
+                })
+            }
         }
 
         // Start the timer

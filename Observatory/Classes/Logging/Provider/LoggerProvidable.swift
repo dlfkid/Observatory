@@ -7,9 +7,9 @@
 
 import Foundation
 
-public protocol LoggerProvidable {
-    func createLoggerIfNeeded(name: String, version: String, schemeaURL: String?, attributes: [String: ObservatoryValue]?)
+public protocol LoggerProvidable: CachedKeyManagable {
+    func createLoggerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String: ObservatoryValue]?)
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?)
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemaURL: String?)
 }
 

@@ -10,7 +10,7 @@ import Foundation
 
 class LoggerProvider: LoggerProvidable {
     
-    private var cacheManageQueue = DispatchQueue(label: "com.leondeng.Observatory.cacheManageQueue", qos: .utility)
+    private var cacheManageQueue = DispatchQueue(label: "com.leondeng.Observatory.cacheManageQueue.log", qos: .utility)
     
     private var loggerCache = [String: Loggerable]()
     
@@ -21,25 +21,21 @@ class LoggerProvider: LoggerProvidable {
     let timeStampProvider: TimeStampProvidable
     
     func createLoggerIfNeeded(name: String, version: String) {
-        return createLoggerIfNeeded(name: name, version: version, schemeaURL: nil, attributes: nil)
+        return createLoggerIfNeeded(name: name, version: version, schemaURL: nil, attributes: nil)
     }
     
-    func createLoggerIfNeeded(name: String, version: String, schemeaURL: String?, attributes: [String : ObservatoryValue]?) {
+    func createLoggerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String : ObservatoryValue]?) {
         cacheManageQueue.sync {
-            if let _ = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
+            if let _ = loggerCache[createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)] {
                 return
             }
-            let generatedLoggerKey = loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)
-            let generatedLogger = Logger(version: version, name: name, schemaURL: schemeaURL)
+            let generatedLoggerKey = createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
+            let generatedLogger = Logger(version: version, name: name, schemaURL: schemaURL)
             loggerCache[generatedLoggerKey] = generatedLogger
         }
     }
     
-    private func loggerCacheKey(name: String, version: String, schemeaURL: String?) -> String {
-        return String("\(name)_\(version)_\(schemeaURL ?? "")")
-    }
-    
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemeaURL: String?) {
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags, name: String, version: String, schemaURL: String?) {
         var actualTimeStamp = 0.0
         if let timeStamp = timeStamp {
             actualTimeStamp = timeStamp
@@ -47,7 +43,7 @@ class LoggerProvider: LoggerProvidable {
             actualTimeStamp = timeStampProvider.currentTimeStampMillieSeconds()
         }
         
-        if let logger = loggerCache[loggerCacheKey(name: name, version: version, schemeaURL: schemeaURL)] {
+        if let logger = loggerCache[createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)] {
             let record = logger.log(body, severity: severity, timeStamp: actualTimeStamp, attributes: attributes, traceID: traceID, spanID: spanID, flag: flag)
             for processor in processorCache {
                 processor.onEmit(logRecord: record)
