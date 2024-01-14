@@ -7,6 +7,10 @@
 
 import Foundation
 
-public protocol SpanProcessable {
+public protocol SpanProcessable: ProcedureEndable {
+    var exporter: (any TelemetryExportable)? {get}
     
+    func onSpanStarted(span: ReadableSpan)
+    
+    func onSpanEnded(span: ReadableSpan)
 }

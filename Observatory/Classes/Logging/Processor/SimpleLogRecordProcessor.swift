@@ -9,13 +9,15 @@ import Foundation
 
 public class SimpleLogProcessor: LogProcessable {
     
+    typealias TelemetryData = LogRecordData
+    
     private var shuttedDown: Bool = false
     
-    public var exporter: LogExportable?
+    public var exporter: (any TelemetryExportable)?
     
     private var unexportedLogRecords = [InstrumentationScope: LogRecordData]()
     
-    public init(exporter: LogExportable? = nil) {
+    public init(exporter: (any TelemetryExportable)? = nil) {
         self.exporter = exporter
     }
     

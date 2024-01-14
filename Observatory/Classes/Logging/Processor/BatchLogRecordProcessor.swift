@@ -9,7 +9,7 @@ import Foundation
 
 public struct BatchLogRecordConfig {
     
-    let exporter: LogExportable?
+    let exporter: (any TelemetryExportable)?
     
     var maxQueueSize: Int = 1024
     
@@ -19,7 +19,7 @@ public struct BatchLogRecordConfig {
     
     var maxExportBatchSize: Int = 32
     
-    public init(exporter: LogExportable?, maxQueueSize: Int = 1024, scheduledDelayMillis: TimeInterval = 1000, exportTimeoutMillis: TimeInterval = 300000, maxExportBatchSize: Int = 32) {
+    public init(exporter: (any TelemetryExportable)?, maxQueueSize: Int = 1024, scheduledDelayMillis: TimeInterval = 1000, exportTimeoutMillis: TimeInterval = 300000, maxExportBatchSize: Int = 32) {
         self.exporter = exporter
         self.maxQueueSize = maxQueueSize
         self.scheduledDelayMillis = scheduledDelayMillis
@@ -40,7 +40,7 @@ public class BatchLogRecordProcessor: LogProcessable {
         }
     }
     
-    public var exporter: LogExportable? {
+    public var exporter: (any TelemetryExportable)? {
         get {
             return config.exporter
         }

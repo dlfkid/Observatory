@@ -9,7 +9,7 @@ import Foundation
 
 public protocol LogProcessable: ProcedureEndable {
     
-    var exporter: LogExportable? {get}
+    var exporter: (any TelemetryExportable)? {get}
     
     func onEmit(logRecord: LogRecordData)
 }

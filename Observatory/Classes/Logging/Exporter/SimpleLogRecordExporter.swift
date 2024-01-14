@@ -7,7 +7,9 @@
 
 import Foundation
 
-public class SimpleLogRecordExporter: LogExportable {
+public class SimpleLogRecordExporter: TelemetryExportable {
+    public typealias TelemetryData = LogRecordData
+    
     var shuttedDown = false
     
     public init() {}
@@ -39,7 +41,7 @@ extension SimpleLogRecordExporter: ProcedureEndable {
         closure(true, nil)
     }
     
-    public func export(timeout: TimeInterval, batch: [LogRecordData], completion: @escaping (Result<[LogRecordData], ObservatoryError>) -> Void) {
+    public func export<TelemetryData>(timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (Result<[TelemetryData], ObservatoryError>) -> Void) where TelemetryData : Encodable {
         for record in batch {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted // Optional: Make the JSON output more readable
