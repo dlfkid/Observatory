@@ -31,21 +31,21 @@ TODO: Add long description of the pod here.
   s.default_subspec = 'Full'
   
   s.subspec 'Full' do |full|
-    full.dependency 'Observatory/Tracing'
-    full.dependency 'Observatory/Logging'
+    full.dependency 'Observatory/ObservatoryTracing'
+    full.dependency 'Observatory/ObservatoryLogging'
   end
 
-  s.subspec 'Tracing' do |tracing|
-    tracing.dependency 'Observatory/Common'
-    tracing.source_files = 'Observatory/Classes/Tracing/**/*'
+  s.subspec 'ObservatoryTracing' do |tracing|
+    tracing.dependency 'Observatory/ObservatoryCommon'
+    tracing.source_files = 'ObservatoryPackage/Sources/Tracing/**/*'
   end
 
-  s.subspec 'Logging' do |logging|
-    logging.dependency 'Observatory/Common'
-    logging.source_files = 'Observatory/Classes/Logging/**/*'
+  s.subspec 'ObservatoryLogging' do |logging|
+    logging.dependency 'Observatory/ObservatoryCommon'
+    logging.source_files = 'ObservatoryPackage/Sources/Logging/**/*'
   end
 
-  s.subspec 'Common' do |common|
-    common.source_files = 'Observatory/Classes/Common/**/*'
+  s.subspec 'ObservatoryCommon' do |common|
+    common.source_files = 'ObservatoryPackage/Sources/Common/**/*'
   end
 end
