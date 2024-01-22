@@ -7,12 +7,17 @@
 
 import Foundation
 
-struct Context: Hashable, Comparable {
-    static func < (lhs: Context, rhs: Context) -> Bool {
+public struct Context: Hashable, Comparable {
+    public static func < (lhs: Context, rhs: Context) -> Bool {
         lhs.hashValue < rhs.hashValue
     }
     
-    let trace: TraceID
+    public let trace: TraceID
     
-    let span: SpanID
+    public let span: SpanID
+    
+    init(trace: TraceID, span: SpanID) {
+        self.trace = trace
+        self.span = span
+    }
 }

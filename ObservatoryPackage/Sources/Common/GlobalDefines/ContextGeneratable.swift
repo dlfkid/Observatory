@@ -21,11 +21,11 @@ extension TelemetryID {
     }
 }
 
-struct TraceID: TelemetryID, Hashable {
+public struct TraceID: TelemetryID, Hashable {
     var raw: [UInt8]
 }
 
-struct SpanID: TelemetryID, Hashable {
+public struct SpanID: TelemetryID, Hashable {
     var raw: [UInt8]
 }
 
