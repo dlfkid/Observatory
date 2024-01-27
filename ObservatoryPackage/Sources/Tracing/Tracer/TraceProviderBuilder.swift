@@ -17,6 +17,8 @@ public class TracerProviderBuilder {
     
     public var spanProcessables = [SpanProcessable]()
     
+    public var limit = SpanLimit(maxAttributesCount: 128, maxLinkCount: 32, maxEventCount: 32, attributeLimit: LimitConfig())
+    
     public init(resource: Resource) {
         self.resource = resource
     }
@@ -32,6 +34,6 @@ public class TracerProviderBuilder {
     }
     
     public func build() -> Any & TracerProvidable {
-        return TracerProvider(resource: resource, timeStampProvider: timeStampProvider, processors: spanProcessables)
+        return TracerProvider(resource: resource, limit: limit, timeStampProvider: timeStampProvider, processors: spanProcessables)
     }
 }

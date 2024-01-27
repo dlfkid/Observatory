@@ -11,13 +11,16 @@ import ObservatoryCommon
 #endif
 
 public class TracerProvider: TracerProvidable {
+    
+    private let limit: SpanLimit
+    
     public func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String : ObservatoryValue]?) {
         cacheManageQueue.sync {
             if let _ = tracerCache[createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)] {
                 return
             }
-            let generatedLoggerKey = createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
-            let generatedLogger = Tracer(version: version, name: name, schemaURL: schemaURL)
+            let generatedLoggerKey = self.createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
+            let generatedLogger = Tracer(version: version, name: name, schemaURL: schemaURL, limit: limit)
             tracerCache[generatedLoggerKey] = generatedLogger
         }
     }
@@ -32,9 +35,10 @@ public class TracerProvider: TracerProvidable {
     
     let timeStampProvider: TimeStampProvidable
     
-    internal init(resource: Resource, timeStampProvider: TimeStampProvidable, processors: [SpanProcessable]) {
+    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [SpanProcessable]) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = processors
+        self.limit = limit
     }
 }

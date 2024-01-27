@@ -9,8 +9,8 @@ import Foundation
 
 public struct Link {
     
-    public let context: Context
+    public let context: Context<SpanContext>
     
-    public let attributes: [ObservatoryKeyValue]
+    public let attributes: [ObservatoryKeyValue]?
     
 }

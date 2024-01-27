@@ -29,16 +29,16 @@ public struct SpanID: TelemetryID, Hashable {
     var raw: [UInt8]
 }
 
-protocol ContextGenerateable {
+public protocol SpanContextGenerateable {
 }
 
-extension ContextGenerateable {
+extension SpanContextGenerateable {
     
-    func generateTraceID() -> TraceID {
+    public func generateTraceID() -> TraceID {
         return TraceID(raw: generateSecureRandomBytes(length: 16))
     }
     
-    func generateSpanID() -> SpanID {
+    public func generateSpanID() -> SpanID {
         return SpanID(raw: generateSecureRandomBytes(length: 8))
     }
     
