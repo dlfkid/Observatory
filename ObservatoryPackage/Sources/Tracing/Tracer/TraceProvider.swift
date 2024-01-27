@@ -32,7 +32,7 @@ public class TracerProvider: TracerProvidable {
     
     let timeStampProvider: TimeStampProvidable
     
-    init(resource: Resource, timeStampProvider: TimeStampProvidable, processors: [SpanProcessable]) {
+    internal init(resource: Resource, timeStampProvider: TimeStampProvidable, processors: [SpanProcessable]) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = processors

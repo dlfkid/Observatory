@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ObservatoryCommon
 
 public protocol Tracerable {
     var version: String {get}
@@ -13,9 +14,15 @@ public protocol Tracerable {
     var name: String {get}
     
     var schemaURL: String? {get}
+    
+    func createSpan(name: String, kind: SpanKind, attributes: [ObservatoryKeyValue]?, startTimeStamp: TimeInterval, linkes:[Link]?) -> Span
 }
 
 public struct Tracer: Tracerable {
+    public func createSpan(name: String, kind: SpanKind, attributes: [ObservatoryKeyValue]?, startTimeStamp: TimeInterval, linkes: [Link]?) -> Span {
+        return Span(name: name, kind: kind, attributes: attributes)
+    }
+    
     public let version: String
     
     public let name: String

@@ -54,7 +54,7 @@ class LoggerProvider: LoggerProvidable {
         }
     }
     
-    init(resource: Resource, timeStampProvider: TimeStampProvidable, logProcessors: [LogProcessable]) {
+    internal init(resource: Resource, timeStampProvider: TimeStampProvidable, logProcessors: [LogProcessable]) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = logProcessors
