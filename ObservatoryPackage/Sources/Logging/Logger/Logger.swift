@@ -28,7 +28,8 @@ public protocol Loggerable {
     
     var schemaURL: String? {get}
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData
+    @discardableResult
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData
 }
 
 extension Loggerable {
@@ -39,14 +40,15 @@ extension Loggerable {
 
 struct Logger: Loggerable {
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData {
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData {
         let scope = InstrumentationScope(name: name, version: version)
         var atttributUnits = [ObservatoryKeyValue]()
         attributes?.forEach({ (key: String, value: ObservatoryValue) in
             let unit = ObservatoryKeyValue(key: key, value: value)
             atttributUnits.append(unit)
         })
-        let logData = LogRecordData(time_unix_nano: timeStamp, body: body, trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: atttributUnits, flags: flag, scope: scope)
+        let time = timeStamp ?? timeStampProvider.currentTimeStampMillieSeconds()
+        let logData = LogRecordData(time_unix_nano: time, body: body, trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: atttributUnits, flags: flag, scope: scope)
         return logData
     }
     
@@ -56,10 +58,13 @@ struct Logger: Loggerable {
     
     let schemaURL: String?
     
-    init(version: String, name: String, schemaURL: String? = nil) {
+    let timeStampProvider: TimeStampProvidable
+    
+    init(version: String, name: String, schemaURL: String? = nil, timeStampProvider: TimeStampProvidable) {
         self.version = version
         self.name = name
         self.schemaURL = schemaURL
+        self.timeStampProvider = timeStampProvider
     }
     
 }

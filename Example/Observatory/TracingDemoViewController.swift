@@ -7,8 +7,17 @@
 //
 
 import UIKit
+#if canImport(ObservatoryTracing)
+import ObservatoryTracing
+#endif
 
 class TracingDemoViewController: UIViewController {
+    
+    private lazy var tracerProvider: TracerProvidable = {
+        let resource = DemoResource.sharedResource
+        let builder = ObservatoryTracing.TracerProviderBuilder(resource: resource)
+        return builder.build()
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()

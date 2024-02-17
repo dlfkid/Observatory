@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		351C34C12B7E00D5009C72F4 /* ObservatoryPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 351C34C02B7E00D5009C72F4 /* ObservatoryPackage */; };
 		357A026B2AECE0330099198D /* LogSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A026A2AECE0330099198D /* LogSendViewController.swift */; };
 		357A02872B528B860099198D /* TracingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A02862B528B860099198D /* TracingDemoViewController.swift */; };
 		357A028B2B5424300099198D /* DemoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A028A2B5424300099198D /* DemoResource.swift */; };
@@ -29,11 +30,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		22884A4D5F2E5C030348928B /* Observatory.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Observatory.podspec; path = ../Observatory.podspec; sourceTree = "<group>"; };
+		351C34BE2B7DFF04009C72F4 /* ObservatoryPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ObservatoryPackage; path = ../ObservatoryPackage; sourceTree = "<group>"; };
 		357A026A2AECE0330099198D /* LogSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSendViewController.swift; sourceTree = "<group>"; };
 		357A02862B528B860099198D /* TracingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracingDemoViewController.swift; sourceTree = "<group>"; };
 		357A028A2B5424300099198D /* DemoResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoResource.swift; sourceTree = "<group>"; };
-		35EF18572B5EDB6D00719795 /* ObservatoryPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ObservatoryPackage; path = ../ObservatoryPackage; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Observatory_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Observatory_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -44,8 +44,6 @@
 		607FACE51AFB9204008FA782 /* Observatory_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Observatory_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		8791F8B82BFAC83C93C47ABC /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		FFAB200B29C4E22BFCC1FDCA /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				351C34C12B7E00D5009C72F4 /* ObservatoryPackage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,31 +72,30 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		357A02932B584B450099198D /* Frameworks */ = {
+		351C34BD2B7DFF04009C72F4 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				351C34BE2B7DFF04009C72F4 /* ObservatoryPackage */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		351C34BF2B7E00D5009C72F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		35F43E1C2B5AD321000E09A8 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				35EF18572B5EDB6D00719795 /* ObservatoryPackage */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
-				35F43E1C2B5AD321000E09A8 /* Packages */,
-				607FACF51AFB993E008FA782 /* Podspec Metadata */,
+				351C34BD2B7DFF04009C72F4 /* Packages */,
 				607FACD21AFB9204008FA782 /* Example for Observatory */,
 				607FACE81AFB9204008FA782 /* Tests */,
 				607FACD11AFB9204008FA782 /* Products */,
 				0F65303D0B34364ACCB0FE98 /* Pods */,
-				357A02932B584B450099198D /* Frameworks */,
+				351C34BF2B7E00D5009C72F4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,16 +150,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		607FACF51AFB993E008FA782 /* Podspec Metadata */ = {
-			isa = PBXGroup;
-			children = (
-				22884A4D5F2E5C030348928B /* Observatory.podspec */,
-				FFAB200B29C4E22BFCC1FDCA /* README.md */,
-				8791F8B82BFAC83C93C47ABC /* LICENSE */,
-			);
-			name = "Podspec Metadata";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -179,6 +167,7 @@
 			);
 			name = Observatory_Example;
 			packageProductDependencies = (
+				351C34C02B7E00D5009C72F4 /* ObservatoryPackage */,
 			);
 			productName = Observatory;
 			productReference = 607FACD01AFB9204008FA782 /* Observatory_Example.app */;
@@ -408,7 +397,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -419,7 +409,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Observatory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -434,7 +427,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Observatory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -456,7 +452,11 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -474,7 +474,11 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -514,6 +518,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		351C34C02B7E00D5009C72F4 /* ObservatoryPackage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ObservatoryPackage;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }
