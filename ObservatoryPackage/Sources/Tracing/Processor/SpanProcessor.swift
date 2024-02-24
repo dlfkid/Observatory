@@ -13,7 +13,7 @@ import ObservatoryCommon
 public protocol SpanProcessable: ProcedureEndable {
     var exporter: (any TelemetryExportable)? {get}
     
-    func onSpanStarted(span: ReadableSpan)
+    func onSpanStarted(span: Span)
     
-    func onSpanEnded(span: ReadableSpan)
+    func onSpanEnded(span: Span)
 }

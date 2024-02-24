@@ -20,28 +20,15 @@ import ObservatoryCommon
  Attributes
  */
 
-public protocol Loggerable {
-    
-    var version: String {get}
-    
-    var name: String {get}
-    
-    var schemaURL: String? {get}
-    
-    @discardableResult
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData
-}
-
-extension Loggerable {
-    var scope: InstrumentationScope {
-        return InstrumentationScope(name: name, version: version)
-    }
+public protocol Loggerable: Scopable {
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags)
 }
 
 struct Logger: Loggerable {
     
-    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) -> LogRecordData {
-        let scope = InstrumentationScope(name: name, version: version)
+    private weak var provider: (AnyObject & LoggerProvidable)?
+    
+    func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String : ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags) {
         var atttributUnits = [ObservatoryKeyValue]()
         attributes?.forEach({ (key: String, value: ObservatoryValue) in
             let unit = ObservatoryKeyValue(key: key, value: value)
@@ -49,7 +36,7 @@ struct Logger: Loggerable {
         })
         let time = timeStamp ?? timeStampProvider.currentTimeStampMillieSeconds()
         let logData = LogRecordData(time_unix_nano: time, body: body, trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: atttributUnits, flags: flag, scope: scope)
-        return logData
+        provider?.onEmit(logRecord: logData)
     }
     
     let version: String
@@ -60,11 +47,12 @@ struct Logger: Loggerable {
     
     let timeStampProvider: TimeStampProvidable
     
-    init(version: String, name: String, schemaURL: String? = nil, timeStampProvider: TimeStampProvidable) {
+    internal init(version: String, name: String, schemaURL: String? = nil, timeStampProvider: TimeStampProvidable, provider: (AnyObject & LoggerProvidable)?) {
         self.version = version
         self.name = name
         self.schemaURL = schemaURL
         self.timeStampProvider = timeStampProvider
+        self.provider = provider
     }
     
 }

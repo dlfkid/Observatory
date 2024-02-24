@@ -20,30 +20,38 @@ public class Span {
     let kind: SpanKind
     let limit: SpanLimit
     let context: SpanContext
+    let scope: InstrumentationScope
+    var startTimeUnixNano: TimeInterval = 0
+    var endTimeUnixNano: TimeInterval = 0
+    var ended: Bool = false
+    
+    private weak var provider: (AnyObject & TracerProvidable)?
     
     private var internalAttributes = [ObservatoryKeyValue]()
     
-    var attributes: [ObservatoryKeyValue]? {
-        guard internalAttributes.count > 0 else {
-            return nil
-        }
-        return internalAttributes
-    }
-    
-    internal init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext) {
+    internal init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?) {
         self.name = name
         self.kind = kind
         self.limit = limit
         self.context = context
+        self.provider = provider
+        self.scope = scope
     }
     
-    convenience init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, attributes: [ObservatoryKeyValue]?) {
-        self.init(name: name, kind: kind, limit: limit, context: context)
+    internal convenience init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, attributes: [ObservatoryKeyValue]?, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?) {
+        self.init(name: name, kind: kind, limit: limit, context: context, scope: scope, provider: provider)
         if let attributes = attributes {
             self.internalAttributes.append(contentsOf: attributes)
         }
     }
     
-    
+    func end(endTimeUnixNano: TimeInterval = 0) {
+        if ended {
+            return
+        }
+        ended = true
+        self.endTimeUnixNano = endTimeUnixNano
+        provider?.onSpanEnded(span: self)
+    }
     
 }

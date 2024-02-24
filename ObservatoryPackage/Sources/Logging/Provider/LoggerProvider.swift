@@ -34,9 +34,15 @@ class LoggerProvider: LoggerProvidable {
                 return logger
             }
             let generatedLoggerKey = createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
-            let generatedLogger = Logger(version: version, name: name, schemaURL: schemaURL, timeStampProvider: timeStampProvider)
+            let generatedLogger = Logger(version: version, name: name, schemaURL: schemaURL, timeStampProvider: timeStampProvider, provider: self)
             loggerCache[generatedLoggerKey] = generatedLogger
             return generatedLogger
+        }
+    }
+    
+    func onEmit(logRecord: LogRecordData) {
+        processorCache.forEach { processor in
+            processor.onEmit(logRecord: logRecord)
         }
     }
     

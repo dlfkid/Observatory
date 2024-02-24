@@ -20,12 +20,36 @@ public class TracerProvider: TracerProvidable {
                 return
             }
             let generatedLoggerKey = self.createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
-            let generatedLogger = Tracer(version: version, name: name, schemaURL: schemaURL, limit: limit)
+            let generatedLogger = Tracer(version: version, name: name, schemaURL: schemaURL, limit: limit, provider: self)
             tracerCache[generatedLoggerKey] = generatedLogger
         }
     }
     
+    public func onSpanStarted(span: Span) {
+        self.processorManageQueue.async {
+            self.processorCache.forEach { processor in
+                if span.startTimeUnixNano == 0 {
+                    span.startTimeUnixNano = self.timeStampProvider.currentTimeStampMillieSeconds()
+                }
+                processor.onSpanEnded(span: span)
+            }
+        }
+    }
+    
+    public func onSpanEnded(span: Span) {
+        self.processorManageQueue.async {
+            self.processorCache.forEach { processor in
+                if span.endTimeUnixNano == 0 {
+                    span.endTimeUnixNano = self.timeStampProvider.currentTimeStampMillieSeconds()
+                }
+                processor.onSpanEnded(span: span)
+            }
+        }
+    }
+    
     private var cacheManageQueue = DispatchQueue(label: "com.leondeng.Observatory.cacheManageQueue.trace", qos: .utility)
+    
+    private var processorManageQueue = DispatchQueue(label: "com.leondeng.Observatory.processorManageQueue.trace", qos: .utility)
     
     private var tracerCache = [String: Tracerable]()
     

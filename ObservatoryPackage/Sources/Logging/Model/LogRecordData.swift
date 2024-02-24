@@ -10,12 +10,6 @@ import Foundation
 import ObservatoryCommon
 #endif
 
-public struct InstrumentationScope: Hashable, Equatable {
-  // An empty instrumentation scope name means the name is unknown.
-    let name: String
-    let version: String
-}
-
 public enum LogRecordFlags: UInt {
   case unspecified = 0;
   case mask = 0x000000FF;

@@ -12,4 +12,8 @@ import ObservatoryCommon
 
 public protocol TracerProvidable: CachedKeyManagable {
     func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String: ObservatoryValue]?)
+    
+    func onSpanStarted(span: Span)
+    
+    func onSpanEnded(span: Span)
 }
