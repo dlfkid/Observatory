@@ -7,6 +7,11 @@
 
 import Foundation
 
-public class ReadableSpan {
+public struct ReadableSpan {
     
+    private let internalSpan: Span
+    
+    init(internalSpan: Span) {
+        self.internalSpan = internalSpan
+    }
 }

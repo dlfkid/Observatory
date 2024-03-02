@@ -14,14 +14,15 @@ public class TracerProvider: TracerProvidable {
     
     private let limit: SpanLimit
     
-    public func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String : ObservatoryValue]?) {
+    public func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String : ObservatoryValue]?) -> Tracerable {
         cacheManageQueue.sync {
-            if let _ = tracerCache[createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)] {
-                return
+            if let tracer = tracerCache[createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)] {
+                return tracer
             }
-            let generatedLoggerKey = self.createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
-            let generatedLogger = Tracer(version: version, name: name, schemaURL: schemaURL, limit: limit, provider: self)
-            tracerCache[generatedLoggerKey] = generatedLogger
+            let generatedTracerKey = self.createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
+            let generatedTracer = Tracer(version: version, name: name, schemaURL: schemaURL, limit: limit, provider: self)
+            tracerCache[generatedTracerKey] = generatedTracer
+            return generatedTracer
         }
     }
     
