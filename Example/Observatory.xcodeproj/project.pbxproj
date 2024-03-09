@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18B3096EEF62DC7D37A149B9 /* Pods_Observatory_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */; };
 		351C34C12B7E00D5009C72F4 /* ObservatoryPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 351C34C02B7E00D5009C72F4 /* ObservatoryPackage */; };
 		357A026B2AECE0330099198D /* LogSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A026A2AECE0330099198D /* LogSendViewController.swift */; };
 		357A02872B528B860099198D /* TracingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A02862B528B860099198D /* TracingDemoViewController.swift */; };
@@ -17,6 +18,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		B54405D4DE3B500E54767A0A /* Pods_Observatory_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,7 @@
 		357A026A2AECE0330099198D /* LogSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSendViewController.swift; sourceTree = "<group>"; };
 		357A02862B528B860099198D /* TracingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracingDemoViewController.swift; sourceTree = "<group>"; };
 		357A028A2B5424300099198D /* DemoResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoResource.swift; sourceTree = "<group>"; };
+		48E73D0410B9A0467D789B0E /* Pods-Observatory_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Tests.release.xcconfig"; path = "Target Support Files/Pods-Observatory_Tests/Pods-Observatory_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* Observatory_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Observatory_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -44,6 +47,11 @@
 		607FACE51AFB9204008FA782 /* Observatory_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Observatory_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
+		6BFC5B716992D0852C7C5DB7 /* Pods-Observatory_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Example.release.xcconfig"; path = "Target Support Files/Pods-Observatory_Example/Pods-Observatory_Example.release.xcconfig"; sourceTree = "<group>"; };
+		7C6390F218901C54CBCF451B /* Pods-Observatory_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Example.debug.xcconfig"; path = "Target Support Files/Pods-Observatory_Example/Pods-Observatory_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Observatory_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9C78A196A87A23D08D851A2 /* Pods-Observatory_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Observatory_Tests/Pods-Observatory_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Observatory_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				351C34C12B7E00D5009C72F4 /* ObservatoryPackage in Frameworks */,
+				B54405D4DE3B500E54767A0A /* Pods_Observatory_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18B3096EEF62DC7D37A149B9 /* Pods_Observatory_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +78,10 @@
 		0F65303D0B34364ACCB0FE98 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				7C6390F218901C54CBCF451B /* Pods-Observatory_Example.debug.xcconfig */,
+				6BFC5B716992D0852C7C5DB7 /* Pods-Observatory_Example.release.xcconfig */,
+				D9C78A196A87A23D08D851A2 /* Pods-Observatory_Tests.debug.xcconfig */,
+				48E73D0410B9A0467D789B0E /* Pods-Observatory_Tests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -83,6 +97,8 @@
 		351C34BF2B7E00D5009C72F4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */,
+				B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -157,9 +173,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACEF1AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Observatory_Example" */;
 			buildPhases = (
+				F81C4CCCEE43DAF656D470D3 /* [CP] Check Pods Manifest.lock */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
+				A2F46DD95BA530E4729548BE /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,6 +195,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 607FACF21AFB9204008FA782 /* Build configuration list for PBXNativeTarget "Observatory_Tests" */;
 			buildPhases = (
+				194AC6223F77C0BE7D522D3A /* [CP] Check Pods Manifest.lock */,
 				607FACE11AFB9204008FA782 /* Sources */,
 				607FACE21AFB9204008FA782 /* Frameworks */,
 				607FACE31AFB9204008FA782 /* Resources */,
@@ -251,6 +270,71 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		194AC6223F77C0BE7D522D3A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Observatory_Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A2F46DD95BA530E4729548BE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Observatory_Example/Pods-Observatory_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Observatory/Observatory.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Observatory.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Observatory_Example/Pods-Observatory_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F81C4CCCEE43DAF656D470D3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Observatory_Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		607FACCC1AFB9204008FA782 /* Sources */ = {
@@ -405,10 +489,11 @@
 		};
 		607FACF01AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C6390F218901C54CBCF451B /* Pods-Observatory_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Observatory/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -423,10 +508,11 @@
 		};
 		607FACF11AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6BFC5B716992D0852C7C5DB7 /* Pods-Observatory_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Observatory/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -441,6 +527,7 @@
 		};
 		607FACF31AFB9204008FA782 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D9C78A196A87A23D08D851A2 /* Pods-Observatory_Tests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
@@ -451,7 +538,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -467,13 +554,14 @@
 		};
 		607FACF41AFB9204008FA782 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48E73D0410B9A0467D789B0E /* Pods-Observatory_Tests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

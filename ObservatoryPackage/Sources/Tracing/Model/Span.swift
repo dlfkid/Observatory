@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if canImport(ObservatoryCommon)
 import ObservatoryCommon
+#endif
 
 public struct SpanLimit {
     let maxAttributesCount: Int

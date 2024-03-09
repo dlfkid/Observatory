@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if canImport(ObservatoryCommon)
 import ObservatoryCommon
+#endif
 
 public enum SamplingDecision {
     /// DROP - IsRecording will be false, the Span will not be recorded and all events and attributes will be dropped.

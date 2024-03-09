@@ -1,5 +1,4 @@
 import XCTest
-import ObservatoryCommon
 
 class Tests: XCTestCase {
     
