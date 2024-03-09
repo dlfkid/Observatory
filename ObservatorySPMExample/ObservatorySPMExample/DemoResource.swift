@@ -7,7 +7,10 @@
 //
 
 import Foundation
-import Observatory
+#if canImport(ObservatoryTracing)
+import ObservatoryTracing
+import ObservatoryCommon
+#endif
 
 enum DemoResource {
     static let sharedResource = ResourceBuilder() .serviceName("demmoTelemetry").nameSpace("plainLogger").instanceId("LogSendViewController").version("0.1.0").build()

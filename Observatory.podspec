@@ -37,15 +37,15 @@ TODO: Add long description of the pod here.
 
   s.subspec 'ObservatoryTracing' do |tracing|
     tracing.dependency 'Observatory/ObservatoryCommon'
-    tracing.source_files = 'ObservatoryPackage/Sources/Tracing/**/*'
+    tracing.source_files = 'Sources/Tracing/**/*'
   end
 
   s.subspec 'ObservatoryLogging' do |logging|
     logging.dependency 'Observatory/ObservatoryCommon'
-    logging.source_files = 'ObservatoryPackage/Sources/Logging/**/*'
+    logging.source_files = 'Sources/Logging/**/*'
   end
 
   s.subspec 'ObservatoryCommon' do |common|
-    common.source_files = 'ObservatoryPackage/Sources/Common/**/*'
+    common.source_files = 'Sources/Common/**/*'
   end
 end

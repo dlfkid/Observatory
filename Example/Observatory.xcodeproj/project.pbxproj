@@ -3,12 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		18B3096EEF62DC7D37A149B9 /* Pods_Observatory_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */; };
-		351C34C12B7E00D5009C72F4 /* ObservatoryPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 351C34C02B7E00D5009C72F4 /* ObservatoryPackage */; };
+		0DA6845C01EF7DC1DF7A4C5E /* Pods_Observatory_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */; };
 		357A026B2AECE0330099198D /* LogSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A026A2AECE0330099198D /* LogSendViewController.swift */; };
 		357A02872B528B860099198D /* TracingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A02862B528B860099198D /* TracingDemoViewController.swift */; };
 		357A028B2B5424300099198D /* DemoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A028A2B5424300099198D /* DemoResource.swift */; };
@@ -18,7 +17,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
-		B54405D4DE3B500E54767A0A /* Pods_Observatory_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */; };
+		E1052FE11216289723157CE6 /* Pods_Observatory_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,8 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				351C34C12B7E00D5009C72F4 /* ObservatoryPackage in Frameworks */,
-				B54405D4DE3B500E54767A0A /* Pods_Observatory_Example.framework in Frameworks */,
+				0DA6845C01EF7DC1DF7A4C5E /* Pods_Observatory_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +66,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18B3096EEF62DC7D37A149B9 /* Pods_Observatory_Tests.framework in Frameworks */,
+				E1052FE11216289723157CE6 /* Pods_Observatory_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,9 +182,6 @@
 			dependencies = (
 			);
 			name = Observatory_Example;
-			packageProductDependencies = (
-				351C34C02B7E00D5009C72F4 /* ObservatoryPackage */,
-			);
 			productName = Observatory;
 			productReference = 607FACD01AFB9204008FA782 /* Observatory_Example.app */;
 			productType = "com.apple.product-type.application";
@@ -481,8 +476,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -494,10 +488,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Observatory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -513,10 +504,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Observatory/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -539,11 +527,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -562,11 +546,7 @@
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -606,13 +586,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		351C34C02B7E00D5009C72F4 /* ObservatoryPackage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = ObservatoryPackage;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 607FACC81AFB9204008FA782 /* Project object */;
 }
