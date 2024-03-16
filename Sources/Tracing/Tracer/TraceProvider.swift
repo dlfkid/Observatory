@@ -58,7 +58,7 @@ public class TracerProvider: TracerProvidable {
     
     let resource: Resource
     
-    let timeStampProvider: TimeStampProvidable
+    public let timeStampProvider: TimeStampProvidable
     
     internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [SpanProcessable]) {
         self.resource = resource

@@ -20,7 +20,7 @@ public protocol Tracerable: SpanContextGenerateable, Scopable {
     
     var schemaURL: String? {get}
     
-    func createSpan(name: String, kind: SpanKind, context: Context<SpanContext>, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan
+    func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan
 }
 
 public class Tracer: Tracerable {
@@ -44,8 +44,8 @@ public class Tracer: Tracerable {
         return recentSpan
     }
     
-    public func createSpan(name: String, kind: SpanKind, context: Context<SpanContext>, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan {
-        if let spanContext = context.acquireValue(key: "spanContext") {
+    public func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan {
+        if let spanContext = context {
             currentContext = spanContext
             let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
             return ReadableSpan(internalSpan: span)

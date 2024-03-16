@@ -11,6 +11,9 @@ import ObservatoryCommon
 #endif
 
 public protocol TracerProvidable: CachedKeyManagable {
+    
+    var timeStampProvider: TimeStampProvidable {get}
+    
     func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String: ObservatoryValue]?) -> Tracerable
     
     func onSpanStarted(span: Span)

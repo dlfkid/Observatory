@@ -33,6 +33,8 @@ public class Span {
     
     private var internalAttributes = [ObservatoryKeyValue]()
     
+    private var internalEvents = [Event]()
+    
     internal init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, queue: DispatchQueue?) {
         self.name = name
         self.kind = kind
@@ -50,14 +52,26 @@ public class Span {
         }
     }
     
-    func end(endTimeUnixNano: TimeInterval = 0) {
+    func end(endTimeUnixNano: TimeInterval? = nil) {
         operateQueue?.async {
             if self.ended {
                 return
             }
             self.ended = true
-            self.endTimeUnixNano = endTimeUnixNano
+            let timeStamp = endTimeUnixNano ?? self.provider?.timeStampProvider.currentTimeStampMillieSeconds() ?? 0
+            self.endTimeUnixNano = timeStamp
             self.provider?.onSpanEnded(span: self)
+        }
+    }
+    
+    func addEvent(name: String, attributes: [ObservatoryKeyValue]?, timeUnixNano: TimeInterval? = nil) {
+        if ended {
+            return
+        }
+        operateQueue?.async {
+            let timeStamp = timeUnixNano ?? self.provider?.timeStampProvider.currentTimeStampMillieSeconds() ?? 0
+            let event = Event(name: name, timeUnixNano: timeStamp, attributes: attributes)
+            self.internalEvents.append(event)
         }
     }
 }
