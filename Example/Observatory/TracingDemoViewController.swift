@@ -7,7 +7,11 @@
 //
 
 import UIKit
+#if canImport(Observatory)
 import Observatory
+#else
+import ObservatoryTracing
+#endif
 
 class TracingDemoViewController: UIViewController {
     
@@ -32,7 +36,6 @@ class TracingDemoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TracingDemoViewController"))]
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewWillAppear"))])
     }
     

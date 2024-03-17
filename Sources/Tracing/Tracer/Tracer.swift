@@ -52,7 +52,7 @@ public class Tracer: Tracerable {
         }
         if let currentContext = currentContext {
             let spanId = generateSpanID()
-            let spanContext = SpanContext(trace: currentContext.trace, span: spanId, sampledFlag: currentContext.sampledFlag, isRemote: currentContext.isRemote)
+            let spanContext = SpanContext(trace: currentContext.traceID, span: spanId, sampledFlag: currentContext.sampledFlag, isRemote: currentContext.isRemote)
             let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
             return ReadableSpan(internalSpan: span)
         }

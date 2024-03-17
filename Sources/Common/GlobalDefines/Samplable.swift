@@ -16,7 +16,7 @@ protocol Samplable {
     ///     the parentContext, unless this is a root span.
     ///   - name: he name of the new Span.
     ///   - parentLinks: the parentLinks associated with the new Span.
-    func shouldSample(parentContext: Context<SpanContext>?,
+    func shouldSample(parentContext: Context,
                       traceId: TraceID,
                       name: String,
                       kind: SpanKind,

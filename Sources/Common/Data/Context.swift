@@ -7,37 +7,27 @@
 
 import Foundation
 
-public struct Context<T> {
-    
-    private var internalValues = [String: T]()
-    
-    public func acquireValue(key: String) -> T? {
-        return internalValues[key]
-    }
-    
-    public func attach(_ value:T, key: String) -> Context {
-        var newContext = Context()
-        newContext.internalValues[key] = value
-        return newContext
-    }
+public protocol Context {
+    var traceID: TraceID {get}
+    var spanID: SpanID {get}
 }
 
-public struct SpanContext: Hashable, Comparable {
-    public static func < (lhs: SpanContext, rhs: SpanContext) -> Bool {
-        lhs.hashValue < rhs.hashValue
+public struct SpanContext: Equatable, Context {
+    public static func == (lhs: SpanContext, rhs: SpanContext) -> Bool {
+        return lhs.spanID == rhs.spanID && lhs.traceID == rhs.traceID
     }
     
-    public let trace: TraceID
+    public let traceID: TraceID
     
-    public let span: SpanID
+    public let spanID: SpanID
     
     public let isRemote: Bool
     
     public let sampledFlag: Int
     
     public init(trace: TraceID, span: SpanID, sampledFlag: Int, isRemote: Bool) {
-        self.trace = trace
-        self.span = span
+        self.traceID = trace
+        self.spanID = span
         self.sampledFlag = sampledFlag
         self.isRemote = isRemote
     }
