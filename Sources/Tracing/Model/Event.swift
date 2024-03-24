@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Event {
+public struct Event {
     let name: String
     let timeUnixNano: TimeInterval
     let attributes: [ObservatoryKeyValue]?

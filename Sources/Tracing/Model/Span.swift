@@ -65,13 +65,31 @@ public class Span {
     }
     
     func addEvent(name: String, attributes: [ObservatoryKeyValue]?, timeUnixNano: TimeInterval? = nil) {
-        if ended {
-            return
-        }
         operateQueue?.async {
+            if self.ended {
+                return
+            }
             let timeStamp = timeUnixNano ?? self.provider?.timeStampProvider.currentTimeStampMillieSeconds() ?? 0
             let event = Event(name: name, timeUnixNano: timeStamp, attributes: attributes)
             self.internalEvents.append(event)
+        }
+    }
+    
+    func fetchAttributes(completion: @escaping ReadableAttributeCallback) {
+        operateQueue?.async {
+            let attributes = self.internalAttributes
+            DispatchQueue.main.async {
+                completion(attributes)
+            }
+        }
+    }
+    
+    func fetchEvents(completion: @escaping ReadableEventCallback) {
+        operateQueue?.async {
+            let events = self.internalEvents
+            DispatchQueue.main.async {
+                completion(events)
+            }
         }
     }
 }
