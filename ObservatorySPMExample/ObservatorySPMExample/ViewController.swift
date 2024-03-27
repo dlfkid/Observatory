@@ -32,7 +32,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Log function module select"
+        navigationItem.title = "Observatory Menu"
         view.addSubview(tableView)
         tableView.frame = view.bounds
         tableView.delegate = self
