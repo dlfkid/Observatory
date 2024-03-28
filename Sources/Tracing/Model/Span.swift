@@ -70,7 +70,7 @@ public class Span {
                 return
             }
             let timeStamp = timeUnixNano ?? self.provider?.timeStampProvider.currentTimeStampMillieSeconds() ?? 0
-            let event = Event(name: name, timeUnixNano: timeStamp, attributes: attributes)
+            let event = Event(name: name, time_unix_nano: timeStamp, attributes: attributes)
             self.internalEvents.append(event)
         }
     }
