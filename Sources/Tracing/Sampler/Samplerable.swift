@@ -23,15 +23,38 @@ public struct SamplingResult {
     /// A sampling Decision
     public let decision: SamplingDecision
     /// A set of span Attributes that will also be added to the Span
-    public let attributes: [ObservatoryKeyValue]
+    public let attributes: [ObservatoryKeyValue]?
     
-    public let traceState: TraceState
+    public let traceState: TraceState?
+    
+    init(decision: SamplingDecision) {
+        self.decision = decision
+        self.attributes = nil
+        self.traceState = nil
+    }
+    
+    init(decision: SamplingDecision, attributes: [ObservatoryKeyValue]) {
+        self.decision = decision
+        self.attributes = attributes
+        self.traceState = nil
+    }
+    
+    init(decision: SamplingDecision, traceState: TraceState) {
+        self.decision = decision
+        self.attributes = nil
+        self.traceState = traceState
+    }
 }
 
 public protocol Samplerable {
-    func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue], links: [Link], traceState: TraceState) -> SamplingResult
+    func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue]?, links: [Link]?, traceState: TraceState?) -> SamplingResult
 }
 
-struct SimpleSampler {
+public struct SimpleSampler: Samplerable {
+    
+    public func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue]?, links: [Link]?, traceState: TraceState?) -> SamplingResult {
+        return SamplingResult(decision: .recordAndSample)
+    }
+    
     
 }

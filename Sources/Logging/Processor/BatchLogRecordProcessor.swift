@@ -57,9 +57,9 @@ public class BatchLogRecordProcessor: LogProcessable {
     
     private var unexportedLogRecords = [LogRecordData]()
     
-    private let logRecordHandleQueue = dispatch_queue_serial_t(label: "observatory_batch_processor_queue_handle")
+    private let logRecordHandleQueue = DispatchQueue(label: "observatory_batch_processor_queue_handle")
     
-    private let logRecordCollectQueue = dispatch_queue_serial_t(label: "observatory_batch_processor_queue_collect")
+    private let logRecordCollectQueue = DispatchQueue(label: "observatory_batch_processor_queue_collect")
     
     public init(config: BatchLogRecordConfig) {
         self.config = config
