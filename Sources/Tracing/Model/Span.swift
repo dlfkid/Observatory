@@ -92,4 +92,20 @@ public class Span {
             }
         }
     }
+    
+    func events() -> [Event]? {
+        var events: [Event]? = nil
+        operateQueue?.sync {
+            events = self.internalEvents
+        }
+        return events
+    }
+    
+    func attributes() -> [ObservatoryKeyValue]? {
+        var attributes: [ObservatoryKeyValue]? = nil
+        operateQueue?.sync {
+            attributes = self.internalAttributes
+        }
+        return attributes
+    }
 }

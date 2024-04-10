@@ -28,7 +28,15 @@ public class SimpleSpanProcessor: SpanProcessable {
     }
     
     public func onSpanEnded(span: Span) {
-        
+        let spanData = SpanData.spanData(from: span)
+        exporter?.export(timeout: 15, batch: [spanData], completion: { result in
+            switch result {
+            case .success:
+                break
+            case .failure(let error):
+                print("Failed to export span data: \(error.localizedDescription)")
+            }
+        })
     }
     
     

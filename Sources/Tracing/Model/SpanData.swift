@@ -21,9 +21,15 @@ public struct SpanData {
     let end_time_unix_nano: TimeInterval?
     let attributes: [ObservatoryKeyValue]?
     let dropped_attributes_count: Int?
+    let events: [Event]?
 }
 
 extension SpanData: Encodable {
+    
+    static func spanData(from span: Span) -> SpanData {
+        SpanData(trace_id: span.context.traceID.bytes, span_id: span.context.spanID.bytes, parent_span_id: span.context.parentSpanID?.bytes, trace_state: nil, name: span.name, kind: span.kind, start_time_unix_nano: span.startTimeUnixNano, end_time_unix_nano: span.endTimeUnixNano, attributes: span.attributes(), dropped_attributes_count: 0, events: span.events())
+    }
+    
     enum CodingKeys: String, CodingKey {
             case start_time_unix_nano = "start_time_unix_nano"
             case end_time_unix_nano = "end_time_unix_nano"
@@ -35,7 +41,8 @@ extension SpanData: Encodable {
             case attributes = "attributes"
             case name = "name"
             case kind = "kind"
-            case time_unix_nano
+            case time_unix_nano = "time_unix_nano"
+            case events = "events"
        }
     
     public func encode(to encoder: Encoder) throws {
@@ -50,5 +57,6 @@ extension SpanData: Encodable {
         try container.encode(attributes, forKey: .attributes)
         try container.encode(name, forKey: .name)
         try container.encode(kind?.rawValue, forKey: .kind)
+        try container.encode(events, forKey: .events)
     }
 }
