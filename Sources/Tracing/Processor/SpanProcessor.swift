@@ -11,7 +11,10 @@ import ObservatoryCommon
 #endif
 
 public protocol SpanProcessable: ProcedureEndable {
-    var exporter: (any TelemetryExportable)? {get}
+    
+    associatedtype Exporter: TelemetryExportable
+    
+    var exporter: Exporter? {get}
     
     func onSpanStarted(span: Span)
     

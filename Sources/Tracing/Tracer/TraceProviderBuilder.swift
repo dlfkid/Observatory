@@ -15,7 +15,7 @@ public class TracerProviderBuilder {
     
     public var timeStampProvider: TimeStampProvidable = TimeStampProvider()
     
-    public var spanProcessables = [SpanProcessable]()
+    public var spanProcessables = [any SpanProcessable]()
     
     public var limit = SpanLimit(maxAttributesCount: 128, maxLinkCount: 32, maxEventCount: 32, attributeLimit: LimitConfig())
     
@@ -28,7 +28,7 @@ public class TracerProviderBuilder {
         return self
     }
     
-    public func addLogProcessable(_ processor: SpanProcessable) -> TracerProviderBuilder {
+    public func addSpanProcessable(_ processor: any SpanProcessable) -> TracerProviderBuilder {
         spanProcessables.append(processor)
         return self
     }

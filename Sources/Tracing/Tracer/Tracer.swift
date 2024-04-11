@@ -38,7 +38,7 @@ public class Tracer: Tracerable {
         var recentSpan: ReadableSpan? = nil
         spanOperateQueue.sync {
             if let span = lastSpan {
-                recentSpan = ReadableSpan(internalSpan: span)
+                recentSpan = span.readableSpan()
             }
         }
         return recentSpan
@@ -49,7 +49,7 @@ public class Tracer: Tracerable {
         if let spanContext = context {
             currentContext = spanContext
             let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
-            return ReadableSpan(internalSpan: span)
+            return span.readableSpan()
         }
         // if no context from parameter, try to create context based on current tracer's context
         if let currentContext = currentContext {
@@ -58,7 +58,7 @@ public class Tracer: Tracerable {
             let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
             // update latest context
             self.currentContext = spanContext
-            return ReadableSpan(internalSpan: span)
+            return span.readableSpan()
         }
         // if current tracer has no context, create a brand new context as the root span of the trace
         let traceId = generateTraceID()
@@ -68,7 +68,7 @@ public class Tracer: Tracerable {
         span.startTimeUnixNano = startTimeUnixNano ?? 0
         currentContext = spanContext
         provider?.onSpanStarted(span: span)
-        return ReadableSpan(internalSpan: span)
+        return span.readableSpan()
     }
     
     public var currentContext: SpanContext?

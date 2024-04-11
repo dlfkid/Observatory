@@ -22,7 +22,7 @@ class TracingDemoViewController: UIViewController {
     private lazy var tracerProvider: TracerProvidable = {
         let resource = DemoResource.sharedResource
         let builder = TracerProviderBuilder(resource: resource)
-        return builder.build()
+        return builder.addSpanProcessable(SpanCachePool.default).addSpanProcessable(SimpleSpanProcessor(exporter: SimpleSpanExporter())).build()
     }()
     
     private var span: ReadableSpan?

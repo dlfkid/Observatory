@@ -12,6 +12,8 @@ import ObservatoryCommon
 
 public class SimpleSpanProcessor: SpanProcessable {
     
+    public typealias Exporter = SimpleSpanExporter
+    
     public let sampler = SimpleSampler()
     
     public func onSpanStarted(span: Span) {
@@ -44,13 +46,15 @@ public class SimpleSpanProcessor: SpanProcessable {
     
     private var shuttedDown: Bool = false
     
-    public var exporter: (any TelemetryExportable)?
+    public var exporter: Exporter?
     
     private var unexportedLogRecords = [InstrumentationScope: SpanData]()
     
-    public init(exporter: (any TelemetryExportable)? = nil) {
+    public init(exporter: Exporter? = nil) {
         self.exporter = exporter
     }
+    
+    internal init() {}
 }
 
 extension SimpleSpanProcessor: ProcedureEndable {

@@ -38,7 +38,7 @@ public struct ReadableSpan {
     
     /// acquire current attributes
     /// - Parameter complection: callback
-    public func fetcEvents(complection: @escaping ReadableEventCallback) {
+    public func fetchEvents(complection: @escaping ReadableEventCallback) {
         self.internalSpan.fetchEvents(completion: complection)
     }
 }

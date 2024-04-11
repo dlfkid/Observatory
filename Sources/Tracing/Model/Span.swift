@@ -109,3 +109,9 @@ public class Span {
         return attributes
     }
 }
+
+extension Span {
+    func readableSpan() -> ReadableSpan {
+        return ReadableSpan(internalSpan: self)
+    }
+}

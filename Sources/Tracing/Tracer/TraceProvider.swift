@@ -54,13 +54,13 @@ public class TracerProvider: TracerProvidable {
     
     private var tracerCache = [String: Tracerable]()
     
-    private let processorCache: [SpanProcessable]
+    private let processorCache: [any SpanProcessable]
     
     let resource: Resource
     
     public let timeStampProvider: TimeStampProvidable
     
-    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [SpanProcessable]) {
+    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [any SpanProcessable]) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = processors
