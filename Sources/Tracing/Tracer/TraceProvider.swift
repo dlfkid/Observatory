@@ -14,6 +14,8 @@ public class TracerProvider: TracerProvidable {
     
     private let limit: SpanLimit
     
+    private let sampler: any Samplerable
+    
     public func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String : ObservatoryValue]?) -> Tracerable {
         cacheManageQueue.sync {
             if let tracer = tracerCache[createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)] {
@@ -48,6 +50,10 @@ public class TracerProvider: TracerProvidable {
         }
     }
     
+    public func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue]?, links: [Link]?, traceState: TraceState?) -> SamplingResult {
+        return sampler.shouldSample(traceID: traceID, name: name, parentSpanID: parentSpanID, attributes: attributes, links: links, traceState: traceState)
+    }
+    
     private var cacheManageQueue = DispatchQueue(label: "com.leondeng.Observatory.cacheManageQueue.trace", qos: .utility)
     
     private var processorManageQueue = DispatchQueue(label: "com.leondeng.Observatory.processorManageQueue.trace", qos: .utility)
@@ -60,10 +66,11 @@ public class TracerProvider: TracerProvidable {
     
     public let timeStampProvider: TimeStampProvidable
     
-    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [any SpanProcessable]) {
+    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [any SpanProcessable], sampler: any Samplerable) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = processors
         self.limit = limit
+        self.sampler = sampler
     }
 }

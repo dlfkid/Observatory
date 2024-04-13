@@ -28,11 +28,14 @@ public struct SpanContext: Equatable, Context {
     
     public let sampledFlag: Int
     
-    public init(trace: TraceID, span: SpanID, sampledFlag: Int, isRemote: Bool, parentSpan: SpanID?) {
+    public let traceState: TraceState?
+    
+    public init(trace: TraceID, span: SpanID, sampledFlag: Int, isRemote: Bool, parentSpan: SpanID?, traceState: TraceState?) {
         self.traceID = trace
         self.spanID = span
         self.sampledFlag = sampledFlag
         self.isRemote = isRemote
         self.parentSpanID = parentSpan
+        self.traceState = traceState
     }
 }

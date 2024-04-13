@@ -12,15 +12,13 @@ import ObservatoryCommon
 
 public protocol Tracerable: SpanContextGenerateable, Scopable {
     
-    var currentContext: SpanContext? {get}
-    
     var version: String {get}
     
     var name: String {get}
     
     var schemaURL: String? {get}
     
-    func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan
+    func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan?
 }
 
 public class Tracer: Tracerable {
@@ -44,34 +42,33 @@ public class Tracer: Tracerable {
         return recentSpan
     }
     
-    public func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan {
+    fileprivate func handleSpanCreation(_ spanContext: SpanContext, _ name: String, _ kind: SpanKind, _ attributes: [ObservatoryKeyValue]?, _ provider: (any AnyObject & TracerProvidable), _ startTimeUnixNano: TimeInterval) -> ReadableSpan? {
+        let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
+        span.startTimeUnixNano = startTimeUnixNano
+        provider.onSpanStarted(span: span)
+        return span.readableSpan()
+    }
+    
+    public func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan? {
+        guard let provider = provider else {
+            return nil
+        }
+        let startTimeUnixNano = startTimeUnixNano ?? provider.timeStampProvider.currentTimeStampMillieSeconds()
         // if there is a context parameter, create span with the parameter context
         if let spanContext = context {
-            currentContext = spanContext
-            let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
-            return span.readableSpan()
-        }
-        // if no context from parameter, try to create context based on current tracer's context
-        if let currentContext = currentContext {
-            let spanId = generateSpanID()
-            let spanContext = SpanContext(trace: currentContext.traceID, span: spanId, sampledFlag: currentContext.sampledFlag, isRemote: currentContext.isRemote, parentSpan: currentContext.spanID)
-            let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
-            // update latest context
-            self.currentContext = spanContext
-            return span.readableSpan()
+            return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnixNano)
         }
         // if current tracer has no context, create a brand new context as the root span of the trace
         let traceId = generateTraceID()
         let spanId = generateSpanID()
-        let spanContext = SpanContext(trace: traceId, span: spanId, sampledFlag: 0, isRemote: false, parentSpan: nil)
-        let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope: scope, provider: provider, queue: spanOperateQueue)
-        span.startTimeUnixNano = startTimeUnixNano ?? 0
-        currentContext = spanContext
-        provider?.onSpanStarted(span: span)
-        return span.readableSpan()
+        // only originatly created span needs a sampler to decide wether the span should be sampled and recorded
+        let sampleResult = provider.shouldSample(traceID: traceId, name: name, parentSpanID: nil, attributes: attributes, links: linkes, traceState: nil)
+        guard sampleResult.decision != .drop else {
+            return nil
+        }
+        let spanContext = SpanContext(trace: traceId, span: spanId, sampledFlag: sampleResult.decision.rawValue, isRemote: false, parentSpan: nil, traceState: sampleResult.traceState)
+        return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnixNano)
     }
-    
-    public var currentContext: SpanContext?
     
     public let version: String
     

@@ -14,19 +14,8 @@ public class SimpleSpanProcessor: SpanProcessable {
     
     public typealias Exporter = SimpleSpanExporter
     
-    public let sampler = SimpleSampler()
-    
     public func onSpanStarted(span: Span) {
-        let sampleResult = sampler.shouldSample(traceID: span.context.traceID, name: span.name, parentSpanID: span.context.spanID, attributes: [], links: [], traceState: nil)
-        switch sampleResult.decision {
-        case .drop:
-            break
-        case .recordOnly:
-            break
-        case .recordAndSample:
-            break
-            // unexportedLogRecords.updateValue(span.toSpanData(), forKey: span)
-        }
+        
     }
     
     public func onSpanEnded(span: Span) {

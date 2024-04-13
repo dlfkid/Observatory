@@ -10,13 +10,13 @@ import Foundation
 import ObservatoryCommon
 #endif
 
-public enum SamplingDecision {
+public enum SamplingDecision: Int {
     /// DROP - IsRecording will be false, the Span will not be recorded and all events and attributes will be dropped.
-    case drop
+    case drop = 0
     /// RECORD_ONLY - IsRecording will be true, but the Sampled flag MUST NOT be set.
-    case recordOnly
+    case recordOnly = 1
     /// RECORD_AND_SAMPLE - IsRecording will be true and the Sampled flag MUST be set.
-    case recordAndSample
+    case recordAndSample = 2
 }
 
 public struct SamplingResult {

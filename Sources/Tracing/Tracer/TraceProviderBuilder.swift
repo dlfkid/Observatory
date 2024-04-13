@@ -17,6 +17,8 @@ public class TracerProviderBuilder {
     
     public var spanProcessables = [any SpanProcessable]()
     
+    public var sampler: Samplerable = SimpleSampler()
+    
     public var limit = SpanLimit(maxAttributesCount: 128, maxLinkCount: 32, maxEventCount: 32, attributeLimit: LimitConfig())
     
     public init(resource: Resource) {
@@ -33,7 +35,13 @@ public class TracerProviderBuilder {
         return self
     }
     
+    public func configSampler(sampler: any Samplerable) -> TracerProviderBuilder {
+        self.sampler = sampler
+        return self
+    }
+    
+    
     public func build() -> Any & TracerProvidable {
-        return TracerProvider(resource: resource, limit: limit, timeStampProvider: timeStampProvider, processors: spanProcessables)
+        return TracerProvider(resource: resource, limit: limit, timeStampProvider: timeStampProvider, processors: spanProcessables, sampler: sampler)
     }
 }

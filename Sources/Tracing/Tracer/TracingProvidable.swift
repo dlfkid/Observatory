@@ -19,4 +19,6 @@ public protocol TracerProvidable: CachedKeyManagable {
     func onSpanStarted(span: Span)
     
     func onSpanEnded(span: Span)
+    
+    func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue]?, links: [Link]?, traceState: TraceState?) -> SamplingResult
 }
