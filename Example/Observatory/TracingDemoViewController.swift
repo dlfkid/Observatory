@@ -30,7 +30,7 @@ class TracingDemoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TracingDemoViewController"))]
-        span = tracer.createSpan(name: "demo_life_cycle", kind: .client, context: nil, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
+        span = tracer.createSpan(name: "demo_life_cycle", kind: .client, attributes: sampleAttri)
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewDidLoad"))])
     }
     

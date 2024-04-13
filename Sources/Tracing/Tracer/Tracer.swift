@@ -18,7 +18,13 @@ public protocol Tracerable: SpanContextGenerateable, Scopable {
     
     var schemaURL: String? {get}
     
-    func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan?
+    func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan?
+}
+
+extension Tracerable {
+    public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeInterval? = nil, linkes:[Link]? = nil) -> ReadableSpan? {
+        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes)
+    }
 }
 
 public class Tracer: Tracerable {
@@ -49,7 +55,7 @@ public class Tracer: Tracerable {
         return span.readableSpan()
     }
     
-    public func createSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan? {
+    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan? {
         guard let provider = provider else {
             return nil
         }
