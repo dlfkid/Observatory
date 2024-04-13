@@ -18,12 +18,12 @@ public protocol Tracerable: SpanContextGenerateable, Scopable {
     
     var schemaURL: String? {get}
     
-    func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?) -> ReadableSpan?
+    func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?, traceState: TraceState?) -> ReadableSpan?
 }
 
 extension Tracerable {
-    public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeInterval? = nil, linkes:[Link]? = nil) -> ReadableSpan? {
-        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes)
+    public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeInterval? = nil, linkes:[Link]? = nil, traceState: TraceState? = nil) -> ReadableSpan? {
+        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }
 }
 
@@ -55,7 +55,7 @@ public class Tracer: Tracerable {
         return span.readableSpan()
     }
     
-    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?) -> ReadableSpan? {
+    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?, traceState: TraceState?) -> ReadableSpan? {
         guard let provider = provider else {
             return nil
         }
@@ -68,7 +68,7 @@ public class Tracer: Tracerable {
         let traceId = generateTraceID()
         let spanId = generateSpanID()
         // only originatly created span needs a sampler to decide wether the span should be sampled and recorded
-        let sampleResult = provider.shouldSample(traceID: traceId, name: name, parentSpanID: nil, attributes: attributes, links: linkes, traceState: nil)
+        let sampleResult = provider.shouldSample(traceID: traceId, name: name, parentSpanID: nil, attributes: attributes, links: linkes, traceState: traceState)
         guard sampleResult.decision != .drop else {
             return nil
         }
