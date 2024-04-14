@@ -19,6 +19,9 @@ public class SimpleSpanProcessor: SpanProcessable {
     }
     
     public func onSpanEnded(span: Span) {
+        guard span.context.sampledFlag == .recordAndSample else {
+            return
+        }
         let spanData = SpanData.spanData(from: span)
         exporter?.export(timeout: 15, batch: [spanData], completion: { result in
             switch result {
@@ -59,7 +62,7 @@ extension SimpleSpanProcessor: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "SimpleSpanProcessor"))
+            closure(false, .alreadyShuttedDown(component: "SimpleSpanProcessor"))
             return
         }
         exporter?.shutdown(timeout: timeout, closure: closure)
@@ -70,7 +73,7 @@ extension SimpleSpanProcessor: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "SimpleSpanProcessor"))
+            closure(false, .alreadyShuttedDown(component: "SimpleSpanProcessor"))
             return
         }
         exporter?.forceFlush(timeout: timeout, closure: closure)

@@ -9,7 +9,7 @@ import Foundation
 
 public enum ObservatoryError: Error {
     case timout(component: String? = nil)
-    case shuttedDown(component: String? = nil)
+    case alreadyShuttedDown(component: String? = nil)
 }
 
 extension ObservatoryError: LocalizedError {
@@ -20,7 +20,7 @@ extension ObservatoryError: LocalizedError {
                 return String("Timeout, \(component) is not responding")
             }
             return "Timeout"
-        case let .shuttedDown(component: component):
+        case let .alreadyShuttedDown(component: component):
             if let component = component {
                 return String("Already shutted down, \(component)")
             }

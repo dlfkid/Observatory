@@ -31,7 +31,7 @@ extension SimpleSpanExporter: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "SimpleSpanExporter"))
+            closure(false, .alreadyShuttedDown(component: "SimpleSpanExporter"))
             return
         }
         forceFlush(timeout: timeout, closure: closure)

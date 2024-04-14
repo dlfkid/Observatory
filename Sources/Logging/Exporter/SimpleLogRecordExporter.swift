@@ -31,7 +31,7 @@ extension SimpleLogRecordExporter: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "SimpleLogExporter"))
+            closure(false, .alreadyShuttedDown(component: "SimpleLogExporter"))
             return
         }
         forceFlush(timeout: timeout, closure: closure)

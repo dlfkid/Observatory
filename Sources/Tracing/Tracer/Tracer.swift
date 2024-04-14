@@ -72,7 +72,7 @@ public class Tracer: Tracerable {
         guard sampleResult.decision != .drop else {
             return nil
         }
-        let spanContext = SpanContext(trace: traceId, span: spanId, sampledFlag: sampleResult.decision.rawValue, isRemote: false, parentSpan: nil, traceState: sampleResult.traceState)
+        let spanContext = SpanContext(trace: traceId, span: spanId, sampledFlag: sampleResult.decision, isRemote: false, parentSpan: nil, traceState: sampleResult.traceState)
         return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnixNano)
     }
     

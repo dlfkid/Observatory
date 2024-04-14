@@ -110,7 +110,7 @@ extension BatchLogRecordProcessor: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "BatchLogProcessor"))
+            closure(false, .alreadyShuttedDown(component: "BatchLogProcessor"))
             return
         }
         exporter?.shutdown(timeout: timeout, closure: closure)
@@ -122,7 +122,7 @@ extension BatchLogRecordProcessor: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "BatchLogProcessor"))
+            closure(false, .alreadyShuttedDown(component: "BatchLogProcessor"))
             return
         }
         exporter?.forceFlush(timeout: timeout, closure: closure)

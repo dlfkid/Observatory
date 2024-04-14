@@ -43,7 +43,7 @@ extension SimpleLogProcessor: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "SimpleLogProcessor"))
+            closure(false, .alreadyShuttedDown(component: "SimpleLogProcessor"))
             return
         }
         exporter?.shutdown(timeout: timeout, closure: closure)
@@ -54,7 +54,7 @@ extension SimpleLogProcessor: ProcedureEndable {
             guard let closure = closure else {
                 return
             }
-            closure(false, .shuttedDown(component: "SimpleLogProcessor"))
+            closure(false, .alreadyShuttedDown(component: "SimpleLogProcessor"))
             return
         }
         exporter?.forceFlush(timeout: timeout, closure: closure)
