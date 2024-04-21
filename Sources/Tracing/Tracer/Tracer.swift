@@ -89,5 +89,6 @@ public class Tracer: Tracerable {
         self.name = name
         self.schemaURL = schemaURL
         self.limit = limit
+        self.provider = provider
     }
 }

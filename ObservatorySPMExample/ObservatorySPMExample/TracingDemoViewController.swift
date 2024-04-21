@@ -16,16 +16,6 @@ import ObservatoryCommon
 
 class TracingDemoViewController: UIViewController {
     
-    private var tracer: Tracerable {
-        return tracerProvider.createTracerIfNeeded(name: "traceDemo", version: "0.1.0", schemaURL: nil, attributes: nil)
-    }
-    
-    private lazy var tracerProvider: TracerProvidable = {
-        let resource = DemoResource.sharedResource
-        let builder = TracerProviderBuilder(resource: resource)
-        return builder.build()
-    }()
-    
     private var span: ReadableSpan?
 
     override func viewDidLoad() {
@@ -33,7 +23,7 @@ class TracingDemoViewController: UIViewController {
         view.backgroundColor = .white
         title = "Tracing Example"
         let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TracingDemoViewController"))]
-        span = tracer.createSpan(name: "demo_life_cycle", kind: .client, context: nil, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
+        span = SharedTracerTool.tool.tracer.createSpan(name: "demo_life_cycle", kind: .client, context: nil, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewDidLoad"))])
     }
     

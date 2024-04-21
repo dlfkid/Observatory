@@ -52,6 +52,8 @@ public protocol Samplerable {
 
 public struct SimpleSampler: Samplerable {
     
+    public init() {}
+    
     public func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue]?, links: [Link]?, traceState: TraceState?) -> SamplingResult {
         return SamplingResult(decision: .recordAndSample)
     }

@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(ObservatoryCommon)
+import ObservatoryCommon
+#endif
 
 public class SpanCachePool {
     public static let `default` = SpanCachePool()

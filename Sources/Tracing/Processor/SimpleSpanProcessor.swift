@@ -12,13 +12,20 @@ import ObservatoryCommon
 
 public class SimpleSpanProcessor: SpanProcessable {
     
+    public var debugOutPutHandler: ((_ event: ObservatoryError)-> Void)?
+    
     public typealias Exporter = SimpleSpanExporter
     
     public func onSpanStarted(span: Span) {
-        
+        if let debugOutPutHandler = debugOutPutHandler {
+            debugOutPutHandler(.normal(msg: "Span \(span.name) started \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
+        }
     }
     
     public func onSpanEnded(span: Span) {
+        if let debugOutPutHandler = debugOutPutHandler {
+            debugOutPutHandler(.normal(msg: "Span \(span.name) ended \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
+        }
         guard span.context.sampledFlag == .recordAndSample else {
             return
         }

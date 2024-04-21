@@ -10,6 +10,7 @@ import Foundation
 public enum ObservatoryError: Error {
     case timout(component: String? = nil)
     case alreadyShuttedDown(component: String? = nil)
+    case normal(msg: String)
 }
 
 extension ObservatoryError: LocalizedError {
@@ -25,6 +26,8 @@ extension ObservatoryError: LocalizedError {
                 return String("Already shutted down, \(component)")
             }
             return "Already shutted down"
+        case let .normal(msg: msg):
+            return msg
         }
     }
 }

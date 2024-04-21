@@ -7,26 +7,26 @@
 
 import Foundation
 
-protocol TelemetryID {
+public protocol TelemetryID {
     var raw: [UInt8] {get}
 }
 
 extension TelemetryID {
-    var bytes: Data {
+    public var bytes: Data {
         return Data(raw)
     }
     
-    var string: String {
-        return String(bytes: raw, encoding: .utf8) ?? ""
+    public var string: String {
+        return bytes.base64EncodedString()
     }
 }
 
 public struct TraceID: TelemetryID, Hashable {
-    var raw: [UInt8]
+    public var raw: [UInt8]
 }
 
 public struct SpanID: TelemetryID, Hashable {
-    var raw: [UInt8]
+    public var raw: [UInt8]
 }
 
 public protocol SpanContextGenerateable {
