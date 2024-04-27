@@ -34,7 +34,8 @@ public class TracerProvider: TracerProvidable {
                 if span.startTimeUnixNano == 0 {
                     span.startTimeUnixNano = self.timeStampProvider.currentTimeStampMillieSeconds()
                 }
-                processor.onSpanEnded(span: span)
+                span.resource = self.resource
+                processor.onSpanStarted(span: span)
             }
         }
     }

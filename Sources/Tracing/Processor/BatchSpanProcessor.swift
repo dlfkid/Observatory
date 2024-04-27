@@ -78,17 +78,30 @@ public class BatchSpanProcessor: SpanProcessable {
                     }
                     batch.append(spanData)
                 }
-                self.exporter?.export(timeout: self.config.exportTimeout, batch: batch, completion: { result in
-                    switch result {
-                    case let .success(spanDataBatch):
-                        print(spanDataBatch)
-                    case let .failure(error):
-                        print(error)
-                    }
-                })
+                self.exportSpanBatchesViaScopes(spanDataBatch: batch)
             }
         }
         self.timer = timer
+    }
+    
+    private func exportSpanBatchesViaScopes(spanDataBatch: [SpanData]) {
+        var batchDict = [InstrumentationScope: [SpanData]]()
+        for item in spanDataBatch {
+            guard let scope = item.scope else {
+                continue
+            }
+            batchDict[scope, default: []].append(item)
+        }
+        batchDict.forEach { key, value in
+            self.exporter?.export(resource: value.first?.resource, scope: key, timeout: 5, batch: value, completion: { result in
+                switch result {
+                case let .success(spanDataBatch):
+                    print(spanDataBatch)
+                case let .failure(error):
+                    print(error)
+                }
+            })
+        }
     }
     
     private func timerStop() {

@@ -24,7 +24,7 @@ public protocol Loggerable: Scopable {
     func log(_ body: String, severity: LogSeverity, timeStamp: TimeInterval?, attributes: [String: ObservatoryValue]?, traceID: Data?, spanID: Data?, flag: LogRecordFlags)
 }
 
-struct Logger: Loggerable {
+class Logger: Loggerable {
     
     private weak var provider: (AnyObject & LoggerProvidable)?
     
@@ -35,7 +35,7 @@ struct Logger: Loggerable {
             atttributUnits.append(unit)
         })
         let time = timeStamp ?? timeStampProvider.currentTimeStampMillieSeconds()
-        let logData = LogRecordData(time_unix_nano: time, body: body, trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: atttributUnits, flags: flag, scope: scope)
+        let logData = LogRecordData(time_unix_nano: time, body: body, trace_id: traceID, span_id: spanID, severity_text: severity.severityName, severity_number: severity.severityNumber, dropped_attributes_count: 0, attributes: atttributUnits, flags: flag, scope: scope, resource: provider?.resource)
         provider?.onEmit(logRecord: logData)
     }
     

@@ -19,7 +19,7 @@ class LoggerProvider: LoggerProvidable {
     
     private let processorCache: [LogProcessable]
     
-    private let resource: Resource
+    let resource: Resource
     
     private let timeStampProvider: TimeStampProvidable
     

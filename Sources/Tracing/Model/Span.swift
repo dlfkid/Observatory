@@ -18,6 +18,7 @@ public struct SpanLimit {
 }
 
 public class Span {
+    var resource: Resource?
     let name: String
     let kind: SpanKind
     let limit: SpanLimit
@@ -35,7 +36,7 @@ public class Span {
     
     private var internalEvents = [Event]()
     
-    internal init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, queue: DispatchQueue?) {
+    internal init(resource: Resource?, name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, queue: DispatchQueue?) {
         self.name = name
         self.kind = kind
         self.limit = limit
@@ -43,10 +44,11 @@ public class Span {
         self.provider = provider
         self.scope = scope
         self.operateQueue = queue
+        self.resource = resource
     }
     
     internal convenience init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, attributes: [ObservatoryKeyValue]?, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, queue: DispatchQueue?) {
-        self.init(name: name, kind: kind, limit: limit, context: context, scope: scope, provider: provider, queue: queue)
+        self.init(resource: nil, name: name, kind: kind, limit: limit, context: context, scope: scope, provider: provider, queue: queue)
         if let attributes = attributes {
             self.internalAttributes.append(contentsOf: attributes)
         }

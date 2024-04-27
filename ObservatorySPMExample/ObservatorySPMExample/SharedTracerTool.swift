@@ -6,7 +6,9 @@
 //
 
 import Foundation
+#if canImport(ObservatoryTracing)
 import ObservatoryTracing
+#endif
 
 class SharedTracerTool {
     
@@ -16,11 +18,15 @@ class SharedTracerTool {
     
     private lazy var tracerProvider: TracerProvidable = {
         let resource = DemoResource.sharedResource
-        let processor = SimpleSpanProcessor()
+        let processor = SimpleSpanProcessor(exporter: SimpleSpanExporter())
         processor.debugOutPutHandler = { event in
             print(event.localizedDescription)
         }
-        let builder = TracerProviderBuilder(resource: resource).configSampler(sampler: SimpleSampler()).addSpanProcessable(processor)
+        let cachePool = SpanCachePool.default
+        cachePool.debugOutPutHandler = { event in
+            print(event.localizedDescription)
+        }
+        let builder = TracerProviderBuilder(resource: resource).configSampler(sampler: SimpleSampler()).addSpanProcessable(processor).addSpanProcessable(cachePool)
         return builder.build()
     }()
     

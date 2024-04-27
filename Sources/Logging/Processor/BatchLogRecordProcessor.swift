@@ -77,18 +77,28 @@ public class BatchLogRecordProcessor: LogProcessable {
             let maxLength = min(config.maxExportBatchSize, self.unexportedLogRecords.count)
             for index in 0 ... maxLength {
                 guard unexportedLogRecords.count > index else {
-                    continue
+                    break
                 }
                 logBatch.append(self.unexportedLogRecords[index])
-            }
-            logRecordCollectQueue.async {
-                self.exporter?.export(timeout: config.exportTimeoutMillis / 1000, batch: logBatch, completion: { result in
-                })
             }
         }
 
         // Start the timer
         timer?.resume()
+    }
+    
+    private func exportLogBatchesViaScopes(logDataBatch: [LogRecordData]) {
+        var batchDict = [InstrumentationScope: [LogRecordData]]()
+        for item in logDataBatch {
+            guard let scope = item.scope else {
+                continue
+            }
+            batchDict[scope, default: []].append(item)
+        }
+        batchDict.forEach { key, value in
+            self.exporter?.export(resource: value.first?.resource, scope: key, timeout: 5, batch: value, completion: { result in
+            })
+        }
     }
     
     private func stopTimer() {

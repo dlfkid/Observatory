@@ -11,6 +11,9 @@ import ObservatoryCommon
 import Foundation
 
 public protocol LoggerProvidable: CachedKeyManagable {
+    
+    var resource: Resource {get}
+    
     func createLoggerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String: ObservatoryValue]?) -> Loggerable?
     
     func onEmit(logRecord: LogRecordData)

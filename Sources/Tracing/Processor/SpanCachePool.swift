@@ -13,6 +13,8 @@ import ObservatoryCommon
 public class SpanCachePool {
     public static let `default` = SpanCachePool()
     
+    public var debugOutPutHandler: ((_ event: ObservatoryError)-> Void)?
+    
     private var shuttedDown: Bool = false
     
     private var spanPool = [SpanID: Span]()
@@ -21,6 +23,7 @@ public class SpanCachePool {
 }
 
 extension SpanCachePool: SpanProcessable {
+    
     public typealias Exporter = SimpleSpanExporter
     
     public var exporter: Exporter? {
@@ -30,12 +33,18 @@ extension SpanCachePool: SpanProcessable {
     public func onSpanStarted(span: Span) {
         poolFetchQueue.async {
             self.spanPool[span.context.spanID] = span
+            if let handler = self.debugOutPutHandler {
+                handler(ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.string) \nspanId: \(span.context.spanID.string)\n is cached in cache pool"))
+            }
         }
     }
     
     public func onSpanEnded(span: Span) {
         poolFetchQueue.async {
             self.spanPool.removeValue(forKey: span.context.spanID)
+            if let handler = self.debugOutPutHandler {
+                handler(ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.string) \nspanId: \(span.context.spanID.string) \nhas removed frome cache pool"))
+            }
         }
     }
     

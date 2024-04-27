@@ -18,19 +18,19 @@ public class SimpleSpanProcessor: SpanProcessable {
     
     public func onSpanStarted(span: Span) {
         if let debugOutPutHandler = debugOutPutHandler {
-            debugOutPutHandler(.normal(msg: "Span \(span.name) started \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
+            debugOutPutHandler(.normal(msg: "\(span.name) started \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
         }
     }
     
     public func onSpanEnded(span: Span) {
         if let debugOutPutHandler = debugOutPutHandler {
-            debugOutPutHandler(.normal(msg: "Span \(span.name) ended \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
+            debugOutPutHandler(.normal(msg: "\(span.name) ended \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
         }
         guard span.context.sampledFlag == .recordAndSample else {
             return
         }
         let spanData = SpanData.spanData(from: span)
-        exporter?.export(timeout: 15, batch: [spanData], completion: { result in
+        exporter?.export(resource:spanData.resource, scope: spanData.scope, timeout: 15, batch: [spanData], completion: { result in
             switch result {
             case .success:
                 break

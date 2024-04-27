@@ -44,7 +44,7 @@ extension SimpleLogRecordExporter: ProcedureEndable {
         closure(true, nil)
     }
     
-    public func export<TelemetryData>(timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (Result<[TelemetryData], ObservatoryError>) -> Void) where TelemetryData : Encodable {
+    public func export<TelemetryData>(resource: Resource?, scope: InstrumentationScope?, timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (Result<[TelemetryData], ObservatoryError>) -> Void) where TelemetryData : Encodable {
         for record in batch {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted // Optional: Make the JSON output more readable

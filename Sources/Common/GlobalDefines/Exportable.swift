@@ -9,5 +9,5 @@ import Foundation
 
 public protocol TelemetryExportable: ProcedureEndable {
     associatedtype TelemetryData
-    func export<TelemetryData: Encodable>(timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (_ result: Result<[TelemetryData], ObservatoryError>) -> Void)
+    func export<TelemetryData: Encodable>(resource:Resource?, scope: InstrumentationScope?, timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (_ result: Result<[TelemetryData], ObservatoryError>) -> Void)
 }

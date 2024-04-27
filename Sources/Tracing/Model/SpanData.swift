@@ -11,6 +11,8 @@ import ObservatoryCommon
 #endif
 
 public struct SpanData {
+    let scope: InstrumentationScope?
+    let resource: Resource?
     let trace_id: Data?
     let span_id: Data?
     let parent_span_id: Data?
@@ -27,7 +29,7 @@ public struct SpanData {
 extension SpanData: Encodable {
     
     static func spanData(from span: Span) -> SpanData {
-        SpanData(trace_id: span.context.traceID.bytes, span_id: span.context.spanID.bytes, parent_span_id: span.context.parentSpanID?.bytes, trace_state: nil, name: span.name, kind: span.kind, start_time_unix_nano: span.startTimeUnixNano, end_time_unix_nano: span.endTimeUnixNano, attributes: span.attributes(), dropped_attributes_count: 0, events: span.events())
+        SpanData(scope:span.scope, resource: span.resource, trace_id: span.context.traceID.bytes, span_id: span.context.spanID.bytes, parent_span_id: span.context.parentSpanID?.bytes, trace_state: nil, name: span.name, kind: span.kind, start_time_unix_nano: span.startTimeUnixNano, end_time_unix_nano: span.endTimeUnixNano, attributes: span.attributes(), dropped_attributes_count: 0, events: span.events())
     }
     
     enum CodingKeys: String, CodingKey {

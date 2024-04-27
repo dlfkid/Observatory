@@ -25,7 +25,7 @@ public class SimpleLogProcessor: LogProcessable {
     }
     
     public func onEmit(logRecord: LogRecordData) {
-        self.exporter?.export(timeout: 10, batch: [logRecord], completion: { result in
+        self.exporter?.export(resource:logRecord.resource, scope: logRecord.scope, timeout: 10, batch: [logRecord], completion: { result in
         })
     }
 }

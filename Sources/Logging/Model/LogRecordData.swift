@@ -25,7 +25,8 @@ public struct LogRecordData {
     let dropped_attributes_count: Int?
     let attributes: [ObservatoryKeyValue]?
     let flags: LogRecordFlags
-    let scope: InstrumentationScope
+    let scope: InstrumentationScope?
+    let resource: Resource?
 }
 
 extension LogRecordData: Encodable {
