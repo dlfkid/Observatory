@@ -13,7 +13,7 @@ import ObservatoryCommon
 public class LoggerProviderBuilder {
     private let resource: Resource
     
-    public var timeStampProvider: TimeStampProvidable = TimeStampProvider()
+    public var timeStampProvider: any TimeStampProvidable = TimeStampProvider()
     
     public var logProcessables = [LogProcessable]()
     
@@ -21,7 +21,7 @@ public class LoggerProviderBuilder {
         self.resource = resource
     }
     
-    public func addTimeStampProvider(_ provider: TimeStampProvidable) -> LoggerProviderBuilder {
+    public func addTimeStampProvider(_ provider: any TimeStampProvidable) -> LoggerProviderBuilder {
         timeStampProvider = provider
         return self
     }

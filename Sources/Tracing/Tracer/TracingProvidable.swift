@@ -12,7 +12,7 @@ import ObservatoryCommon
 
 public protocol TracerProvidable: CachedKeyManagable {
     
-    var timeStampProvider: TimeStampProvidable {get}
+    var timeStampProvider: any TimeStampProvidable {get}
     
     func createTracerIfNeeded(name: String, version: String, schemaURL: String?, attributes: [String: ObservatoryValue]?) -> Tracerable
     

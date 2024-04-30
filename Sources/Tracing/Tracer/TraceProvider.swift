@@ -31,8 +31,8 @@ public class TracerProvider: TracerProvidable {
     public func onSpanStarted(span: Span) {
         self.processorManageQueue.async {
             self.processorCache.forEach { processor in
-                if span.startTimeUnixNano == 0 {
-                    span.startTimeUnixNano = self.timeStampProvider.currentTimeStampMillieSeconds()
+                if span.startTimeUnix == nil {
+                    span.startTimeUnix = self.timeStampProvider.currentTime()
                 }
                 span.resource = self.resource
                 processor.onSpanStarted(span: span)
@@ -43,8 +43,8 @@ public class TracerProvider: TracerProvidable {
     public func onSpanEnded(span: Span) {
         self.processorManageQueue.async {
             self.processorCache.forEach { processor in
-                if span.endTimeUnixNano == 0 {
-                    span.endTimeUnixNano = self.timeStampProvider.currentTimeStampMillieSeconds()
+                if span.endTimeUnix == nil {
+                    span.endTimeUnix = self.timeStampProvider.currentTime()
                 }
                 processor.onSpanEnded(span: span)
             }
@@ -65,9 +65,9 @@ public class TracerProvider: TracerProvidable {
     
     let resource: Resource
     
-    public let timeStampProvider: TimeStampProvidable
+    public let timeStampProvider: any TimeStampProvidable
     
-    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: TimeStampProvidable, processors: [any SpanProcessable], sampler: any Samplerable) {
+    internal init(resource: Resource, limit: SpanLimit, timeStampProvider: any TimeStampProvidable, processors: [any SpanProcessable], sampler: any Samplerable) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = processors

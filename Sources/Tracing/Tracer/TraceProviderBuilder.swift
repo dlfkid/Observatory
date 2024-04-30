@@ -13,7 +13,7 @@ import ObservatoryCommon
 public class TracerProviderBuilder {
     private let resource: Resource
     
-    public var timeStampProvider: TimeStampProvidable = TimeStampProvider()
+    public var timeStampProvider: any TimeStampProvidable = TimeStampProvider()
     
     public var spanProcessables = [any SpanProcessable]()
     
@@ -25,7 +25,7 @@ public class TracerProviderBuilder {
         self.resource = resource
     }
     
-    public func addTimeStampProvider(_ provider: TimeStampProvidable) -> TracerProviderBuilder {
+    public func addTimeStampProvider(_ provider: any TimeStampProvidable) -> TracerProviderBuilder {
         timeStampProvider = provider
         return self
     }

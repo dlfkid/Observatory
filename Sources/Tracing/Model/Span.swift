@@ -24,8 +24,8 @@ public class Span {
     let limit: SpanLimit
     let context: SpanContext
     let scope: InstrumentationScope
-    var startTimeUnixNano: TimeInterval = 0
-    var endTimeUnixNano: TimeInterval = 0
+    var startTimeUnix: TimeRepresentable?
+    var endTimeUnix: TimeRepresentable?
     var ended: Bool = false
     
     private var operateQueue: DispatchQueue?
@@ -60,8 +60,7 @@ public class Span {
                 return
             }
             self.ended = true
-            let timeStamp = endTimeUnixNano ?? self.provider?.timeStampProvider.currentTimeStampMillieSeconds() ?? 0
-            self.endTimeUnixNano = timeStamp
+            self.endTimeUnix = self.provider?.timeStampProvider.currentTime()
             self.provider?.onSpanEnded(span: self)
         }
     }
@@ -71,8 +70,7 @@ public class Span {
             if self.ended {
                 return
             }
-            let timeStamp = timeUnixNano ?? self.provider?.timeStampProvider.currentTimeStampMillieSeconds() ?? 0
-            let event = Event(name: name, time_unix_nano: timeStamp, attributes: attributes)
+            let event = Event(name: name, timeUnix: self.provider?.timeStampProvider.currentTime(), attributes: attributes)
             self.internalEvents.append(event)
         }
     }

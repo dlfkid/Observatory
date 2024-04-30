@@ -16,10 +16,10 @@ public enum LogRecordFlags: UInt {
 }
 
 public struct LogRecordData {
-    let time_unix_nano: TimeInterval
+    let timeUnix: TimeRepresentable?
     let body: String?
-    let trace_id: Data?
-    let span_id: Data?
+    let traceID: TraceID?
+    let spanID: SpanID?
     let severity_text: String?
     let severity_number: Int?
     let dropped_attributes_count: Int?
@@ -44,10 +44,10 @@ extension LogRecordData: Encodable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(time_unix_nano, forKey: .time_unix_nano)
+        try container.encode(timeUnix?.timeUnixNano, forKey: .time_unix_nano)
         try container.encode(body, forKey: .body)
-        try container.encode(trace_id, forKey: .trace_id)
-        try container.encode(span_id, forKey: .span_id)
+        try container.encode(traceID?.bytes, forKey: .trace_id)
+        try container.encode(spanID?.bytes, forKey: .span_id)
         try container.encode(severity_text, forKey: .severity_text)
         try container.encode(severity_number, forKey: .severity_number)
         try container.encode(dropped_attributes_count, forKey: .dropped_attributes_count)

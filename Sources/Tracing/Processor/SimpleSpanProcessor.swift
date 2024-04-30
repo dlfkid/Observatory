@@ -18,13 +18,13 @@ public class SimpleSpanProcessor: SpanProcessable {
     
     public func onSpanStarted(span: Span) {
         if let debugOutPutHandler = debugOutPutHandler {
-            debugOutPutHandler(.normal(msg: "\(span.name) started \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
+            debugOutPutHandler(.normal(msg: "\(span.name) started \n traceId: \(span.context.traceID.hexString) \n spanId: \(span.context.spanID.hexString)"))
         }
     }
     
     public func onSpanEnded(span: Span) {
         if let debugOutPutHandler = debugOutPutHandler {
-            debugOutPutHandler(.normal(msg: "\(span.name) ended \n traceId: \(span.context.traceID.string) \n spanId: \(span.context.spanID.string)"))
+            debugOutPutHandler(.normal(msg: "\(span.name) ended \n traceId: \(span.context.traceID.hexString) \n spanId: \(span.context.spanID.hexString)"))
         }
         guard span.context.sampledFlag == .recordAndSample else {
             return

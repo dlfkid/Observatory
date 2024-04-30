@@ -21,7 +21,7 @@ class LoggerProvider: LoggerProvidable {
     
     let resource: Resource
     
-    private let timeStampProvider: TimeStampProvidable
+    private let timeStampProvider: (any TimeStampProvidable)?
     
     func createLoggerIfNeeded(name: String, version: String) -> Loggerable? {
         return createLoggerIfNeeded(name: name, version: version, schemaURL: nil, attributes: nil)
@@ -46,7 +46,7 @@ class LoggerProvider: LoggerProvidable {
         }
     }
     
-    internal init(resource: Resource, timeStampProvider: TimeStampProvidable, logProcessors: [LogProcessable]) {
+    internal init(resource: Resource, timeStampProvider: (any TimeStampProvidable)?, logProcessors: [LogProcessable]) {
         self.resource = resource
         self.timeStampProvider = timeStampProvider
         self.processorCache = logProcessors

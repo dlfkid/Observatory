@@ -18,12 +18,12 @@ public protocol Tracerable: SpanContextGenerateable, Scopable {
     
     var schemaURL: String? {get}
     
-    func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes:[Link]?, traceState: TraceState?) -> ReadableSpan?
+    func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnix: TimeRepresentable?, linkes:[Link]?, traceState: TraceState?) -> ReadableSpan?
 }
 
 extension Tracerable {
-    public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeInterval? = nil, linkes:[Link]? = nil, traceState: TraceState? = nil) -> ReadableSpan? {
-        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes, traceState: traceState)
+    public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceState: TraceState? = nil) -> ReadableSpan? {
+        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }
 }
 
@@ -48,21 +48,20 @@ public class Tracer: Tracerable {
         return recentSpan
     }
     
-    fileprivate func handleSpanCreation(_ spanContext: SpanContext, _ name: String, _ kind: SpanKind, _ attributes: [ObservatoryKeyValue]?, _ provider: (any AnyObject & TracerProvidable), _ startTimeUnixNano: TimeInterval) -> ReadableSpan? {
+    fileprivate func handleSpanCreation(_ spanContext: SpanContext, _ name: String, _ kind: SpanKind, _ attributes: [ObservatoryKeyValue]?, _ provider: (any AnyObject & TracerProvidable), _ startTimeUnixNano: TimeRepresentable?) -> ReadableSpan? {
         let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
-        span.startTimeUnixNano = startTimeUnixNano
+        span.startTimeUnix = startTimeUnixNano
         provider.onSpanStarted(span: span)
         return span.readableSpan()
     }
     
-    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnixNano: TimeInterval?, linkes: [Link]?, traceState: TraceState?) -> ReadableSpan? {
+    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnix startTimeUnix: TimeRepresentable?, linkes: [Link]?, traceState: TraceState?) -> ReadableSpan? {
         guard let provider = provider else {
             return nil
         }
-        let startTimeUnixNano = startTimeUnixNano ?? provider.timeStampProvider.currentTimeStampMillieSeconds()
         // if there is a context parameter, create span with the parameter context
         if let spanContext = context {
-            return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnixNano)
+            return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnix)
         }
         // if current tracer has no context, create a brand new context as the root span of the trace
         let traceId = generateTraceID()
@@ -73,7 +72,7 @@ public class Tracer: Tracerable {
             return nil
         }
         let spanContext = SpanContext(trace: traceId, span: spanId, sampledFlag: sampleResult.decision, isRemote: false, parentSpan: nil, traceState: sampleResult.traceState)
-        return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnixNano)
+        return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnix)
     }
     
     public let version: String

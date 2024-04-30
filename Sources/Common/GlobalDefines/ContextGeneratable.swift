@@ -16,17 +16,54 @@ extension TelemetryID {
         return Data(raw)
     }
     
-    public var string: String {
-        return bytes.base64EncodedString()
+    public var hexString: String {
+        return bytes.hexadecimalString
     }
 }
 
+extension Data {
+    
+    var hexadecimalString: String {
+        return map { String(format: "%02x", $0) }.joined()
+    }
+    
+    // Initializer that converts a hexadecimal string into Data
+    init?(hexString: String) {
+        let length = hexString.count / 2
+        var data = Data(capacity: length)
+        var index = hexString.startIndex
+        for _ in 0..<length {
+            let nextIndex = hexString.index(index, offsetBy: 2)
+            if nextIndex > hexString.endIndex {
+                return nil
+            }
+            guard let b = UInt8(hexString[index..<nextIndex], radix: 16) else {
+                return nil
+            }
+            data.append(b)
+            index = nextIndex
+        }
+        self = data
+    }
+}
+
+
 public struct TraceID: TelemetryID, Hashable {
     public var raw: [UInt8]
+    
+    public static func create(hexString: String) -> TraceID? {
+        guard let bytes = Data(hexString: hexString) else { return nil }
+        return TraceID(raw: Array(bytes))
+    }
 }
 
 public struct SpanID: TelemetryID, Hashable {
     public var raw: [UInt8]
+    
+    public static func create(hexString: String) -> SpanID? {
+        guard let bytes = Data(hexString: hexString) else { return nil }
+        return SpanID(raw: Array(bytes))
+    }
 }
 
 public protocol SpanContextGenerateable {

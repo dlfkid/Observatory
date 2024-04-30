@@ -12,7 +12,7 @@ import ObservatoryCommon
 
 public struct Event {
     let name: String?
-    let time_unix_nano: TimeInterval?
+    let timeUnix: TimeRepresentable?
     let attributes: [ObservatoryKeyValue]?
 }
 
@@ -28,6 +28,6 @@ extension Event: Encodable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
         try container.encode(attributes, forKey: .attributes)
-        try container.encode(time_unix_nano, forKey: .time_unix_nano)
+        try container.encode(timeUnix?.timeUnixNano, forKey: .time_unix_nano)
     }
 }
