@@ -23,6 +23,7 @@ let package = Package(
         .target(
             name: "ObservatoryTracing",
             dependencies: ["ObservatoryCommon"], path: "Sources/Tracing"),
+        .target(name: "ZipkinExpot", dependencies: ["ObservatoryTracing"], path: "Sources/Tracing/"),
         .testTarget(
             name: "ObservatoryPackageTests",
             dependencies: ["ObservatoryCommon", "ObservatoryLogging", "ObservatoryTracing"]),

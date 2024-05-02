@@ -14,8 +14,8 @@ public struct ObservatoryKeyValue: Encodable {
         case value = "value"
     }
     
-    let key: String
-    let value: ObservatoryValue
+    public let key: String
+    public let value: ObservatoryValue
     
     public init(key: String, value: ObservatoryValue) {
         self.key = key
@@ -32,6 +32,27 @@ public enum ObservatoryValue {
     case boolArray([Bool])
     case intArray([Int])
     case doubleArray([Double])
+    
+    public var description: String {
+        switch self {
+        case .string(let value):
+            return value
+        case .int(let value):
+            return String(value)
+        case .double(let value):
+            return String(value)
+        case .bool(let value):
+            return String(value)
+        case .stringArray(let value):
+            return value.joined(separator: ",")
+        case .boolArray(let value):
+            return value.map { String($0) }.joined(separator: ",")
+        case .intArray(let value):
+            return value.map { String($0) }.joined(separator: ",")
+        case .doubleArray(let value):
+            return value.map { String($0) }.joined(separator: ",")
+        }
+    }
 }
 
 extension ObservatoryValue: Encodable {

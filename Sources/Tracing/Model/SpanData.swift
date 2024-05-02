@@ -15,7 +15,7 @@ public struct SpanData {
     let resource: Resource?
     let traceID: TraceID?
     let spanID: SpanID?
-    let parent_span_id: Data?
+    let parentSpanID: SpanID?
     let trace_state: String?
     let name: String?
     let kind: SpanKind?
@@ -29,7 +29,7 @@ public struct SpanData {
 extension SpanData: Encodable {
     
     static func spanData(from span: Span) -> SpanData {
-        SpanData(scope:span.scope, resource: span.resource, traceID: span.context.traceID, spanID: span.context.spanID, parent_span_id: span.context.parentSpanID?.bytes, trace_state: nil, name: span.name, kind: span.kind, startTimeUnix: span.startTimeUnix, endTimeUnix: span.endTimeUnix, attributes: span.attributes(), dropped_attributes_count: 0, events: span.events())
+        SpanData(scope:span.scope, resource: span.resource, traceID: span.context.traceID, spanID: span.context.spanID, parentSpanID: span.context.parentSpanID, trace_state: nil, name: span.name, kind: span.kind, startTimeUnix: span.startTimeUnix, endTimeUnix: span.endTimeUnix, attributes: span.attributes(), dropped_attributes_count: 0, events: span.events())
     }
     
     enum CodingKeys: String, CodingKey {
@@ -54,7 +54,7 @@ extension SpanData: Encodable {
         try container.encode(trace_state, forKey: .trace_state)
         try container.encode(traceID?.bytes, forKey: .trace_id)
         try container.encode(spanID?.bytes, forKey: .span_id)
-        try container.encode(parent_span_id, forKey: .parent_span_id)
+        try container.encode(parentSpanID?.bytes, forKey: .parent_span_id)
         try container.encode(dropped_attributes_count, forKey: .dropped_attributes_count)
         try container.encode(attributes, forKey: .attributes)
         try container.encode(name, forKey: .name)

@@ -11,6 +11,8 @@ public enum ObservatoryError: Error {
     case timout(component: String? = nil)
     case alreadyShuttedDown(component: String? = nil)
     case normal(msg: String)
+    case network(msg: String)
+    case dataError(msg: String)
 }
 
 extension ObservatoryError: LocalizedError {
@@ -27,6 +29,10 @@ extension ObservatoryError: LocalizedError {
             }
             return "Already shutted down"
         case let .normal(msg: msg):
+            return msg
+        case .network(msg: let msg):
+            return msg
+        case .dataError(msg: let msg):
             return msg
         }
     }
