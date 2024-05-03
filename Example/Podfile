@@ -4,6 +4,7 @@ platform :ios, '12.2'
 
 target 'Observatory_Example' do
   pod 'Observatory', :path => '../'
+  pod 'Observatory/ObservatoryTracingZipkin', :path => '../'
 
   target 'Observatory_Tests' do
     inherit! :search_paths

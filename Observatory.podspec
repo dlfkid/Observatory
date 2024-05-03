@@ -48,4 +48,9 @@ TODO: Add long description of the pod here.
   s.subspec 'ObservatoryCommon' do |common|
     common.source_files = 'Sources/Common/**/*'
   end
+
+  s.subspec 'ObservatoryTracingZipkin' do |zipkin|
+    zipkin.dependency 'Observatory/ObservatoryTracing'
+    zipkin.source_files = 'Sources/Extensions/Tracing/ZipkinExport'
+  end
 end

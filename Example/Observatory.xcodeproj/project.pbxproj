@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0DA6845C01EF7DC1DF7A4C5E /* Pods_Observatory_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */; };
+		3519E1C62BE5271A00FC1B18 /* SharedTracerTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3519E1C52BE5271A00FC1B18 /* SharedTracerTool.swift */; };
 		357A026B2AECE0330099198D /* LogSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A026A2AECE0330099198D /* LogSendViewController.swift */; };
 		357A02872B528B860099198D /* TracingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A02862B528B860099198D /* TracingDemoViewController.swift */; };
 		357A028B2B5424300099198D /* DemoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357A028A2B5424300099198D /* DemoResource.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3519E1C52BE5271A00FC1B18 /* SharedTracerTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SharedTracerTool.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/SharedTracerTool.swift; sourceTree = "<group>"; };
 		351C34BE2B7DFF04009C72F4 /* ObservatoryPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ObservatoryPackage; path = ../ObservatoryPackage; sourceTree = "<group>"; };
 		357A026A2AECE0330099198D /* LogSendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogSendViewController.swift; sourceTree = "<group>"; };
 		357A02862B528B860099198D /* TracingDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracingDemoViewController.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				357A026A2AECE0330099198D /* LogSendViewController.swift */,
 				357A02862B528B860099198D /* TracingDemoViewController.swift */,
+				3519E1C52BE5271A00FC1B18 /* SharedTracerTool.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -337,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				3519E1C62BE5271A00FC1B18 /* SharedTracerTool.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				357A02872B528B860099198D /* TracingDemoViewController.swift in Sources */,
 				357A026B2AECE0330099198D /* LogSendViewController.swift in Sources */,

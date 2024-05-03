@@ -8,6 +8,8 @@
 import Foundation
 #if canImport(ObservatoryTracing)
 import ObservatoryTracing
+#else
+import Observatory
 #endif
 #if canImport(ZipkinExport)
 import ZipkinExport

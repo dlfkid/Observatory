@@ -40,7 +40,7 @@ extension ZipkinTraceExporter: TelemetryExportable {
             completion(.failure(.network(msg: "Invalid end point")))
             return
         }
-        let request = MutableURLRequest(url: url)
+        var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted // Optional: Make the JSON output more readable
@@ -50,6 +50,7 @@ extension ZipkinTraceExporter: TelemetryExportable {
                 print("[Span Exported]: \(jsonString)")
             }
             request.httpBody = jsonData
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             let finalRequest =
             session.dataTask(with: request as URLRequest) { data, response, error in
                 if let error = error {

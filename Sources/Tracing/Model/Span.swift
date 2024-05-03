@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 #if canImport(ObservatoryCommon)
 import ObservatoryCommon
 #endif
