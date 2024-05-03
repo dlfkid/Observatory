@@ -13,13 +13,13 @@ public struct Link {
     
     public let attributes: [ObservatoryKeyValue]?
     
-    let trace_state: String?
+    public let trace_state: String?
     
-    let dropped_attributes_count: Int?
+    public let dropped_attributes_count: Int?
     
-    let trace_id: Data?
+    public let traceID: TraceID?
     
-    let span_id: Data?
+    public let spanID: SpanID?
 }
 
 extension Link: Encodable {
@@ -36,7 +36,7 @@ extension Link: Encodable {
         try container.encode(dropped_attributes_count, forKey: .dropped_attributes_count)
         try container.encode(attributes, forKey: .attributes)
         try container.encode(trace_state, forKey: .trace_state)
-        try container.encode(trace_id, forKey: .trace_id)
-        try container.encode(span_id, forKey: .span_id)
+        try container.encode(traceID?.bytes, forKey: .trace_id)
+        try container.encode(spanID?.bytes, forKey: .span_id)
     }
 }

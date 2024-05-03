@@ -11,19 +11,19 @@ import ObservatoryCommon
 #endif
 
 public struct SpanData {
-    let scope: InstrumentationScope?
-    let resource: Resource?
-    let traceID: TraceID?
-    let spanID: SpanID?
-    let parentSpanID: SpanID?
-    let trace_state: String?
-    let name: String?
-    let kind: SpanKind?
-    let startTimeUnix: TimeRepresentable?
-    let endTimeUnix: TimeRepresentable?
-    let attributes: [ObservatoryKeyValue]?
-    let dropped_attributes_count: Int?
-    let events: [Event]?
+    public let scope: InstrumentationScope?
+    public let resource: Resource?
+    public let traceID: TraceID?
+    public let spanID: SpanID?
+    public let parentSpanID: SpanID?
+    public let trace_state: String?
+    public let name: String?
+    public let kind: SpanKind?
+    public let startTimeUnix: TimeRepresentable?
+    public let endTimeUnix: TimeRepresentable?
+    public let attributes: [ObservatoryKeyValue]?
+    public let dropped_attributes_count: Int?
+    public let events: [Event]?
 }
 
 extension SpanData: Encodable {

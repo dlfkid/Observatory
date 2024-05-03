@@ -11,9 +11,9 @@ import ObservatoryCommon
 #endif
 
 public struct Event {
-    let name: String?
-    let timeUnix: TimeRepresentable?
-    let attributes: [ObservatoryKeyValue]?
+    public let name: String?
+    public let timeUnix: TimeRepresentable?
+    public let attributes: [ObservatoryKeyValue]?
 }
 
 extension Event: Encodable {

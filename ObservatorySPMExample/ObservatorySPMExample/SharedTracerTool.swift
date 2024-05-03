@@ -9,6 +9,9 @@ import Foundation
 #if canImport(ObservatoryTracing)
 import ObservatoryTracing
 #endif
+#if canImport(ZipkinExport)
+import ZipkinExport
+#endif
 
 class SharedTracerTool {
     
@@ -18,7 +21,7 @@ class SharedTracerTool {
     
     private lazy var tracerProvider: TracerProvidable = {
         let resource = DemoResource.sharedResource
-        let processor = SimpleSpanProcessor(exporter: SimpleSpanExporter())
+        let processor = SimpleSpanProcessor<ZipkinTraceExporter>(exporter: ZipkinTraceExporter(endPoint: "http://localhost:9411"))
         processor.debugOutPutHandler = { event in
             print(event.localizedDescription)
         }

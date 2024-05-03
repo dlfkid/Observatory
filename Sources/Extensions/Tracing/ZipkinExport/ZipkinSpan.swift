@@ -9,6 +9,9 @@ import Foundation
 #if canImport(ObservatoryCommon)
 import ObservatoryCommon
 #endif
+#if canImport(ObservatoryTracing)
+import ObservatoryTracing
+#endif
 
 public struct ZipkinSpan {
     

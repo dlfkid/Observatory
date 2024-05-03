@@ -9,7 +9,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "ObservatoryPackage",
-            targets: ["ObservatoryCommon", "ObservatoryLogging", "ObservatoryTracing"]),
+            targets: ["ObservatoryCommon", "ObservatoryLogging", "ObservatoryTracing", "ZipkinExport"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -23,7 +23,7 @@ let package = Package(
         .target(
             name: "ObservatoryTracing",
             dependencies: ["ObservatoryCommon"], path: "Sources/Tracing"),
-        .target(name: "ZipkinExpot", dependencies: ["ObservatoryTracing"], path: "Sources/Tracing/"),
+        .target(name: "ZipkinExport", dependencies: ["ObservatoryTracing", "ObservatoryCommon"], path: "Sources/Extensions/Tracing/ZipkinExport"),
         .testTarget(
             name: "ObservatoryPackageTests",
             dependencies: ["ObservatoryCommon", "ObservatoryLogging", "ObservatoryTracing"]),

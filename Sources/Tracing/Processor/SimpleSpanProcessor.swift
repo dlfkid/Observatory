@@ -10,11 +10,11 @@ import Foundation
 import ObservatoryCommon
 #endif
 
-public class SimpleSpanProcessor: SpanProcessable {
+public class SimpleSpanProcessor<T: TelemetryExportable>: SpanProcessable {
+    
+    public typealias Exporter = T
     
     public var debugOutPutHandler: ((_ event: ObservatoryError)-> Void)?
-    
-    public typealias Exporter = SimpleSpanExporter
     
     public func onSpanStarted(span: Span) {
         if let debugOutPutHandler = debugOutPutHandler {

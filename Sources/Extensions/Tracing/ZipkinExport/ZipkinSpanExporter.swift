@@ -9,6 +9,9 @@ import Foundation
 #if canImport(ObservatoryCommon)
 import ObservatoryCommon
 #endif
+#if canImport(ObservatoryTracing)
+import ObservatoryTracing
+#endif
 
 public class ZipkinTraceExporter {
     
@@ -62,7 +65,7 @@ extension ZipkinTraceExporter: TelemetryExportable {
                     return
                 }
                 completion(.success(batch))
-            }
+            }.resume()
         } catch {
             completion(.failure(.dataError(msg: "[Span Exported]: Error encoding JSON: \(error)")))
         }
