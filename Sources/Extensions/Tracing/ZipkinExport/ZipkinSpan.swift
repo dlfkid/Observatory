@@ -13,12 +13,16 @@ import ObservatoryCommon
 import ObservatoryTracing
 #endif
 
+public struct ZipkinSpanBatch: Codable {
+    public let span: [ZipkinSpan]
+}
+
 public struct ZipkinSpan {
     
     public static func create(from spanData: SpanData) -> ZipkinSpan {
         var zipkinSpan = ZipkinSpan()
         zipkinSpan.traceId = spanData.traceID?.hexString
-        zipkinSpan.spanId = spanData.spanID?.hexString
+        zipkinSpan.id = spanData.spanID?.hexString
         zipkinSpan.parentId = spanData.parentSpanID?.hexString
         zipkinSpan.name = spanData.name
         zipkinSpan.timestamp = spanData.startTimeUnix?.timeUnixMicro
@@ -27,7 +31,7 @@ public struct ZipkinSpan {
             return Annotation(timestamp: event.timeUnix?.timeUnixMicro ?? 0, value: event.name ?? "")
         })
         var tags = [String: String]()
-        let attributes = spanData.attributes?.forEach({ attribute in
+        spanData.attributes?.forEach({ attribute in
             let key = attribute.key
             let value = attribute.value.description
             tags[key] = value
@@ -37,8 +41,18 @@ public struct ZipkinSpan {
     }
     
     public struct Annotation: Codable {
-        public var timestamp: TimeInterval
-        public var value: String
+        public var timestamp: TimeInterval?
+        public var value: String?
+        
+        enum CodingKeys: String, CodingKey {
+                case timestamp = "timestamp"
+                case value = "value"
+           }
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: ZipkinSpan.Annotation.CodingKeys.self)
+            try container.encodeIfPresent(Int(self.timestamp ?? 0), forKey: ZipkinSpan.Annotation.CodingKeys.timestamp)
+            try container.encodeIfPresent(self.value, forKey: ZipkinSpan.Annotation.CodingKeys.value)
+        }
     }
     
     public enum ZipkinSpanKind: String {
@@ -49,7 +63,7 @@ public struct ZipkinSpan {
     }
     
     public var traceId: String?
-    public var spanId: String?
+    public var id: String?
     public var parentId: String?
     public var name: String?
     public var timestamp: TimeInterval?
@@ -83,7 +97,7 @@ public struct ZipkinSpan {
 extension ZipkinSpan: Codable {
     enum CodingKeys: String, CodingKey {
             case traceId = "traceId"
-            case spanId = "spanId"
+            case id = "id"
             case parentId = "parentId"
             case name = "name"
             case timestamp = "timestamp"
@@ -94,12 +108,12 @@ extension ZipkinSpan: Codable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(timestamp, forKey: CodingKeys.timestamp)
-        try container.encode(spanId, forKey: CodingKeys.spanId)
+        try container.encode(Int(timestamp ?? 0), forKey: CodingKeys.timestamp)
+        try container.encode(id, forKey: CodingKeys.id)
         try container.encode(traceId, forKey: CodingKeys.traceId)
         try container.encode(parentId, forKey: CodingKeys.parentId)
         try container.encode(name, forKey: CodingKeys.name)
-        try container.encode(duration, forKey: CodingKeys.duration)
+        try container.encode(Int(duration ?? 0), forKey: CodingKeys.duration)
         try container.encode(annotations, forKey: CodingKeys.annotations)
         try container.encode(zipkinSpanKind.rawValue, forKey: CodingKeys.kind)
     }

@@ -51,7 +51,6 @@ extension ZipkinTraceExporter: TelemetryExportable {
             }
             request.httpBody = jsonData
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            let finalRequest =
             session.dataTask(with: request as URLRequest) { data, response, error in
                 if let error = error {
                     completion(.failure(.network(msg: "Error: \(error)")))
