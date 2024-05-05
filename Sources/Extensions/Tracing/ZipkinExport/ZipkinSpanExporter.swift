@@ -17,12 +17,27 @@ public class ZipkinTraceExporter {
     
     private let api = "/api/v2/spans"
     
-    private let endPoint: String
+    private let host: String
+    
+    private let ipv4: String?
+    
+    private let ipv6: String?
+    
+    private let port: Int
+    
+    private let islocal: Bool
+    
+    private let serviceName: String
     
     var shuttedDown = false
     
-    public init(endPoint: String) {
-        self.endPoint = endPoint
+    public init(serviceName: String = "observatory_exporter_zipkin", host: String, islocal: Bool, port: Int = 9411, ipv4: String? = nil, ipv6: String? = nil) {
+        self.host = host
+        self.islocal = islocal
+        self.port = port
+        self.ipv4 = ipv4
+        self.ipv6 = ipv6
+        self.serviceName = serviceName
     }
 }
 
@@ -32,11 +47,16 @@ extension ZipkinTraceExporter: TelemetryExportable {
     public func export<TelemetryData>(resource: Resource?, scope: InstrumentationScope?, timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (Result<[TelemetryData], ObservatoryError>) -> Void) where TelemetryData : Encodable {
         let spanDatas = batch as! [SpanData]
         let zipKinBatch: [ZipkinSpan] = spanDatas.map { spanData in
-            let zipkinSpan = ZipkinSpan.create(from: spanData)
+            var zipkinSpan = ZipkinSpan.create(from: spanData)
+            if islocal {
+                zipkinSpan.localEndpoint = ZipkinSpan.ZipkinEndpoint(serviceName: serviceName, ipv4: ipv4, ipv6: ipv6, port: port)
+            } else {
+                zipkinSpan.remoteEndpoint = ZipkinSpan.ZipkinEndpoint(serviceName: serviceName, ipv4: ipv4, ipv6: ipv6, port: port)
+            }
             return zipkinSpan
         }
         let session = URLSession(configuration: .default)
-        guard let url = URL(string: endPoint + api) else {
+        guard let url = URL(string: host + ":" + String(port) + api) else {
             completion(.failure(.network(msg: "Invalid end point")))
             return
         }

@@ -19,6 +19,35 @@ public struct ZipkinSpanBatch: Codable {
 
 public struct ZipkinSpan {
     
+    public enum ZipkinSpanKind: String {
+        case client = "CLIENT"
+        case server = "SERVER"
+        case producer = "PRODUCER"
+        case consumer = "CONSUMER"
+    }
+    
+    public struct Annotation: Codable {
+        public var timestamp: TimeInterval?
+        public var value: String?
+        
+        enum CodingKeys: String, CodingKey {
+                case timestamp = "timestamp"
+                case value = "value"
+           }
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: ZipkinSpan.Annotation.CodingKeys.self)
+            try container.encodeIfPresent(Int(self.timestamp ?? 0), forKey: ZipkinSpan.Annotation.CodingKeys.timestamp)
+            try container.encodeIfPresent(self.value, forKey: ZipkinSpan.Annotation.CodingKeys.value)
+        }
+    }
+    
+    public struct ZipkinEndpoint: Codable {
+        public var serviceName: String?
+        public var ipv4: String?
+        public var ipv6: String?
+        public var port: Int?
+    }
+    
     public static func create(from spanData: SpanData) -> ZipkinSpan {
         var zipkinSpan = ZipkinSpan()
         zipkinSpan.traceId = spanData.traceID?.hexString
@@ -40,28 +69,6 @@ public struct ZipkinSpan {
         return zipkinSpan
     }
     
-    public struct Annotation: Codable {
-        public var timestamp: TimeInterval?
-        public var value: String?
-        
-        enum CodingKeys: String, CodingKey {
-                case timestamp = "timestamp"
-                case value = "value"
-           }
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: ZipkinSpan.Annotation.CodingKeys.self)
-            try container.encodeIfPresent(Int(self.timestamp ?? 0), forKey: ZipkinSpan.Annotation.CodingKeys.timestamp)
-            try container.encodeIfPresent(self.value, forKey: ZipkinSpan.Annotation.CodingKeys.value)
-        }
-    }
-    
-    public enum ZipkinSpanKind: String {
-        case client = "CLIENT"
-        case server = "SERVER"
-        case producer = "PRODUCER"
-        case consumer = "CONSUMER"
-    }
-    
     public var traceId: String?
     public var id: String?
     public var parentId: String?
@@ -71,6 +78,8 @@ public struct ZipkinSpan {
     public var annotations: [Annotation]?
     public var tags: [String: String]?
     public var kind: SpanKind?
+    public var localEndpoint: ZipkinEndpoint?
+    public var remoteEndpoint: ZipkinEndpoint?
     public var zipkinSpanKind: ZipkinSpanKind {
         switch kind {
         case .none:
@@ -104,6 +113,8 @@ extension ZipkinSpan: Codable {
             case duration = "duration"
             case annotations = "annotations"
             case kind = "kind"
+            case remoteEndpoint = "remoteEndpoint"
+            case localEndpoint = "localEndpoint"
        }
     
     public func encode(to encoder: Encoder) throws {
@@ -116,6 +127,8 @@ extension ZipkinSpan: Codable {
         try container.encode(Int(duration ?? 0), forKey: CodingKeys.duration)
         try container.encode(annotations, forKey: CodingKeys.annotations)
         try container.encode(zipkinSpanKind.rawValue, forKey: CodingKeys.kind)
+        try container.encode(remoteEndpoint, forKey: .remoteEndpoint)
+        try container.encode(localEndpoint, forKey: .localEndpoint)
     }
 }
 
