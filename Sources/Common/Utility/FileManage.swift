@@ -8,17 +8,16 @@
 import Foundation
 import Dispatch
 
-struct SandBoxDataWriter {
-    
+public struct SandBoxDataWriter {
     private static let semaphoreChannel = DispatchSemaphore(value: 1)
     
-    static func saveDataToSandBox(searchPath: FileManager.SearchPathDirectory, path: String, _ data: Data, completion: @escaping (_ error: Error?) -> Void) {
+    public static func saveDataToSandBox(searchPath: FileManager.SearchPathDirectory, path: String, _ data: Data, completion: @escaping (_ error: Error?) -> Void) {
         let fullPath = SandBoxManage.prefixPath(searchPath: searchPath).appending(path)
         DispatchQueue.global().async {
             SandBoxDataWriter.semaphoreChannel.wait()
             do {
-                try SandBoxManage.createDirectoryAtPathIfNeeded(path)
-                guard let handle = FileHandle(forWritingAtPath: path) else {
+                SandBoxManage.createFileAtPathIfNeeded(fullPath)
+                guard let handle = FileHandle(forWritingAtPath: fullPath) else {
                     SandBoxDataWriter.semaphoreChannel.signal()
                     completion(nil)
                     return
@@ -42,18 +41,18 @@ struct SandBoxDataWriter {
     }
 }
 
-struct SandBoxManage {
+public struct SandBoxManage {
     
-    static func prefixPath(searchPath: FileManager.SearchPathDirectory) -> String {
+    public static func prefixPath(searchPath: FileManager.SearchPathDirectory) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(searchPath, .userDomainMask, true)
         return paths.first ?? ""
     }
     
-    static func readFileInfo(_ filePath: String) -> [FileAttributeKey : Any]? {
+    public static func readFileInfo(_ filePath: String) -> [FileAttributeKey : Any]? {
         return try? FileManager.default.attributesOfItem(atPath: filePath)
     }
     
-    static func saveToDirectory(_ path: String, data: Data, completion: @escaping (Bool) -> Void) {
+    public static func saveToDirectory(_ path: String, data: Data, completion: @escaping (Bool) -> Void) {
         DispatchQueue.global().async {
             let result = FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
             DispatchQueue.main.async {
@@ -62,11 +61,11 @@ struct SandBoxManage {
         }
     }
     
-    static func readFileContent(_ filePath: String) -> Data? {
+    public static func readFileContent(_ filePath: String) -> Data? {
         return FileManager.default.contents(atPath: filePath)
     }
     
-    static func removeFileAtPath(_ filePath: String) -> Bool {
+    public static func removeFileAtPath(_ filePath: String) -> Bool {
         do {
             try FileManager.default.removeItem(atPath: filePath)
             return true
@@ -75,17 +74,17 @@ struct SandBoxManage {
         }
     }
     
-    static func fileExistsAtPath(_ path: String) -> Bool {
+    public static func fileExistsAtPath(_ path: String) -> Bool {
         return FileManager.default.fileExists(atPath: path)
     }
     
-    static func createDirectoryAtPathIfNeeded(_ path: String) throws {
+    public static func createFileAtPathIfNeeded(_ path: String) {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
             return
         }
         var ret: ObjCBool = false
-        try fileManager.createDirectory(atPath: path, withIntermediateDirectories: false, attributes: nil)
+        try fileManager.createFile(atPath: path, contents: nil)
     }
 }

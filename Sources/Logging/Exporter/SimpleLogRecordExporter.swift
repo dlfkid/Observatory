@@ -2,7 +2,7 @@
 //  SimpleLogRecordExporter.swift
 //  Observatory
 //
-//  Created by 邓凌峰(DengLingfeng)-顺丰科技技术集团 on 2023/12/9.
+//  Created by Ravendeng on 2023/12/9.
 //
 
 import Foundation
