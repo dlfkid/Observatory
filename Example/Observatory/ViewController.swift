@@ -70,6 +70,7 @@ extension ViewController: UITableViewDelegate {
             navigationController?.pushViewController(controller, animated: true)
         case .tracing:
             let controller = TracingDemoViewController()
+            controller.title = "Subpage index 0"
             navigationController?.pushViewController(controller, animated: true)
             break
         }

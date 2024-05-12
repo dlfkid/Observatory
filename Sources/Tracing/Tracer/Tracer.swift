@@ -25,6 +25,17 @@ extension Tracerable {
     public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceState: TraceState? = nil) -> ReadableSpan? {
         return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }
+    
+    public func createSpan(name: String, kind: SpanKind, parentSpanHex: String, traceHex: String, sample: SamplingDecision, isRemote: Bool, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceStateRaw: String?) -> ReadableSpan? {
+        guard let spanId = SpanID.create(hexString: parentSpanHex),
+        let traceId = TraceID.create(hexString: traceHex)
+        else {
+            return nil
+        }
+        let traceState = TraceState(raw: traceStateRaw)
+        let context = SpanContext(trace: traceId, span: spanId, sampledFlag: sample, isRemote: isRemote, parentSpan: nil, traceState: traceState)
+        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
+    }
 }
 
 public class Tracer: Tracerable {
@@ -55,12 +66,14 @@ public class Tracer: Tracerable {
         return span.readableSpan()
     }
     
-    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnix startTimeUnix: TimeRepresentable?, linkes: [Link]?, traceState: TraceState?) -> ReadableSpan? {
+    public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnix: TimeRepresentable?, linkes: [Link]?, traceState: TraceState?) -> ReadableSpan? {
         guard let provider = provider else {
             return nil
         }
         // if there is a context parameter, create span with the parameter context
         if let spanContext = context {
+            let spanId = generateSpanID()
+            let spanContext = SpanContext(trace: spanContext.traceID, span: spanId, sampledFlag: spanContext.sampledFlag, isRemote: false, parentSpan: spanContext.spanID, traceState: spanContext.traceState)
             return handleSpanCreation(spanContext, name, kind, attributes, provider, startTimeUnix)
         }
         // if current tracer has no context, create a brand new context as the root span of the trace

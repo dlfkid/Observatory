@@ -46,4 +46,8 @@ public extension TraceState {
     var w3cTraceStateHeader: String {
         return keyValueList.map({ $0.map({ "\($0.key)=\($0.value)" }).joined(separator: ";") }).joined(separator: ",")
     }
+    
+    init(raw: String?) {
+        keyValueList = []
+    }
 }
