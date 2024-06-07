@@ -10,6 +10,9 @@ import UIKit
 #if canImport(ObservatoryLogging)
 import ObservatoryLogging
 #endif
+#if canImport(Observatory)
+import Observatory
+#endif
 
 class LogSendViewController: UIViewController {
     

@@ -11,26 +11,38 @@ import Dispatch
 public struct SandBoxDataWriter {
     private static let semaphoreChannel = DispatchSemaphore(value: 1)
     
-    public static func saveDataToSandBox(searchPath: FileManager.SearchPathDirectory, path: String, _ data: Data, completion: @escaping (_ error: Error?) -> Void) {
-        let fullPath = SandBoxManage.prefixPath(searchPath: searchPath).appending(path)
+    public static func saveDataToSandBox(searchPath: FileManager.SearchPathDirectory, subDir: String, fileName: String, _ data: Data, completion: @escaping (_ error: Error?) -> Void) {
+        let dirPath = SandBoxManage.prefixPath(searchPath: searchPath).appending(subDir)
         DispatchQueue.global().async {
             SandBoxDataWriter.semaphoreChannel.wait()
             do {
-                SandBoxManage.createFileAtPathIfNeeded(fullPath)
+                guard SandBoxManage.createDirAtPathIfNeeded(dirPath) else {
+                    SandBoxDataWriter.semaphoreChannel.signal()
+                    completion(ObservatoryError.fileManage(msg: "Unable to create sub directory"))
+                    return
+                }
+                let fullPath = dirPath.appending(fileName)
+                guard SandBoxManage.createFileAtPathIfNeeded(fullPath) else {
+                    SandBoxDataWriter.semaphoreChannel.signal()
+                    completion(ObservatoryError.fileManage(msg: "Unable to create file"))
+                    return
+                }
                 guard let handle = FileHandle(forWritingAtPath: fullPath) else {
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    completion(nil)
+                    completion(ObservatoryError.fileManage(msg: "Unable to create file cursor handle"))
                     return
                 }
                 if #available(iOS 13.4, *) {
                     try handle.seekToEnd()
                     try handle.write(contentsOf: data)
                     SandBoxDataWriter.semaphoreChannel.signal()
+                    try handle.write(contentsOf: "\n".data(using: .utf8)!)
                     completion(nil)
                 } else {
                     handle.seekToEndOfFile()
                     handle.write(data)
                     SandBoxDataWriter.semaphoreChannel.signal()
+                    handle.write("\n".data(using: .utf8)!)
                     completion(nil)
                 }
             } catch {
@@ -46,19 +58,6 @@ public struct SandBoxManage {
     public static func prefixPath(searchPath: FileManager.SearchPathDirectory) -> String {
         let paths = NSSearchPathForDirectoriesInDomains(searchPath, .userDomainMask, true)
         return paths.first ?? ""
-    }
-    
-    public static func readFileInfo(_ filePath: String) -> [FileAttributeKey : Any]? {
-        return try? FileManager.default.attributesOfItem(atPath: filePath)
-    }
-    
-    public static func saveToDirectory(_ path: String, data: Data, completion: @escaping (Bool) -> Void) {
-        DispatchQueue.global().async {
-            let result = FileManager.default.createFile(atPath: path, contents: data, attributes: nil)
-            DispatchQueue.main.async {
-                completion(result)
-            }
-        }
     }
     
     public static func readFileContent(_ filePath: String) -> Data? {
@@ -78,13 +77,29 @@ public struct SandBoxManage {
         return FileManager.default.fileExists(atPath: path)
     }
     
-    public static func createFileAtPathIfNeeded(_ path: String) {
+    @discardableResult
+    public static func createFileAtPathIfNeeded(_ path: String) -> Bool {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
-            return
+            return !isDirectory.boolValue
         }
-        var ret: ObjCBool = false
-        try fileManager.createFile(atPath: path, contents: nil)
+        let ret = fileManager.createFile(atPath: path, contents: nil)
+        return ret
+    }
+    
+    @discardableResult
+    public static func createDirAtPathIfNeeded(_ path: String) -> Bool {
+        let fileManager = FileManager.default
+        var isDirectory: ObjCBool = false
+        if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
+            isDirectory.boolValue
+        }
+        do {
+            try fileManager.createDirectory(atPath: path, withIntermediateDirectories: true)
+            return true
+        } catch {
+            return false
+        }
     }
 }

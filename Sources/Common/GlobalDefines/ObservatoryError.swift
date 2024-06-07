@@ -13,6 +13,8 @@ public enum ObservatoryError: Error {
     case normal(msg: String)
     case network(msg: String)
     case dataError(msg: String)
+    case fileManage(msg: String)
+    case export(msg: String)
 }
 
 extension ObservatoryError: LocalizedError {
@@ -33,6 +35,10 @@ extension ObservatoryError: LocalizedError {
         case .network(msg: let msg):
             return msg
         case .dataError(msg: let msg):
+            return msg
+        case .fileManage(msg: let msg):
+            return msg
+        case .export(msg: let msg):
             return msg
         }
     }

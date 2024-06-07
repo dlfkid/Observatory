@@ -52,7 +52,7 @@ public class ZipkinSpanStorage: TelemetryExportable {
                 print("[Span Exported]: \(jsonString)")
             }
             let dateString = dateFormatter.string(from: Date())
-            SandBoxDataWriter.saveDataToSandBox(searchPath: searchPath, path: String("/\(subdir)/\(serviceName)-\(dateString).json"), jsonData) { error in
+            SandBoxDataWriter.saveDataToSandBox(searchPath: searchPath, subDir: String("/\(subdir)/\(serviceName)"), fileName: String("/\(dateString).json"), jsonData) { error in
                 if let error = error {
                     completion(.failure(.dataError(msg: "[Span Exported]: Error saving data to sandbox: \(error)")))
                 } else {

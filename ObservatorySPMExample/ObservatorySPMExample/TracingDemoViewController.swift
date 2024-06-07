@@ -13,6 +13,9 @@ import ObservatoryTracing
 #if canImport(ObservatoryCommon)
 import ObservatoryCommon
 #endif
+#if canImport(Observatory)
+import Observatory
+#endif
 
 class TracingDemoViewController: UIViewController {
     

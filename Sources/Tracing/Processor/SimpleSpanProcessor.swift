@@ -35,7 +35,9 @@ public class SimpleSpanProcessor<T: TelemetryExportable>: SpanProcessable {
             case .success:
                 break
             case .failure(let error):
-                print("Failed to export span data: \(error.localizedDescription)")
+                if let debugOutPutHandler = self.debugOutPutHandler {
+                    debugOutPutHandler(.export(msg: String("Failed to export span data: \(error.localizedDescription)")))
+                }
             }
         })
     }
