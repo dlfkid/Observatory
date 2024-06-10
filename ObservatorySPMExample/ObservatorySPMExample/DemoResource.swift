@@ -10,6 +10,8 @@ import Foundation
 #if canImport(ObservatoryTracing)
 import ObservatoryTracing
 import ObservatoryCommon
+#else
+import Observatory
 #endif
 
 enum DemoResource {
