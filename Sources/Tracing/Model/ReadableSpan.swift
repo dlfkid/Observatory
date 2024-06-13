@@ -16,6 +16,14 @@ public typealias ReadableEventCallback = (_ attributes: [Event]) -> Void
 
 public struct ReadableSpan {
     
+    public var traceId: TraceID {
+        return internalSpan.context.traceID
+    }
+    
+    public var spanId: SpanID {
+        return internalSpan.context.spanID
+    }
+    
     private let internalSpan: Span
     
     init(internalSpan: Span) {

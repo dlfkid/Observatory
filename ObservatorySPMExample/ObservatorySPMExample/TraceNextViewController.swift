@@ -1,9 +1,8 @@
 //
-//  TracingDemoViewController.swift
-//  Observatory_Example
+//  TraceNextViewController.swift
+//  ObservatorySPMExample
 //
-//  Created by LeonDeng on 2024/1/13.
-//  Copyright © 2024 CocoaPods. All rights reserved.
+//  Created by 邓凌峰(DengLingfeng)-顺丰科技技术集团 on 2024/6/10.
 //
 
 import UIKit
@@ -17,20 +16,21 @@ import ObservatoryCommon
 import Observatory
 #endif
 
-class TracingDemoViewController: UIViewController {
+class TraceNextViewController: UIViewController {
+    
+    var superSpan: ReadableSpan?
     
     private var span: ReadableSpan?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextButtonAction))
         view.backgroundColor = .white
-        title = "Tracing Example"
-        let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TracingDemoViewController"))]
+        title = "Tracing Next Page"
+        let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TraceNextViewController"))]
         span = SharedTracerTool.tool.tracer.createSpan(name: "demo_life_cycle", kind: .client, context: nil, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewDidLoad"))])
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewWillAppear"))])
@@ -55,13 +55,5 @@ class TracingDemoViewController: UIViewController {
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("deinit"))])
         span?.end()
     }
-}
 
-extension TracingDemoViewController {
-    @objc private func nextButtonAction() {
-        span?.addEvent(name: "button_tapped", attributes: [ObservatoryKeyValue(key: "name", value: .string("next_button"))])
-        let controller = TraceNextViewController()
-        controller.superSpan = span
-        navigationController?.pushViewController(controller, animated: true)
-    }
 }

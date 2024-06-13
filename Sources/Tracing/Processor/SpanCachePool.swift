@@ -48,7 +48,7 @@ extension SpanCachePool: SpanProcessable {
         }
     }
     
-    func fetchReadableSpan(_ spanId: SpanID, resultHandle: @escaping (ReadableSpan?) -> Void) {
+    public func fetchReadableSpan(_ spanId: SpanID, resultHandle: @escaping (ReadableSpan?) -> Void) {
         poolFetchQueue.async {
             let span = self.spanPool[spanId]
             resultHandle(span?.readableSpan())
