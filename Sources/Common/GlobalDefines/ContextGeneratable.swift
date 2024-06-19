@@ -51,7 +51,10 @@ extension Data {
 public struct TraceID: TelemetryID, Hashable {
     public var raw: [UInt8]
     
-    public static func create(hexString: String) -> TraceID? {
+    public static func create(hexString: String?) -> TraceID? {
+        guard let hexString = hexString else {
+            return nil
+        }
         guard let bytes = Data(hexString: hexString) else { return nil }
         return TraceID(raw: Array(bytes))
     }
@@ -60,7 +63,10 @@ public struct TraceID: TelemetryID, Hashable {
 public struct SpanID: TelemetryID, Hashable {
     public var raw: [UInt8]
     
-    public static func create(hexString: String) -> SpanID? {
+    public static func create(hexString: String?) -> SpanID? {
+        guard let hexString = hexString else {
+            return nil
+        }
         guard let bytes = Data(hexString: hexString) else { return nil }
         return SpanID(raw: Array(bytes))
     }
