@@ -22,8 +22,8 @@ public protocol Tracerable: SpanContextGenerateable, Scopable {
 }
 
 extension Tracerable {
-    public func createSpan(name: String, kind: SpanKind, context: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceState: TraceState? = nil) -> ReadableSpan? {
-        return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
+    public func createSpan(name: String, kind: SpanKind, superSpanContext: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceState: TraceState? = nil) -> ReadableSpan? {
+        return internalCreateSpan(name: name, kind: kind, context: superSpanContext, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }
     
     public func createRemoteSpan(name: String?, kind: SpanKind, traceState: String?, traceParent: String) -> ReadableSpan? {

@@ -27,7 +27,7 @@ class TracingDemoViewController: UIViewController {
         view.backgroundColor = .white
         title = "Tracing Example"
         let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TracingDemoViewController"))]
-        span = SharedTracerTool.tool.tracer.createSpan(name: "demo_life_cycle", kind: .client, context: nil, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
+        span = SharedTracerTool.tool.tracer.createSpan(name: "demo_life_cycle", kind: .client, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewDidLoad"))])
     }
     
