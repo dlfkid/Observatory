@@ -27,7 +27,7 @@ class TraceNextViewController: UIViewController {
         view.backgroundColor = .white
         title = "Tracing Next Page"
         let sampleAttri = [ObservatoryKeyValue(key: "controller_name", value: .string("TraceNextViewController"))]
-        span = SharedTracerTool.tool.tracer.createSpan(name: "demo_life_cycle", kind: .client, superSpanContext: superSpan?.context, attributes: sampleAttri, startTimeUnixNano: nil, linkes: nil)
+        span = self.obs.spanStart(name: "demo_life_cycle", kind: .client, parentContext: superSpan?.context, attributes: sampleAttri, traceStateStr: nil)
         span?.addEvent(name: "life_cycle_event", attributes: [ObservatoryKeyValue(key: "name", value: .string("viewDidLoad"))])
     }
 

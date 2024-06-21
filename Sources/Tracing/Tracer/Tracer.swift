@@ -26,27 +26,19 @@ extension Tracerable {
         return internalCreateSpan(name: name, kind: kind, context: superSpanContext, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }
     
-    public func createRemoteSpan(name: String?, kind: SpanKind, traceState: String?, traceParent: String) -> ReadableSpan? {
-        let traceParentKeyValus = traceParent.components(separatedBy: "-")
-        guard traceParentKeyValus.count == 4 else {
-            return nil
-        }
-        let version = traceParentKeyValus[0]
-        let traceId = traceParentKeyValus[1]
-        let spanId = traceParentKeyValus[2]
-        let sampled = traceParentKeyValus[3]
-        let parent = TraceParent(version: version, traceIdHex: traceId, spanIdHex: spanId, sampled: sampled)
-        return createRemoteSpan(name: spanId, kind: kind, parent: parent, traceStateRaw: traceState)
+    public func createRemoteSpan(name: String, kind: SpanKind, traceState: String?, traceParent: String) -> ReadableSpan? {
+        let parent = traceParent.obs_traceParent()
+        return createRemoteSpan(name: name, kind: kind, parent: parent, traceStateRaw: traceState)
     }
     
-    public func createRemoteSpan(name: String, kind: SpanKind, parent: TraceParent, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceStateRaw: String?) -> ReadableSpan? {
-        guard let spanId = SpanID.create(hexString: parent.spanIdHex),
-              let traceId = TraceID.create(hexString: parent.traceIdHex)
+    public func createRemoteSpan(name: String, kind: SpanKind, parent: TraceParent?, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceStateRaw: String?) -> ReadableSpan? {
+        guard let spanId = SpanID.create(hexString: parent?.spanIdHex),
+              let traceId = TraceID.create(hexString: parent?.traceIdHex)
         else {
             return nil
         }
         let traceState = TraceState(raw: traceStateRaw)
-        let decision = parent.isSampled ? SamplingDecision.recordAndSample : .drop
+        let decision = parent?.isSampled == true ? SamplingDecision.recordAndSample : .drop
         let context = SpanContext(trace: traceId, span: spanId, sampledFlag: decision, isRemote: true, parentSpan: nil, traceState: traceState)
         return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }

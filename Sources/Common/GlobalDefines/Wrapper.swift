@@ -11,7 +11,7 @@ public protocol ObservatoryWrapperable: AnyObject { }
 
 /// The real value holder of `ObservatoryWrapperable`
 public struct ObservatoryWrapper<T> {
-    var value: T
+    public var value: T
     init(_ value: T) {
         self.value = value
     }
