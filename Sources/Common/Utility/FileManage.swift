@@ -35,14 +35,14 @@ public struct SandBoxDataWriter {
                 if #available(iOS 13.4, *) {
                     try handle.seekToEnd()
                     try handle.write(contentsOf: data)
+                    try handle.write(contentsOf: ",\n".data(using: .utf8)!)
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    try handle.write(contentsOf: "\n".data(using: .utf8)!)
                     completion(nil)
                 } else {
                     handle.seekToEndOfFile()
                     handle.write(data)
+                    handle.write(",\n".data(using: .utf8)!)
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    handle.write("\n".data(using: .utf8)!)
                     completion(nil)
                 }
             } catch {
@@ -93,7 +93,7 @@ public struct SandBoxManage {
         let fileManager = FileManager.default
         var isDirectory: ObjCBool = false
         if fileManager.fileExists(atPath: path, isDirectory: &isDirectory) {
-            isDirectory.boolValue
+            return true
         }
         do {
             try fileManager.createDirectory(atPath: path, withIntermediateDirectories: true)

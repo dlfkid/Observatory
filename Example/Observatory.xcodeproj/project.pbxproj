@@ -18,6 +18,7 @@
 		7EA814CB2C12FF78003AA860 /* LogSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814C92C12FF78003AA860 /* LogSendViewController.swift */; };
 		7EA814CC2C12FF78003AA860 /* TracingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814CA2C12FF78003AA860 /* TracingDemoViewController.swift */; };
 		7EA814CE2C16F147003AA860 /* DemoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814CD2C16F147003AA860 /* DemoResource.swift */; };
+		7EE606362C294DD600AEB8FD /* TraceNextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE606352C294DD600AEB8FD /* TraceNextViewController.swift */; };
 		E1052FE11216289723157CE6 /* Pods_Observatory_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +51,7 @@
 		7EA814C92C12FF78003AA860 /* LogSendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogSendViewController.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/LogSendViewController.swift; sourceTree = "<group>"; };
 		7EA814CA2C12FF78003AA860 /* TracingDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TracingDemoViewController.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/TracingDemoViewController.swift; sourceTree = "<group>"; };
 		7EA814CD2C16F147003AA860 /* DemoResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DemoResource.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/DemoResource.swift; sourceTree = "<group>"; };
+		7EE606352C294DD600AEB8FD /* TraceNextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TraceNextViewController.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/TraceNextViewController.swift; sourceTree = "<group>"; };
 		B4B21D02F92A6B3C5C828157 /* Pods_Observatory_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Observatory_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D9C78A196A87A23D08D851A2 /* Pods-Observatory_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Tests.debug.xcconfig"; path = "Target Support Files/Pods-Observatory_Tests/Pods-Observatory_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		FD92BB58DA5CAB95F6F102AE /* Pods_Observatory_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Observatory_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -133,6 +135,7 @@
 				3519E1C52BE5271A00FC1B18 /* SharedTracerTool.swift */,
 				7EA814C92C12FF78003AA860 /* LogSendViewController.swift */,
 				7EA814CA2C12FF78003AA860 /* TracingDemoViewController.swift */,
+				7EE606352C294DD600AEB8FD /* TraceNextViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -344,6 +347,7 @@
 				7EA814CB2C12FF78003AA860 /* LogSendViewController.swift in Sources */,
 				3519E1C62BE5271A00FC1B18 /* SharedTracerTool.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
+				7EE606362C294DD600AEB8FD /* TraceNextViewController.swift in Sources */,
 				7EA814CC2C12FF78003AA860 /* TracingDemoViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -18,7 +18,7 @@ public struct TraceParent {
 }
 
 public extension TraceParent {
-    public var isSampled: Bool {
+    var isSampled: Bool {
         return sampled == "01"
     }
 }
@@ -28,8 +28,6 @@ public extension String {
         return NSString(string: self).obs.traceParent()
     }
 }
-
-extension NSString: ObservatoryWrapperable {}
 
 public extension ObservatoryWrapper where T: NSString {
     func traceParent() -> TraceParent? {

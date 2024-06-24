@@ -13,7 +13,7 @@ import ObservatoryCommon
 import ObservatoryTracing
 #endif
 
-public class ZipkinTraceExporter {
+public class ZipkinSpanExporter {
     
     private let api = "/api/v2/spans"
     
@@ -41,7 +41,7 @@ public class ZipkinTraceExporter {
     }
 }
 
-extension ZipkinTraceExporter: TelemetryExportable {
+extension ZipkinSpanExporter: TelemetryExportable {
     public typealias TelemetryData = SpanData
     
     public func export<TelemetryData>(resource: Resource?, scope: InstrumentationScope?, timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (Result<[TelemetryData], ObservatoryError>) -> Void) where TelemetryData : Encodable {
@@ -92,7 +92,7 @@ extension ZipkinTraceExporter: TelemetryExportable {
     }
 }
 
-extension ZipkinTraceExporter: ProcedureEndable {
+extension ZipkinSpanExporter: ProcedureEndable {
     public var isShuttedDown: Bool {
         return shuttedDown
     }

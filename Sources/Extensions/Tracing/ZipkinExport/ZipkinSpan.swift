@@ -66,6 +66,7 @@ public struct ZipkinSpan {
             tags[key] = value
         })
         zipkinSpan.kind = spanData.kind
+        zipkinSpan.tags = tags
         return zipkinSpan
     }
     
@@ -115,6 +116,7 @@ extension ZipkinSpan: Codable {
             case kind = "kind"
             case remoteEndpoint = "remoteEndpoint"
             case localEndpoint = "localEndpoint"
+            case tags = "tags"
        }
     
     public func encode(to encoder: Encoder) throws {
@@ -129,6 +131,7 @@ extension ZipkinSpan: Codable {
         try container.encode(zipkinSpanKind.rawValue, forKey: CodingKeys.kind)
         try container.encode(remoteEndpoint, forKey: .remoteEndpoint)
         try container.encode(localEndpoint, forKey: .localEndpoint)
+        try container.encode(tags, forKey: .tags)
     }
 }
 

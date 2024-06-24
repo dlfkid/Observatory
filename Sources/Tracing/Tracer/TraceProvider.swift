@@ -12,6 +12,8 @@ import ObservatoryCommon
 
 public class TracerProvider: TracerProvidable {
     
+    internal static var lastTracerProvider: TracerProvidable? = nil
+    
     internal static var latestTracer: Tracerable? = nil
     
     private let limit: SpanLimit
@@ -76,5 +78,6 @@ public class TracerProvider: TracerProvidable {
         self.processorCache = processors
         self.limit = limit
         self.sampler = sampler
+        TracerProvider.lastTracerProvider = self
     }
 }

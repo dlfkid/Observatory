@@ -39,28 +39,27 @@ public class ZipkinSpanStorage: TelemetryExportable {
     
     public func export<TelemetryData>(resource: Resource?, scope: InstrumentationScope?, timeout: TimeInterval, batch: [TelemetryData], completion: @escaping (Result<[TelemetryData], ObservatoryError>) -> Void) where TelemetryData : Encodable {
         let spanDatas = batch as! [SpanData]
-        let zipKinBatch: [ZipkinSpan] = spanDatas.map { spanData in
-            var zipkinSpan = ZipkinSpan.create(from: spanData)
-            zipkinSpan.localEndpoint = ZipkinSpan.ZipkinEndpoint(serviceName: serviceName)
-            return zipkinSpan
-        }
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted // Optional: Make the JSON output more readable
-        do {
-            let jsonData = try encoder.encode(zipKinBatch)
-            if let jsonString = String(data: jsonData, encoding: .utf8) {
-                print("[Span Exported]: \(jsonString)")
-            }
-            let dateString = dateFormatter.string(from: Date())
-            SandBoxDataWriter.saveDataToSandBox(searchPath: searchPath, subDir: String("/\(subdir)/\(serviceName)"), fileName: String("/\(dateString).json"), jsonData) { error in
-                if let error = error {
-                    completion(.failure(.dataError(msg: "[Span Exported]: Error saving data to sandbox: \(error)")))
-                } else {
-                    completion(.success(batch))
+        for spanData in spanDatas {
+            var zipkinSpan = ZipkinSpan.create(from: spanData)
+            zipkinSpan.localEndpoint = ZipkinSpan.ZipkinEndpoint(serviceName: serviceName)
+            do {
+                let jsonData = try encoder.encode(zipkinSpan)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    print("[Span Exported]: \(jsonString)")
                 }
+                let dateString = dateFormatter.string(from: Date())
+                SandBoxDataWriter.saveDataToSandBox(searchPath: searchPath, subDir: String("/\(subdir)/\(serviceName)"), fileName: String("/\(dateString).json"), jsonData) { error in
+                    if let error = error {
+                        completion(.failure(.dataError(msg: "[Span Exported]: Error saving data to sandbox: \(error)")))
+                    } else {
+                        completion(.success(batch))
+                    }
+                }
+            } catch {
+                completion(.failure(.dataError(msg: "[Span Exported]: Error encoding JSON: \(error)")))
             }
-        } catch {
-            completion(.failure(.dataError(msg: "[Span Exported]: Error encoding JSON: \(error)")))
         }
     }
 }
