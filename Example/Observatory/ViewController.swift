@@ -7,10 +7,14 @@
 //
 
 import UIKit
+#if canImport(Observatory)
+import Observatory
+#endif
 
 enum LogModuleCases: CaseIterable {
     case plainLog
     case tracing
+    case exportingTracingData
 }
 
 extension LogModuleCases {
@@ -20,6 +24,8 @@ extension LogModuleCases {
             return "plain_log_module"
         case .tracing:
             return "tracing"
+        case .exportingTracingData:
+            return "export_tracing_data_from_sandbox"
         }
     }
 }
@@ -72,6 +78,29 @@ extension ViewController: UITableViewDelegate {
             let controller = TracingDemoViewController()
             controller.title = "Subpage index 0"
             navigationController?.pushViewController(controller, animated: true)
+            break
+        case .exportingTracingData:
+            Observatory.SandBoxDataWriter.exportSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { filePaths in
+                guard let filePaths = filePaths, !filePaths.isEmpty else {
+                    return
+                }
+                var results = [URL]()
+                for filePath in filePaths {
+                    do {
+                        if let outputContent = try SandBoxDataWriter.formattedDataForExport(filePath) {
+                            var outputPath = filePath.deletingPathExtension()
+                            outputPath = outputPath.appendingPathExtension("json")
+                            try outputContent.write(to: outputPath)
+                            results.append(outputPath)
+                        }
+                    } catch {
+                        continue
+                    }
+                }
+                let activityViewController = UIActivityViewController(activityItems: results, applicationActivities: nil)
+                activityViewController.popoverPresentationController?.sourceView = self.view
+                self.present(activityViewController, animated: true)
+            }
             break
         }
         

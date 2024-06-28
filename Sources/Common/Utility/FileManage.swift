@@ -11,6 +11,76 @@ import Dispatch
 public struct SandBoxDataWriter {
     private static let semaphoreChannel = DispatchSemaphore(value: 1)
     
+    public static func formattedDataForExport(_ filePath: URL) throws -> Data? {
+        let rawContent = try String(contentsOf: filePath)
+        var resultString = rawContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        if rawContent.hasSuffix(",") {
+             resultString = String(rawContent.dropLast())
+        }
+        return String("[\(resultString)]").data(using: .utf8)
+    }
+    
+    public static func exportSavedDataFromSandBox(searchPath: FileManager.SearchPathDirectory, subDir: String, fileNames: [String]? = nil, completion: @escaping (_ filePaths: [URL]?) -> Void) {
+        let fileManager = FileManager.default
+        guard let basePath = fileManager.urls(for: searchPath, in: .userDomainMask).first else {
+            DispatchQueue.main.async {
+                completion(nil)
+            }
+            return
+        }
+        var prefixPath = basePath
+        if #available(iOS 16.0, *) {
+            prefixPath = basePath.appending(path: subDir, directoryHint: .isDirectory)
+        } else {
+            prefixPath = basePath.appendingPathComponent(subDir, isDirectory: true)
+        }
+        guard let fileNames = fileNames, fileNames.count > 0 else {
+            // if no filename as parameter were passed, just acquire all the file within subdir
+            do {
+                let fileNames = try fileManager.contentsOfDirectory(atPath: prefixPath.path)
+                if fileNames.count > 0 {
+                    // files acquired, recursion again
+                    exportSavedDataFromSandBox(searchPath: searchPath, subDir: subDir, fileNames: fileNames, completion: completion)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            }
+            return
+        }
+        DispatchQueue.global().async {
+            var results = [URL]()
+            semaphoreChannel.wait()
+            for fileName in fileNames {
+                guard fileName != ".DS_Store" else {
+                    continue
+                }
+                var fullPath = prefixPath
+                if #available(iOS 16.0, *) {
+                    fullPath = prefixPath.appending(path: fileName, directoryHint: .notDirectory)
+                } else {
+                    fullPath = prefixPath.appendingPathComponent(fileName, isDirectory: false)
+                }
+                guard fullPath.pathExtension != ".obtemp" else {
+                    continue
+                }
+                var isDir: ObjCBool = false
+                guard fileManager.fileExists(atPath: fullPath.path, isDirectory: &isDir) else {
+                    continue
+                }
+                if isDir.boolValue == true {
+                    continue
+                }
+                results.append(fullPath)
+            }
+            semaphoreChannel.signal()
+            DispatchQueue.main.async {
+                completion(results)
+            }
+        }
+    }
+    
     public static func saveDataToSandBox(searchPath: FileManager.SearchPathDirectory, subDir: String, fileName: String, _ data: Data, completion: @escaping (_ error: Error?) -> Void) {
         let dirPath = SandBoxManage.prefixPath(searchPath: searchPath).appending(subDir)
         DispatchQueue.global().async {
@@ -18,18 +88,24 @@ public struct SandBoxDataWriter {
             do {
                 guard SandBoxManage.createDirAtPathIfNeeded(dirPath) else {
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    completion(ObservatoryError.fileManage(msg: "Unable to create sub directory"))
+                    DispatchQueue.main.async {
+                        completion(ObservatoryError.fileManage(msg: "Unable to create sub directory"))
+                    }
                     return
                 }
-                let fullPath = dirPath.appending(fileName)
+                let fullPath = dirPath.appending(fileName).appending(".obtemp")
                 guard SandBoxManage.createFileAtPathIfNeeded(fullPath) else {
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    completion(ObservatoryError.fileManage(msg: "Unable to create file"))
+                    DispatchQueue.main.async {
+                        completion(ObservatoryError.fileManage(msg: "Unable to create file"))
+                    }
                     return
                 }
                 guard let handle = FileHandle(forWritingAtPath: fullPath) else {
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    completion(ObservatoryError.fileManage(msg: "Unable to create file cursor handle"))
+                    DispatchQueue.main.async {
+                        completion(ObservatoryError.fileManage(msg: "Unable to create file cursor handle"))
+                    }
                     return
                 }
                 if #available(iOS 13.4, *) {
@@ -37,17 +113,23 @@ public struct SandBoxDataWriter {
                     try handle.write(contentsOf: data)
                     try handle.write(contentsOf: ",\n".data(using: .utf8)!)
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    completion(nil)
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
                 } else {
                     handle.seekToEndOfFile()
                     handle.write(data)
                     handle.write(",\n".data(using: .utf8)!)
                     SandBoxDataWriter.semaphoreChannel.signal()
-                    completion(nil)
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
                 }
             } catch {
                 SandBoxDataWriter.semaphoreChannel.signal()
-                completion(error)
+                DispatchQueue.main.async {
+                    completion(error)
+                }
             }
         }
     }
