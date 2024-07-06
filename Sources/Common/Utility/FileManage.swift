@@ -13,11 +13,28 @@ public struct SandBoxDataWriter {
     
     public static func formattedDataForExport(_ filePath: URL) throws -> Data? {
         let rawContent = try String(contentsOf: filePath)
-        var resultString = rawContent.trimmingCharacters(in: .whitespacesAndNewlines)
-        if rawContent.hasSuffix(",") {
-             resultString = String(rawContent.dropLast())
+        let resultString = rawContent.trimmingCharacters(in: .whitespacesAndNewlines)
+        let outputStr = removeLastComma(in: resultString)
+        return String("[\(outputStr)]").data(using: .utf8)
+    }
+    
+    private static func removeLastComma(in string: String) -> String {
+        let targetEnding = "},"
+        
+        // Check if the string ends with "},\n"
+        guard string.hasSuffix(targetEnding) else {
+            return string
         }
-        return String("[\(resultString)]").data(using: .utf8)
+        
+        // Find the range of the last occurrence of "},\n"
+        if let range = string.range(of: targetEnding, options: .backwards) {
+            // Remove the last comma by creating a new substring without the comma
+            let beforeTargetEnding = string[..<range.lowerBound]
+            let newEnding = "}"
+            return beforeTargetEnding + newEnding
+        }
+        
+        return string
     }
     
     public static func exportSavedDataFromSandBox(searchPath: FileManager.SearchPathDirectory, subDir: String, fileNames: [String]? = nil, completion: @escaping (_ filePaths: [URL]?) -> Void) {

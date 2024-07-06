@@ -88,10 +88,15 @@ extension ViewController: UITableViewDelegate {
                 for filePath in filePaths {
                     do {
                         if let outputContent = try SandBoxDataWriter.formattedDataForExport(filePath) {
-                            var outputPath = filePath.deletingPathExtension()
-                            outputPath = outputPath.appendingPathExtension("json")
-                            try outputContent.write(to: outputPath)
-                            results.append(outputPath)
+                            let fileManager = FileManager.default
+                            guard let basePath = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
+                                return
+                            }
+                            var exportPath = basePath.appendingPathComponent(filePath.lastPathComponent, isDirectory: false)
+                            exportPath.deletePathExtension()
+                            exportPath.appendPathExtension("json")
+                            try outputContent.write(to: exportPath)
+                            results.append(exportPath)
                         }
                     } catch {
                         continue
