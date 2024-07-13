@@ -37,6 +37,89 @@ public struct SandBoxDataWriter {
         return string
     }
     
+    /// Remove Observatory data from sandbox
+    /// - Parameters:
+    ///   - searchPath: SearchPathDirectory
+    ///   - subDir: Where data is saved
+    ///   - fileNames: the file name of the data, if pass nil, all file will be removed
+    ///   - completion: a callback closure to inform caller how many file is removed
+    public static func removeSavedDataFromSandBox(searchPath: FileManager.SearchPathDirectory, subDir: String, fileNames: [String]? = nil, completion: @escaping (_ removedCount: Int) -> Void) {
+        let fileManager = FileManager.default
+        guard let basePath = fileManager.urls(for: searchPath, in: .userDomainMask).first else {
+            DispatchQueue.main.async {
+                completion(0)
+            }
+            return
+        }
+        var prefixPath = basePath
+        if #available(iOS 16.0, *) {
+            prefixPath = basePath.appending(path: subDir, directoryHint: .isDirectory)
+        } else {
+            prefixPath = basePath.appendingPathComponent(subDir, isDirectory: true)
+        }
+        guard let fileNames = fileNames, fileNames.count > 0 else {
+            // if no filename as parameter were passed, just acquire all the file within subdir
+            do {
+                let fileNames = try fileManager.contentsOfDirectory(atPath: prefixPath.path)
+                if fileNames.count > 0 {
+                    // files acquired, recursion again
+                    removeSavedDataFromSandBox(searchPath: searchPath, subDir: subDir, fileNames: fileNames, completion: completion)
+                } else {
+                    DispatchQueue.main.async {
+                        completion(0)
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(0)
+                }
+            }
+            return
+        }
+        DispatchQueue.global().async {
+            var results = 0
+            semaphoreChannel.wait()
+            for fileName in fileNames {
+                guard fileName != ".DS_Store" else {
+                    continue
+                }
+                var fullPath = prefixPath
+                if #available(iOS 16.0, *) {
+                    fullPath = prefixPath.appending(path: fileName, directoryHint: .notDirectory)
+                } else {
+                    fullPath = prefixPath.appendingPathComponent(fileName, isDirectory: false)
+                }
+                guard fullPath.pathExtension != ".obtemp" else {
+                    continue
+                }
+                var isDir: ObjCBool = false
+                guard fileManager.fileExists(atPath: fullPath.path, isDirectory: &isDir) else {
+                    continue
+                }
+                if isDir.boolValue == true {
+                    continue
+                }
+                do {
+                    try fileManager.removeItem(at: fullPath)
+                    results += 1
+                }
+                catch {
+                    continue
+                }
+            }
+            semaphoreChannel.signal()
+            DispatchQueue.main.async {
+                completion(results)
+            }
+        }
+    }
+    
+    /// Locate specific or all observatory tracing Data
+    /// - Parameters:
+    ///   - searchPath: SearchPathDirectory
+    ///   - subDir: Where data is saved
+    ///   - fileNames: the filename of the data, if pass nil, all file will be callback
+    ///   - completion: the callback closure constains the file paths
     public static func exportSavedDataFromSandBox(searchPath: FileManager.SearchPathDirectory, subDir: String, fileNames: [String]? = nil, completion: @escaping (_ filePaths: [URL]?) -> Void) {
         let fileManager = FileManager.default
         guard let basePath = fileManager.urls(for: searchPath, in: .userDomainMask).first else {
@@ -58,6 +141,10 @@ public struct SandBoxDataWriter {
                 if fileNames.count > 0 {
                     // files acquired, recursion again
                     exportSavedDataFromSandBox(searchPath: searchPath, subDir: subDir, fileNames: fileNames, completion: completion)
+                } else {
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
                 }
             } catch {
                 DispatchQueue.main.async {

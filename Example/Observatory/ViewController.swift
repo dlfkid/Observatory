@@ -15,6 +15,7 @@ enum LogModuleCases: CaseIterable {
     case plainLog
     case tracing
     case exportingTracingData
+    case removeTracingData
 }
 
 extension LogModuleCases {
@@ -26,6 +27,8 @@ extension LogModuleCases {
             return "tracing"
         case .exportingTracingData:
             return "export_tracing_data_from_sandbox"
+        case .removeTracingData:
+            return "remove_tracing_data"
         }
     }
 }
@@ -82,6 +85,7 @@ extension ViewController: UITableViewDelegate {
         case .exportingTracingData:
             Observatory.SandBoxDataWriter.exportSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { filePaths in
                 guard let filePaths = filePaths, !filePaths.isEmpty else {
+                    print("No data to export")
                     return
                 }
                 var results = [URL]()
@@ -106,7 +110,10 @@ extension ViewController: UITableViewDelegate {
                 activityViewController.popoverPresentationController?.sourceView = self.view
                 self.present(activityViewController, animated: true)
             }
-            break
+        case .removeTracingData:
+            Observatory.SandBoxDataWriter.removeSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { removedCount in
+                print("\(removedCount) file are removed")
+            }
         }
         
     }
