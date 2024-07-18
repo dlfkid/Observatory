@@ -11,6 +11,9 @@ public protocol ProcedureEndable {
     
     typealias ProcedureEndClosure = (_ ret: Bool, _ error: ObservatoryError?) -> Void
     
+    /// this closure will called if the processor needs to inform the user
+    var eventCallBackEmited: ProcedureEndClosure? {get}
+    
     /// to tell the caller wether this component is shutted down
     var isShuttedDown: Bool {get}
     
@@ -25,4 +28,19 @@ public protocol ProcedureEndable {
     ///   - timeout: asssumed errror happend if reached timeout
     ///   - closure: result closure
     func forceFlush(timeout: TimeInterval, closure: ProcedureEndClosure?)
+}
+
+extension ProcedureEndable {
+    
+    /// trigger the callback in main queue to the user
+    /// - Parameters:
+    ///   - ret: event ret
+    ///   - event: detail event
+    func executeEventEmitCallback(ret: Bool, event: ObservatoryError) {
+        if let handler = eventCallBackEmited {
+            DispatchQueue.main.async {
+                handler(ret, event)
+            }
+        }
+    }
 }

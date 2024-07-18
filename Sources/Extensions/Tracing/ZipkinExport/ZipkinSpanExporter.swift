@@ -29,6 +29,9 @@ public class ZipkinSpanExporter {
     
     private let serviceName: String
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     var shuttedDown = false
     
     public init(serviceName: String = "observatory_exporter_zipkin", host: String, islocal: Bool, port: Int = 9411, ipv4: String? = nil, ipv6: String? = nil) {

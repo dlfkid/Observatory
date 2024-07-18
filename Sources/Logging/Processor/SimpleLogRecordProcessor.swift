@@ -14,6 +14,9 @@ public class SimpleLogProcessor: LogProcessable {
     
     typealias TelemetryData = LogRecordData
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     private var shuttedDown: Bool = false
     
     public var exporter: (any TelemetryExportable)?

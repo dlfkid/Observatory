@@ -13,6 +13,9 @@ import ObservatoryCommon
 public class SimpleSpanExporter: TelemetryExportable {
     public typealias TelemetryData = SpanData
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     var shuttedDown = false
     
     public init() {}

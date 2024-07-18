@@ -37,6 +37,9 @@ public class BatchSpanProcessor: SpanProcessable {
     
     public var exporter: SimpleSpanExporter?
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     private lazy var spanDataBatch: [SpanData] = {
         return [SpanData]()
     }()
@@ -96,9 +99,9 @@ public class BatchSpanProcessor: SpanProcessable {
             self.exporter?.export(resource: value.first?.resource, scope: key, timeout: 5, batch: value, completion: { result in
                 switch result {
                 case let .success(spanDataBatch):
-                    print(spanDataBatch)
+                    self.executeEventEmitCallback(ret: true, event: .normal(msg: spanDataBatch.description))
                 case let .failure(error):
-                    print(error)
+                    self.executeEventEmitCallback(ret: false, event: error)
                 }
             })
         }
@@ -139,6 +142,7 @@ public class BatchSpanProcessor: SpanProcessable {
         let spanData = SpanData.spanData(from: span)
         operateQueue.async {
             guard self.spanDataBatch.count < self.config.maximumBatchSize else {
+                
                 return
             }
             self.spanDataBatch.insert(spanData, at: 0)

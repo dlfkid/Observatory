@@ -33,10 +33,13 @@ public struct BatchLogRecordConfig {
 
 public class BatchLogRecordProcessor: LogProcessable {
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     public func onEmit(logRecord: LogRecordData) {
         logRecordHandleQueue.async {
             guard self.config.maxQueueSize > self.unexportedLogRecords.count else {
-                print("[Observatory]: LogProcessor collect limit reached")
+                self.executeEventEmitCallback(ret: true, event: .limitReached(msg: String("LogProcessor collect limit maxQueueSize = \(self.config.maxQueueSize) reached")))
                 return
             }
             self.unexportedLogRecords.append(logRecord)

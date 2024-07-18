@@ -13,7 +13,8 @@ import ObservatoryCommon
 public class SpanCachePool {
     public static let `default` = SpanCachePool()
     
-    public var debugOutPutHandler: ((_ event: ObservatoryError)-> Void)?
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
     
     private var shuttedDown: Bool = false
     
@@ -33,18 +34,14 @@ extension SpanCachePool: SpanProcessable {
     public func onSpanStarted(span: Span) {
         poolFetchQueue.async {
             self.spanPool[span.context.spanID] = span
-            if let handler = self.debugOutPutHandler {
-                handler(ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.hexString) \nspanId: \(span.context.spanID.hexString)\n is cached in cache pool"))
-            }
+            self.executeEventEmitCallback(ret: true, event: ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.hexString) \nspanId: \(span.context.spanID.hexString)\n is cached in cache pool"))
         }
     }
     
     public func onSpanEnded(span: Span) {
         poolFetchQueue.async {
             self.spanPool.removeValue(forKey: span.context.spanID)
-            if let handler = self.debugOutPutHandler {
-                handler(ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.hexString) \nspanId: \(span.context.spanID.hexString) \nhas removed frome cache pool"))
-            }
+            self.executeEventEmitCallback(ret: true, event: ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.hexString) \nspanId: \(span.context.spanID.hexString) \nhas removed frome cache pool"))
         }
     }
     

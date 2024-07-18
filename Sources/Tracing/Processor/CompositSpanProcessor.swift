@@ -15,6 +15,9 @@ public class CompositSpanProcessor: SpanProcessable {
     
     public let exporter: SimpleSpanExporter? = nil
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     var shuttedDown: Bool = false
     
     let processors: [any SpanProcessable]

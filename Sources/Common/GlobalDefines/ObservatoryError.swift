@@ -8,13 +8,14 @@
 import Foundation
 
 public enum ObservatoryError: Error {
-    case timout(component: String? = nil)
-    case alreadyShuttedDown(component: String? = nil)
-    case normal(msg: String)
-    case network(msg: String)
-    case dataError(msg: String)
-    case fileManage(msg: String)
-    case export(msg: String)
+    case timout(component: String?)
+    case alreadyShuttedDown(component: String?)
+    case normal(msg: String?)
+    case network(msg: String?)
+    case dataError(msg: String?)
+    case fileManage(msg: String?)
+    case export(msg: String?)
+    case limitReached(msg: String?)
 }
 
 extension ObservatoryError: LocalizedError {
@@ -40,6 +41,8 @@ extension ObservatoryError: LocalizedError {
             return msg
         case .export(msg: let msg):
             return msg
+        case .limitReached(msg: let msg):
+            return String("Reached the limitation of the configuration \(msg)")
         }
     }
 }

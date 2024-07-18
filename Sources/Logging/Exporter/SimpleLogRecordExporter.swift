@@ -13,6 +13,9 @@ import ObservatoryCommon
 public class SimpleLogRecordExporter: TelemetryExportable {
     public typealias TelemetryData = LogRecordData
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     var shuttedDown = false
     
     public init() {}

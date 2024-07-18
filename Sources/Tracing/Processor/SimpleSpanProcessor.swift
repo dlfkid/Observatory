@@ -14,18 +14,15 @@ public class SimpleSpanProcessor<T: TelemetryExportable>: SpanProcessable {
     
     public typealias Exporter = T
     
-    public var debugOutPutHandler: ((_ event: ObservatoryError)-> Void)?
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
     
     public func onSpanStarted(span: Span) {
-        if let debugOutPutHandler = debugOutPutHandler {
-            debugOutPutHandler(.normal(msg: "\(span.name) started \n traceId: \(span.context.traceID.hexString) \n spanId: \(span.context.spanID.hexString)"))
-        }
+        executeEventEmitCallback(ret: true, event: .normal(msg: "\(span.name) started \n traceId: \(span.context.traceID.hexString) \n spanId: \(span.context.spanID.hexString)"))
     }
     
     public func onSpanEnded(span: Span) {
-        if let debugOutPutHandler = debugOutPutHandler {
-            debugOutPutHandler(.normal(msg: "\(span.name) ended \n traceId: \(span.context.traceID.hexString) \n spanId: \(span.context.spanID.hexString)"))
-        }
+        executeEventEmitCallback(ret: true, event: .normal(msg: "\(span.name) ended \n traceId: \(span.context.traceID.hexString) \n spanId: \(span.context.spanID.hexString)"))
         guard span.context.sampledFlag == .recordAndSample else {
             return
         }
@@ -35,9 +32,7 @@ public class SimpleSpanProcessor<T: TelemetryExportable>: SpanProcessable {
             case .success:
                 break
             case .failure(let error):
-                if let debugOutPutHandler = self.debugOutPutHandler {
-                    debugOutPutHandler(.export(msg: String("Failed to export span data: \(error.localizedDescription)")))
-                }
+                self.executeEventEmitCallback(ret: false, event: .export(msg: String("Failed to export span data: \(error.localizedDescription)")))
             }
         })
     }

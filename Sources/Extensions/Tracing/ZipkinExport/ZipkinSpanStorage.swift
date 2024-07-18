@@ -21,6 +21,9 @@ public class ZipkinSpanStorage: TelemetryExportable {
         return formatter
     }()
     
+    /// this closure will called if the processor needs to inform the user
+    public var eventCallBackEmited: ProcedureEndClosure?
+    
     private let serviceName: String
     
     private let searchPath: FileManager.SearchPathDirectory
