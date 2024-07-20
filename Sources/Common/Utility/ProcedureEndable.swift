@@ -36,7 +36,7 @@ extension ProcedureEndable {
     /// - Parameters:
     ///   - ret: event ret
     ///   - event: detail event
-    func executeEventEmitCallback(ret: Bool, event: ObservatoryError) {
+    public func executeEventEmitCallback(ret: Bool, event: ObservatoryError) {
         if let handler = eventCallBackEmited {
             DispatchQueue.main.async {
                 handler(ret, event)

@@ -15,6 +15,7 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
+		7E72EE6B2C4B986500DA0E71 /* TraceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72EE6A2C4B986500DA0E71 /* TraceTableViewController.swift */; };
 		7EA814CB2C12FF78003AA860 /* LogSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814C92C12FF78003AA860 /* LogSendViewController.swift */; };
 		7EA814CC2C12FF78003AA860 /* TracingDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814CA2C12FF78003AA860 /* TracingDemoViewController.swift */; };
 		7EA814CE2C16F147003AA860 /* DemoResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814CD2C16F147003AA860 /* DemoResource.swift */; };
@@ -48,6 +49,7 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6BFC5B716992D0852C7C5DB7 /* Pods-Observatory_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Example.release.xcconfig"; path = "Target Support Files/Pods-Observatory_Example/Pods-Observatory_Example.release.xcconfig"; sourceTree = "<group>"; };
 		7C6390F218901C54CBCF451B /* Pods-Observatory_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Observatory_Example.debug.xcconfig"; path = "Target Support Files/Pods-Observatory_Example/Pods-Observatory_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		7E72EE6A2C4B986500DA0E71 /* TraceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TraceTableViewController.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/TraceTableViewController.swift; sourceTree = "<group>"; };
 		7EA814C92C12FF78003AA860 /* LogSendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogSendViewController.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/LogSendViewController.swift; sourceTree = "<group>"; };
 		7EA814CA2C12FF78003AA860 /* TracingDemoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TracingDemoViewController.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/TracingDemoViewController.swift; sourceTree = "<group>"; };
 		7EA814CD2C16F147003AA860 /* DemoResource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DemoResource.swift; path = ../../ObservatorySPMExample/ObservatorySPMExample/DemoResource.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				7EA814C92C12FF78003AA860 /* LogSendViewController.swift */,
 				7EA814CA2C12FF78003AA860 /* TracingDemoViewController.swift */,
 				7EE606352C294DD600AEB8FD /* TraceNextViewController.swift */,
+				7E72EE6A2C4B986500DA0E71 /* TraceTableViewController.swift */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -349,6 +352,7 @@
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				7EE606362C294DD600AEB8FD /* TraceNextViewController.swift in Sources */,
 				7EA814CC2C12FF78003AA860 /* TracingDemoViewController.swift in Sources */,
+				7E72EE6B2C4B986500DA0E71 /* TraceTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

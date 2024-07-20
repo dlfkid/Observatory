@@ -23,7 +23,9 @@ class SharedTracerTool {
     
     private lazy var tracerProvider: TracerProvidable = {
         let resource = DemoResource.sharedResource
-        let processor = SimpleSpanProcessor<ZipkinSpanStorage>(exporter: ZipkinSpanStorage(serviceName: "observatory_storage_demo_service", searchPath: .documentDirectory, subdir: "zipkinSpans"))
+//        let exporter = ZipkinSpanStorage(serviceName: "observatory_storage_demo_service", searchPath: .documentDirectory, subdir: "zipkinSpans")
+        let exporter = ZipkinSpanExporter(serviceName: "observatory_export_demo_service", host: "http://127.0.0.1", islocal: true)
+        let processor = SimpleSpanProcessor<ZipkinSpanExporter>(exporter: exporter)
         processor.eventCallBackEmited = { ret, event in
             print(String(event?.localizedDescription ?? ""))
         }

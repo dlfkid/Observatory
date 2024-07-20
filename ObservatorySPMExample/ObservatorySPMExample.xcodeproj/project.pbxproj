@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7E72EE6D2C4BA2F200DA0E71 /* TraceTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E72EE6C2C4BA2F200DA0E71 /* TraceTableViewController.swift */; };
 		7E7EF0AB2BD4FED7001CF63D /* SharedTracerTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7EF0AA2BD4FED7001CF63D /* SharedTracerTool.swift */; };
 		7EA814D02C16F289003AA860 /* TraceNextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA814CF2C16F289003AA860 /* TraceNextViewController.swift */; };
 		7EE34D8A2B9C4FA700513841 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE34D892B9C4FA700513841 /* AppDelegate.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7E72EE6C2C4BA2F200DA0E71 /* TraceTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TraceTableViewController.swift; sourceTree = "<group>"; };
 		7E7EF0AA2BD4FED7001CF63D /* SharedTracerTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedTracerTool.swift; sourceTree = "<group>"; };
 		7EA814CF2C16F289003AA860 /* TraceNextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraceNextViewController.swift; sourceTree = "<group>"; };
 		7EE34D862B9C4FA700513841 /* ObservatorySPMExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObservatorySPMExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +78,7 @@
 				7EE34DA02B9C50FB00513841 /* TracingDemoViewController.swift */,
 				7EA814CF2C16F289003AA860 /* TraceNextViewController.swift */,
 				7E7EF0AA2BD4FED7001CF63D /* SharedTracerTool.swift */,
+				7E72EE6C2C4BA2F200DA0E71 /* TraceTableViewController.swift */,
 				7EE34D8F2B9C4FA700513841 /* Main.storyboard */,
 				7EE34D922B9C4FA900513841 /* Assets.xcassets */,
 				7EE34D942B9C4FA900513841 /* LaunchScreen.storyboard */,
@@ -164,6 +167,7 @@
 				7EE34DA72B9C50FB00513841 /* LogSendViewController.swift in Sources */,
 				7EE34D8A2B9C4FA700513841 /* AppDelegate.swift in Sources */,
 				7EE34DA42B9C50FB00513841 /* TracingDemoViewController.swift in Sources */,
+				7E72EE6D2C4BA2F200DA0E71 /* TraceTableViewController.swift in Sources */,
 				7E7EF0AB2BD4FED7001CF63D /* SharedTracerTool.swift in Sources */,
 				7EE34DA92B9C515C00513841 /* ViewController.swift in Sources */,
 				7EE34D8C2B9C4FA700513841 /* SceneDelegate.swift in Sources */,

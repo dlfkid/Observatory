@@ -25,9 +25,10 @@ public extension ObservatoryWrapper where T: UIViewController {
     ///   - linkes: links
     ///   - traceStateStr: trace state
     /// - Returns: A redable span
-    func spanStart(tracerInfo: (name: String, version: String, schemaURL: String?)? = nil, name: String, kind: SpanKind = .producer, parentContext: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceStateStr: String? = nil) -> ReadableSpan? {
+    func spanStart(provider: TracerProvider? = nil, tracerInfo: (name: String, version: String, schemaURL: String?)? = nil, name: String, kind: SpanKind = .producer, parentContext: SpanContext? = nil, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceStateStr: String? = nil) -> ReadableSpan? {
+        let provider = provider ?? TracerProvider.lastTracerProvider
         guard let tracerInfo = tracerInfo else {
-            return TracerProvider.latestTracer?.createSpan(name: name, kind: kind, superSpanContext: parentContext, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes, traceState: TraceState(raw: traceStateStr))
+            return provider?.latestTracer?.createSpan(name: name, kind: kind, superSpanContext: parentContext, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes, traceState: TraceState(raw: traceStateStr))
         }
         let tracer = TracerProvider.lastTracerProvider?.createTracerIfNeeded(name: tracerInfo.name, version: tracerInfo.version, schemaURL: tracerInfo.schemaURL, attributes: nil)
         return tracer?.createSpan(name: name, kind: kind, superSpanContext: parentContext, attributes: attributes, startTimeUnixNano: startTimeUnixNano, linkes: linkes, traceState: TraceState(raw: traceStateStr))

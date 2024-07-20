@@ -12,9 +12,9 @@ import ObservatoryCommon
 
 public class TracerProvider: TracerProvidable {
     
-    internal static var lastTracerProvider: TracerProvidable? = nil
+    internal static var lastTracerProvider: TracerProvider? = nil
     
-    internal static var latestTracer: Tracerable? = nil
+    internal var latestTracer: Tracerable? = nil
     
     private let limit: SpanLimit
     
@@ -28,7 +28,7 @@ public class TracerProvider: TracerProvidable {
             let generatedTracerKey = self.createInstrumentScopeCachedKey(name: name, version: version, schemaURL: schemaURL)
             let generatedTracer = Tracer(version: version, name: name, schemaURL: schemaURL, limit: limit, provider: self)
             tracerCache[generatedTracerKey] = generatedTracer
-            TracerProvider.latestTracer = generatedTracer
+            latestTracer = generatedTracer
             return generatedTracer
         }
     }

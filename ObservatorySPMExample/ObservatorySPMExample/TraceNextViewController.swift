@@ -71,5 +71,8 @@ class TraceNextViewController: UIViewController {
 extension TraceNextViewController {
     @objc private func traceActionButtonAction() {
         span?.addEvent(name: "TraceActionButtonTapped", attributes: nil)
+        let testVC = TraceTableViewController()
+        testVC.superSpan = span
+        navigationController?.pushViewController(testVC, animated: true)
     }
 }
