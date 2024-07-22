@@ -7,6 +7,30 @@ A swift written distributed tracing and log clinet built conformimg to **OpenTel
 
 ## What it does?
 
+### DemoScenario
+
+​	Here's an example of user activity. In this show case, the user has done following actions:
+
+* Enter trace page
+* Segue to another page
+* Press a button and segue to another page
+* view a table list, select one of the item
+* An alert is shown, the user tapped OK
+
+<img src="Observatory_Demo.gif" alt="showcase" width="325" height="712">
+
+### Data Browse
+
+Here's the distributed tracing data collected in an Zipkin backend, by searching the trace ID the developer can look into details when the App is used by the user. Including:
+
+*  Each span duration
+* Attribute added to the span
+* Event happend during the span period
+
+<img src="Observatory_bakend.png" alt="backend" width="1080">
+
+### summary
+
 ​	In short, To help application developer to improve the observability of their apps. By offering distributed tacing data to the backend colletor, developer can see through the connection between logs and understand the hole process they defined rather than searching in tons of god knows wether they are relative logs and die trying to organize the whole situation.
 
 ​	when the distributed tracing data sent to backend, in a Grafana backend would looks like this:
