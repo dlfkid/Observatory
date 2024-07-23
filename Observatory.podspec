@@ -21,10 +21,10 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/RavenDeng/Observatory'
+  s.homepage         = 'git@github.com:dlfkid/Observatory'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'RavenDeng' => 'dlfkid@icloud.com' }
-  s.source           = { :git => 'https://github.com/RavenDeng/Observatory.git', :tag => s.version.to_s }
+  s.source           = { :git => 'git@github.com:dlfkid/Observatory.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '12.2'
 
