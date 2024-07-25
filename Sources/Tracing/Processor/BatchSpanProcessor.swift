@@ -142,7 +142,7 @@ public class BatchSpanProcessor: SpanProcessable {
         let spanData = SpanData.spanData(from: span)
         operateQueue.async {
             guard self.spanDataBatch.count < self.config.maximumBatchSize else {
-                
+                self.executeEventEmitCallback(ret: false, event: .limitReached(msg: "Current batch size has reached maximum limit"))
                 return
             }
             self.spanDataBatch.insert(spanData, at: 0)

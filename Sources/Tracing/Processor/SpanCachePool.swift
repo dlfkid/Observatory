@@ -16,6 +16,9 @@ public class SpanCachePool {
     /// this closure will called if the processor needs to inform the user
     public var eventCallBackEmited: ProcedureEndClosure?
     
+    /// the maximum number of span the cachePool can contain
+    public var maximumCacheCount: Int = 128
+    
     private var shuttedDown: Bool = false
     
     private var spanPool = [SpanID: Span]()
@@ -33,6 +36,10 @@ extension SpanCachePool: SpanProcessable {
     
     public func onSpanStarted(span: Span) {
         poolFetchQueue.async {
+            if self.spanPool.count > self.maximumCacheCount {
+                self.executeEventEmitCallback(ret: false, event: ObservatoryError.limitReached(msg: "SpanCachePool has reached the maximum cache count"))
+                return
+            }
             self.spanPool[span.context.spanID] = span
             self.executeEventEmitCallback(ret: true, event: ObservatoryError.normal(msg: "SpanName: \(span.name) \ntraceId: \(span.context.traceID.hexString) \nspanId: \(span.context.spanID.hexString)\n is cached in cache pool"))
         }
@@ -57,12 +64,36 @@ extension SpanCachePool: SpanProcessable {
     }
     
     public func shutdown(timeout: TimeInterval, closure: ProcedureEndClosure?) {
-        shuttedDown = true
+        defer {
+            shuttedDown = true
+        }
+        if isShuttedDown {
+            guard let closure = closure else {
+                return
+            }
+            closure(false, .alreadyShuttedDown(component: "SpanCachePool"))
+            return
+        }
+        poolFetchQueue.async {
+            self.spanPool.removeAll()
+            guard let closure = closure else {
+                return
+            }
+            DispatchQueue.main.async {
+                closure(true, .normal(msg: "SpanCachePool"))
+            }
+        }
     }
     
     public func forceFlush(timeout: TimeInterval, closure: ProcedureEndClosure?) {
-        if let closure = closure {
-            closure(true, nil)
+        poolFetchQueue.async {
+            self.spanPool.removeAll()
+            guard let closure = closure else {
+                return
+            }
+            DispatchQueue.main.async {
+                closure(true, .normal(msg: "SpanCachePool"))
+            }
         }
     }
 }
