@@ -101,7 +101,8 @@ class TraceTableViewController: UITableViewController {
             ObservatoryKeyValue(key: "gender", value: .string(student.gender)),
             ObservatoryKeyValue(key: "No", value: .int(student.classNo))
         ]
-        let alertSpan = self.obs.spanStart(name: "message_alert", parentContext: span?.context, attributes: alertAttri)
+        let currentParentSpan = self.obs.recentSpan()
+        let alertSpan = self.obs.spanStart(name: "message_alert", parentContext: currentParentSpan?.context, attributes: alertAttri)
         let alertController = UIAlertController(title: student.name, message: "Message sent", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { action in
             alertSpan?.addEvent(name: "tapped_ok", attributes: nil)

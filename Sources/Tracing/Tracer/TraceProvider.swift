@@ -14,7 +14,7 @@ public class TracerProvider: TracerProvidable {
     
     internal static var lastTracerProvider: TracerProvider? = nil
     
-    internal var latestTracer: Tracerable? = nil
+    private var latestTracer: Tracerable? = nil
     
     private let limit: SpanLimit
     
@@ -79,5 +79,9 @@ public class TracerProvider: TracerProvidable {
         self.limit = limit
         self.sampler = sampler
         TracerProvider.lastTracerProvider = self
+    }
+    
+    public func recentTracer() -> (any Tracerable)? {
+        return latestTracer
     }
 }

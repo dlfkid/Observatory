@@ -12,13 +12,30 @@ import ObservatoryCommon
 
 public protocol Tracerable: SpanContextGenerateable, Scopable {
     
+    /// Version of the tracer
     var version: String {get}
     
+    /// name of the tracer
     var name: String {get}
     
+    /// SchemaURL of the tracer
     var schemaURL: String? {get}
     
+    /// Create an internal span an return a readableSpan to the caller
+    /// - Parameters:
+    ///   - name: name of the Span
+    ///   - kind: span kind
+    ///   - context: context of the span
+    ///   - attributes: atrributes of the span
+    ///   - startTimeUnix: span's start time
+    ///   - linkes: links of the span
+    ///   - traceState: traceState pass along the baggage
+    /// - Returns: Readable span
     func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnix: TimeRepresentable?, linkes:[Link]?, traceState: TraceState?) -> ReadableSpan?
+    
+    /// Acquire the recently created redableSpan by this tracer
+    /// - Returns: ReadableSpan
+    func recentReadableSpan() -> ReadableSpan?
 }
 
 extension Tracerable {
@@ -42,6 +59,10 @@ extension Tracerable {
         let context = SpanContext(trace: traceId, span: spanId, sampledFlag: decision, isRemote: true, parentSpan: nil, traceState: traceState)
         return internalCreateSpan(name: name, kind: kind, context: context, attributes: attributes, startTimeUnix: startTimeUnixNano, linkes: linkes, traceState: traceState)
     }
+    
+    public func recentReadableSpan() -> ReadableSpan? {
+        return nil
+    }
 }
 
 public class Tracer: Tracerable {
@@ -55,7 +76,7 @@ public class Tracer: Tracerable {
     
     private var lastSpan: Span?
     
-    public func recentSpan() -> ReadableSpan? {
+    public func recentReadableSpan() -> ReadableSpan? {
         var recentSpan: ReadableSpan? = nil
         spanOperateQueue.sync {
             if let span = lastSpan {
@@ -69,7 +90,9 @@ public class Tracer: Tracerable {
         let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
         span.startTimeUnix = startTimeUnixNano
         provider.onSpanStarted(span: span)
-        return span.readableSpan()
+        lastSpan = span
+        let createdSpan = span.readableSpan()
+        return createdSpan
     }
     
     public func internalCreateSpan(name: String, kind: SpanKind, context: SpanContext?, attributes: [ObservatoryKeyValue]?, startTimeUnix: TimeRepresentable?, linkes: [Link]?, traceState: TraceState?) -> ReadableSpan? {

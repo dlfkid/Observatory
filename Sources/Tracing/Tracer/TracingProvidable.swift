@@ -21,4 +21,15 @@ public protocol TracerProvidable: CachedKeyManagable {
     func onSpanEnded(span: Span)
     
     func shouldSample(traceID: TraceID, name: String, parentSpanID: SpanID?, attributes: [ObservatoryKeyValue]?, links: [Link]?, traceState: TraceState?) -> SamplingResult
+    
+    /// Acquire the recent created tracer by this provider
+    /// - Returns: Tracerable
+    func recentTracer() -> Tracerable?
 }
+
+extension TracerProvidable {
+    public func recentTracer() -> Tracerable? {
+        return nil
+    }
+}
+
