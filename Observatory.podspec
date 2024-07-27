@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'Observatory'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A swift written distributed tracing and log clinet built conformimg to OpenTelemetry specifications'
 
 # This description is used to generate tags and improve search results.
@@ -18,10 +18,10 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+In short, To help application developer to improve the observability of their apps. By offering distributed tacing data to the backend colletor, developer can see through the connection between logs and understand the hole process they defined rather than searching in tons of god knows wether they are relative logs and die trying to organize the whole situation.
                        DESC
 
-  s.homepage         = 'git@github.com:dlfkid/Observatory'
+  s.homepage         = 'https://github.com/dlfkid/Observatory'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'RavenDeng' => 'dlfkid@icloud.com' }
   s.source           = { :git => 'git@github.com:dlfkid/Observatory.git', :tag => s.version.to_s }
