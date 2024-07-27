@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
   s.name             = 'Observatory'
   s.version          = '0.1.1'
   s.summary          = 'A swift written distributed tracing and log clinet built conformimg to OpenTelemetry specifications'
-
+  s.swift_versions = '5.0'
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
 #   * Try to keep it short, snappy and to the point.
@@ -24,7 +24,7 @@ In short, To help application developer to improve the observability of their ap
   s.homepage         = 'https://github.com/dlfkid/Observatory'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'RavenDeng' => 'dlfkid@icloud.com' }
-  s.source           = { :git => 'git@github.com:dlfkid/Observatory.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/dlfkid/Observatory.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '12.2'
 
