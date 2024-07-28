@@ -7,7 +7,7 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'Observatory'
+  s.name             = 'ObservatoryPod'
   s.version          = '0.1.1'
   s.summary          = 'A swift written distributed tracing and log clinet built conformimg to OpenTelemetry specifications'
   s.swift_versions = '5.0'
@@ -31,26 +31,26 @@ In short, To help application developer to improve the observability of their ap
   s.default_subspec = 'Full'
   
   s.subspec 'Full' do |full|
-    full.dependency 'Observatory/ObservatoryTracing'
-    full.dependency 'Observatory/ObservatoryLogging'
+    full.dependency 'ObservatoryPod/Tracing'
+    full.dependency 'ObservatoryPod/Logging'
   end
 
-  s.subspec 'ObservatoryTracing' do |tracing|
-    tracing.dependency 'Observatory/ObservatoryCommon'
+  s.subspec 'Tracing' do |tracing|
+    tracing.dependency 'ObservatoryPod/Common'
     tracing.source_files = 'Sources/Tracing/**/*'
   end
 
-  s.subspec 'ObservatoryLogging' do |logging|
-    logging.dependency 'Observatory/ObservatoryCommon'
+  s.subspec 'Logging' do |logging|
+    logging.dependency 'ObservatoryPod/Common'
     logging.source_files = 'Sources/Logging/**/*'
   end
 
-  s.subspec 'ObservatoryCommon' do |common|
+  s.subspec 'Common' do |common|
     common.source_files = 'Sources/Common/**/*'
   end
 
-  s.subspec 'ObservatoryTracingZipkin' do |zipkin|
-    zipkin.dependency 'Observatory/ObservatoryTracing'
+  s.subspec 'TracingZipkin' do |zipkin|
+    zipkin.dependency 'ObservatoryPod/Tracing'
     zipkin.source_files = 'Sources/Extensions/Tracing/ZipkinExport'
   end
 end

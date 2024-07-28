@@ -7,8 +7,8 @@
 //
 
 import UIKit
-#if canImport(Observatory)
-import Observatory
+#if canImport(ObservatoryPod)
+import ObservatoryPod
 #endif
 
 enum LogModuleCases: CaseIterable {
@@ -83,7 +83,7 @@ extension ViewController: UITableViewDelegate {
             navigationController?.pushViewController(controller, animated: true)
             break
         case .exportingTracingData:
-            Observatory.SandBoxDataWriter.exportSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { filePaths in
+            ObservatoryPod.SandBoxDataWriter.exportSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { filePaths in
                 guard let filePaths = filePaths, !filePaths.isEmpty else {
                     print("No data to export")
                     return
@@ -111,7 +111,7 @@ extension ViewController: UITableViewDelegate {
                 self.present(activityViewController, animated: true)
             }
         case .removeTracingData:
-            Observatory.SandBoxDataWriter.removeSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { removedCount in
+            ObservatoryPod.SandBoxDataWriter.removeSavedDataFromSandBox(searchPath: .documentDirectory, subDir: "zipkinSpans") { removedCount in
                 print("\(removedCount) file are removed")
             }
         }

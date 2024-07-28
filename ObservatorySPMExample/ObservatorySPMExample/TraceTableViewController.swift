@@ -7,8 +7,8 @@
 //
 
 import UIKit
-#if canImport(Observatory)
-import Observatory
+#if canImport(ObservatoryPod)
+import ObservatoryPod
 #endif
 #if canImport(ObservatoryTracing)
 import ObservatoryTracing

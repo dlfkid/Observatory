@@ -9,7 +9,7 @@ import Foundation
 #if canImport(ObservatoryTracing)
 import ObservatoryTracing
 #else
-import Observatory
+import ObservatoryPod
 #endif
 #if canImport(ZipkinExport)
 import ZipkinExport

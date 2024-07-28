@@ -12,8 +12,8 @@ import ObservatoryTracing
 #if canImport(ObservatoryCommon)
 import ObservatoryCommon
 #endif
-#if canImport(Observatory)
-import Observatory
+#if canImport(ObservatoryPod)
+import ObservatoryPod
 #endif
 
 class TraceNextViewController: UIViewController {

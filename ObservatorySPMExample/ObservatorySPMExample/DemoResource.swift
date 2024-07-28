@@ -11,7 +11,7 @@ import Foundation
 import ObservatoryTracing
 import ObservatoryCommon
 #else
-import Observatory
+import ObservatoryPod
 #endif
 
 enum DemoResource {

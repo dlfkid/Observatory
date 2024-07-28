@@ -58,19 +58,19 @@ Observatory is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'Observatory'
+pod 'ObservatoryPod'
 ```
 
 Alternatively, you can intergrate the module only if it's what you need:
 
 ````shell
-pod 'Observatory/ObservatoryTracing'
+pod 'Observatory/Tracing'
 ````
 
 For default **Zipkin** implementation:
 
 ````shell
-pod 'Observatory/ObservatoryTracingZipkin'
+pod 'Observatory/TracingZipkin'
 ````
 
 ### SPM
