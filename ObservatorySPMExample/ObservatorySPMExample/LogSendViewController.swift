@@ -21,7 +21,7 @@ class LogSendViewController: UIViewController {
     private let loggerName = "customize_logger"
     
     private let loggerVersion = "1.0.0"
-    
+#if canImport(ObservatoryPod)
     lazy private var loggerProvider: LoggerProvidable = {
         
         let exporter = SimpleLogRecordExporter()
@@ -34,10 +34,13 @@ class LogSendViewController: UIViewController {
     }()
     
     private var logger: Loggerable?
+#endif
 
     override func viewDidLoad() {
         super.viewDidLoad()
+#if canImport(ObservatoryPod)
         logger = loggerProvider.createLoggerIfNeeded(name: loggerName, version: loggerVersion, schemaURL: nil, attributes: ["type": .string("demo")])
+#endif
         view.backgroundColor = .white
         navigationItem.title = "Log send"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(rightBarButtonItemDidTappedAction))
@@ -48,9 +51,11 @@ class LogSendViewController: UIViewController {
 extension LogSendViewController {
     
     @objc func rightBarButtonItemDidTappedAction() {
+#if canImport(ObservatoryPod)
         guard let logger = loggerProvider.createLoggerIfNeeded(name: loggerName, version: loggerVersion, schemaURL: nil, attributes: nil) else {
             return
         }
         logger.log("In my restless dreams, I see that tonw, silent hill, your promised you will take me there again someday, but you never did. Now I am all alone here, in our special place, waiting for you.", severity: .info, timeStamp: nil, attributes: ["game_name": .string("Silent Hill"), "generation": .int(2), "qoute_by": .string("mary"), "boss_names": .stringArray(["red pyramid thing", "eddie", "angela's father", "maria"])], traceID: nil, spanID: nil, flag: .unspecified)
+#endif
     }
 }
