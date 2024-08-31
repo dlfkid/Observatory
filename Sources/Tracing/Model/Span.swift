@@ -6,16 +6,14 @@
 //
 
 import Foundation
-
 #if canImport(ObservatoryCommon)
 import ObservatoryCommon
 #endif
 
 public struct SpanLimit {
-    let maxAttributesCount: Int
     let maxLinkCount: Int
     let maxEventCount: Int
-    let attributeLimit: LimitConfig
+    let attributeLimit: AttributeLimit
 }
 
 public class Span {
@@ -31,13 +29,17 @@ public class Span {
     
     private var operateQueue: DispatchQueue?
     
-    private weak var provider: (AnyObject & TracerProvidable)?
+    fileprivate weak var provider: (AnyObject & TracerProvidable)?
+    
+    fileprivate weak var tracer: (AnyObject & Tracerable)?
     
     private var internalAttributes = [ObservatoryKeyValue]()
     
     private var internalEvents = [Event]()
     
-    internal init(resource: Resource?, name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, queue: DispatchQueue?) {
+    private var internalLinks = [Link]()
+    
+    internal init(resource: Resource?, name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, tracer: (AnyObject & Tracerable)?, queue: DispatchQueue?) {
         self.name = name
         self.kind = kind
         self.limit = limit
@@ -48,8 +50,8 @@ public class Span {
         self.resource = resource
     }
     
-    internal convenience init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, attributes: [ObservatoryKeyValue]?, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, queue: DispatchQueue?) {
-        self.init(resource: nil, name: name, kind: kind, limit: limit, context: context, scope: scope, provider: provider, queue: queue)
+    internal convenience init(name: String, kind: SpanKind, limit: SpanLimit, context: SpanContext, attributes: [ObservatoryKeyValue]?, scope: InstrumentationScope, provider: (AnyObject & TracerProvidable)?, tracer: (AnyObject & Tracerable)?, queue: DispatchQueue?) {
+        self.init(resource: nil, name: name, kind: kind, limit: limit, context: context, scope: scope, provider: provider, tracer: tracer, queue: queue)
         if let attributes = attributes {
             self.internalAttributes.append(contentsOf: attributes)
         }
@@ -68,6 +70,9 @@ public class Span {
     
     func addEvent(name: String, attributes: [ObservatoryKeyValue]?, timeUnixNano: TimeInterval? = nil) {
         operateQueue?.async {
+            guard self.internalEvents.count <= self.limit.maxEventCount else {
+                return
+            }
             if self.ended {
                 return
             }
@@ -76,28 +81,43 @@ public class Span {
         }
     }
     
-    func fetchAttributes(completion: @escaping ReadableAttributeCallback) {
-        operateQueue?.async {
-            let attributes = self.internalAttributes
-            DispatchQueue.main.async {
-                completion(attributes)
-            }
-        }
-    }
+    /*
+     public let context: Context
+     
+     public let attributes: [ObservatoryKeyValue]?
+     
+     public let traceState: TraceState?
+     
+     public let droppedAttributesCount: Int?
+     */
     
-    func fetchEvents(completion: @escaping ReadableEventCallback) {
+    func addLink(context: Context, attributes: [ObservatoryKeyValue]?, state: TraceState?) {
         operateQueue?.async {
-            let events = self.internalEvents
-            DispatchQueue.main.async {
-                completion(events)
+            guard self.internalLinks.count <= self.limit.maxLinkCount else {
+                return
             }
+            var actualAttributes: [ObservatoryKeyValue]? = nil
+            var droppedCount = 0
+            if let attributes = attributes {
+                var tempAttributes = [ObservatoryKeyValue]()
+                for (index, value) in attributes.enumerated() {
+                    guard index < self.limit.attributeLimit.maximumAttriForLink else {
+                        droppedCount += 1
+                        continue
+                    }
+                    tempAttributes.append(value)
+                }
+                actualAttributes = tempAttributes
+            }
+            let link = Link(context: context, attributes: actualAttributes, traceState: state, droppedAttributesCount: droppedCount)
+            self.internalLinks.append(link)
         }
     }
     
     func events() -> [Event]? {
         var events: [Event]? = nil
         operateQueue?.sync {
-            events = self.internalEvents
+            events?.append(contentsOf: self.internalEvents)
         }
         return events
     }
@@ -105,14 +125,87 @@ public class Span {
     func attributes() -> [ObservatoryKeyValue]? {
         var attributes: [ObservatoryKeyValue]? = nil
         operateQueue?.sync {
-            attributes = self.internalAttributes
+            attributes?.append(contentsOf: self.internalAttributes)
         }
         return attributes
+    }
+    
+    func links() -> [Link]? {
+        var links: [Link]? = nil
+        operateQueue?.sync {
+            links?.append(contentsOf: self.internalLinks)
+        }
+        return links
     }
 }
 
 extension Span {
     func readableSpan() -> ReadableSpan {
         return ReadableSpan(internalSpan: self)
+    }
+}
+
+public typealias ReadableAttributeCallback = (_ attributes: [ObservatoryKeyValue]) -> Void
+
+public typealias ReadableEventCallback = (_ attributes: [Event]) -> Void
+
+public struct ReadableSpan {
+    
+    public let events: [Event]?
+    
+    public let attributes: [ObservatoryKeyValue]?
+    
+    public let links: [Link]?
+    
+    public var context: SpanContext {
+        return internalSpan.context
+    }
+    
+    fileprivate let internalSpan: Span
+    
+    init(internalSpan: Span) {
+        self.internalSpan = internalSpan
+        self.events = internalSpan.events()
+        self.attributes = internalSpan.attributes()
+        self.links = internalSpan.links()
+    }
+    
+    public func end(endTimeUnixNano: TimeInterval? = nil) {
+        self.internalSpan.end(endTimeUnixNano: endTimeUnixNano)
+    }
+    
+    public func addEvent(name: String, attributes: [ObservatoryKeyValue]? = nil, timeUnixNano: TimeInterval? = nil) {
+        self.internalSpan.addEvent(name: name, attributes: attributes, timeUnixNano: timeUnixNano)
+    }
+    
+    public func addLink(context: Context, attributes: [ObservatoryKeyValue]? = nil, state: TraceState? = nil) {
+        self.internalSpan.addLink(context: context, attributes: attributes, state: state)
+    }
+    
+    /// Create a subspan of current span
+    /// - Parameters:
+    ///   - name: subspan name
+    ///   - kind: kind
+    ///   - attributes: attributes description
+    ///   - startTimeUnixNano: startTimeUnixNano description
+    ///   - linkes: linkes description
+    ///   - traceStateStr: traceStateStr description
+    /// - Returns: description
+    func addSubspan(name: String, kind: SpanKind = .producer, attributes: [ObservatoryKeyValue]? = nil, startTimeUnixNano: TimeRepresentable? = nil, linkes:[Link]? = nil, traceStateStr: String? = nil) -> ReadableSpan? {
+        let internalSpan = internalSpan
+        guard let tracer = internalSpan.tracer else {
+            return nil
+        }
+        return tracer.createSpan(name: name, kind: kind, superSpanContext: internalSpan.context, attributes: nil, startTimeUnixNano: startTimeUnixNano, linkes: linkes, traceState: TraceState(raw: traceStateStr))
+    }
+    
+    /// Link this span to another span
+    /// - Parameters:
+    ///   - span: span description
+    ///   - attributes: attributes description
+    ///   - state: state description
+    func linkToSpan(_ span: ReadableSpan, attributes: [ObservatoryKeyValue]? = nil, state: TraceState? = nil) {
+        let internalSpan = internalSpan
+        internalSpan.addLink(context: span.context, attributes: attributes, state: state)
     }
 }

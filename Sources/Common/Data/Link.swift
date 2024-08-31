@@ -13,13 +13,17 @@ public struct Link {
     
     public let attributes: [ObservatoryKeyValue]?
     
-    public let trace_state: String?
+    public let traceState: TraceState?
     
-    public let dropped_attributes_count: Int?
+    public let droppedAttributesCount: Int?
     
-    public let traceID: TraceID?
+    public var traceID: TraceID? {
+        return context.traceID
+    }
     
-    public let spanID: SpanID?
+    public var spanID: SpanID? {
+        return context.spanID
+    }
 }
 
 extension Link: Encodable {
@@ -33,9 +37,9 @@ extension Link: Encodable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(dropped_attributes_count, forKey: .dropped_attributes_count)
+        try container.encode(droppedAttributesCount, forKey: .dropped_attributes_count)
         try container.encode(attributes, forKey: .attributes)
-        try container.encode(trace_state, forKey: .trace_state)
+        try container.encode(traceState?.w3cTraceStateHeader, forKey: .trace_state)
         try container.encode(traceID?.bytes, forKey: .trace_id)
         try container.encode(spanID?.bytes, forKey: .span_id)
     }

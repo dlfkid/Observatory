@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol ObservatoryWrapperable: AnyObject { }
+public protocol ObservatoryWrapperable { }
 
 /// The real value holder of `ObservatoryWrapperable`
 public struct ObservatoryWrapper<T> {

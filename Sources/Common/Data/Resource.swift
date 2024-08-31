@@ -24,7 +24,7 @@ public class ResourceBuilder {
     private let instanceIdKey = "service.instance.id"
     private let versionKey = "service.version"
     
-    private var limit = LimitConfig()
+    private var limit = AttributeLimit(maximumAttriForSpan: 32, maximumAttriForLink: 8, maximumAttriForEvent: 16)
     private var attributesDict = [String: ObservatoryValue]()
     private var droppedAttribute: Int = 0
     
@@ -54,7 +54,7 @@ public class ResourceBuilder {
                 attributesDict[key] = value
                 continue
             }
-            if attributeCount >= limit.maximumNumberOfAttributes ?? 0 {
+            if attributeCount >= limit.maximumAttriForSpan {
                 // if the dict is reach its limit, dropp the attribute
                 droppedAttribute += 1
                 continue

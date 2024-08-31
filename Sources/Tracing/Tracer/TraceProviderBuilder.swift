@@ -19,7 +19,7 @@ public class TracerProviderBuilder {
     
     public var sampler: Samplerable = SimpleSampler()
     
-    public var limit = SpanLimit(maxAttributesCount: 128, maxLinkCount: 32, maxEventCount: 32, attributeLimit: LimitConfig())
+    public var limit = SpanLimit(maxLinkCount: 32, maxEventCount: 32, attributeLimit: AttributeLimit(maximumAttriForSpan: 32, maximumAttriForLink: 8, maximumAttriForEvent: 16))
     
     public init(resource: Resource) {
         self.resource = resource

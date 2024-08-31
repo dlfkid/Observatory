@@ -10,7 +10,7 @@ import Foundation
 import ObservatoryCommon
 #endif
 
-public protocol Tracerable: SpanContextGenerateable, Scopable {
+public protocol Tracerable: SpanContextGenerateable, Scopable, AnyObject {
     
     /// Version of the tracer
     var version: String {get}
@@ -87,7 +87,7 @@ public class Tracer: Tracerable {
     }
     
     fileprivate func handleSpanCreation(_ spanContext: SpanContext, _ name: String, _ kind: SpanKind, _ attributes: [ObservatoryKeyValue]?, _ provider: (any AnyObject & TracerProvidable), _ startTimeUnixNano: TimeRepresentable?) -> ReadableSpan? {
-        let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, queue: spanOperateQueue)
+        let span = Span(name: name, kind: kind, limit: limit, context: spanContext, attributes: attributes, scope:scope, provider: provider, tracer: self, queue: spanOperateQueue)
         span.startTimeUnix = startTimeUnixNano
         provider.onSpanStarted(span: span)
         lastSpan = span

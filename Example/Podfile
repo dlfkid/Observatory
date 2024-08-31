@@ -3,8 +3,8 @@ use_frameworks!
 platform :ios, '12.2'
 
 target 'Observatory_Example' do
-  pod 'ObservatoryPod'
-  pod 'ObservatoryPod/TracingZipkin'
+  pod 'ObservatoryPod', :path => '../'
+  pod 'ObservatoryPod/TracingZipkin', :path => '../'
 
   target 'Observatory_Tests' do
     inherit! :search_paths
