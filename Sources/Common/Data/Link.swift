@@ -24,6 +24,13 @@ public struct Link {
     public var spanID: SpanID? {
         return context.spanID
     }
+    
+    public init(context: Context, attributes: [ObservatoryKeyValue]?, traceState: TraceState?, droppedAttributesCount: Int?) {
+        self.context = context
+        self.attributes = attributes
+        self.traceState = traceState
+        self.droppedAttributesCount = droppedAttributesCount
+    }
 }
 
 extension Link: Encodable {

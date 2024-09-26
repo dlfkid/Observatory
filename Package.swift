@@ -8,8 +8,11 @@ let package = Package(
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "ObservatoryPackage",
+            name: "ObservatoryCore",
             targets: ["ObservatoryCommon", "ObservatoryLogging", "ObservatoryTracing", "ZipkinExport"]),
+        .library(
+            name: "ObservatoryZipKin",
+                 targets: ["ObservatoryCommon", "ObservatoryLogging", "ObservatoryTracing", "ZipkinExport"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
